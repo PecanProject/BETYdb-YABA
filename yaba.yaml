@@ -1,0 +1,321 @@
+openapi: "3.0.0"
+info:
+  version: 0.0.1
+  title: BETYdb-YABA
+  description: <h2>The YABA API (BETYdb-YABA) is a Standardized RESTful Web Service API Specification for MetaData Upload to respective tables.</h2>
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8080/yaba/v1
+paths:
+  /experiments:
+    post:
+      summary: Upload metadata to Experiments Table
+      operationId: metaExperiments
+      tags:
+        - experiments
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                name:
+                  type: string
+                start_date:
+                  type: string
+                end_date:
+                  type: string
+                user_id:
+                  type: integer
+              example:   # Sample data
+                name: 'MAC Season 6: Sorghum BAP'
+                start_date: '2018-04-06'
+                end_date: '2018-08-01'
+                user_id: 6000000004
+      responses:
+        '201':
+          description: Successfully Inserted to Experiment Table
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /sites:
+    post:
+      summary: Upload metadata to Sites Table
+      operationId: metaSites
+      tags:
+        - sites
+      parameters:
+        - name: shapefile
+          in: query
+          description: 'Shapefile for a site to get geometry'
+          required: true
+          allowReserved: true
+          example: "sometext"
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                city:
+                  type: string
+                state:
+                  type: string
+                country:
+                  type: string
+                sitename:
+                  type: string
+              example:   # Sample object
+                city: Maricopa
+                state: Arizona
+                country: USA
+                sitename: MAC Field Scanner Season 7 Range 9 Column 15
+      responses:
+        '201':
+          description: Successfully Inserted to Site Table
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /treatments:
+    post:
+      summary: Upload metadata to Treatments Table
+      operationId: metaTreatments
+      tags:
+        - treatments
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                name:
+                  type: string
+                definition:
+                  type: string
+                control:
+                  type: string
+                             
+              example:   # Sample object
+                definition: 'some text'
+                name: 'MAC Season 6: Sorghum'
+                control: 'f'
+      responses:
+        '201':
+          description: Successfully Inserted to Treatments Table
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /cultivars:
+    post:
+      summary: Upload meta-data to Cultivars Table
+      operationId: metaCultivars
+      tags:
+        - cultivars
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                name:
+                  type: string
+                specie_id:
+                  type: integer
+                
+              example:   # Sample object
+                id: 2588
+                name: 'RIL-CS27_(TX2910/(Macia/R07007)-CS44)-CSF1-PRF2-CS27'
+      responses:
+        '201':
+          description: Successfully Inserted to Cultivars Table
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /citations:
+    post:
+      summary: Upload meta data to Citations Table
+      operationId: metaCitations
+      tags:
+        - citations
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                author:
+                  type: string
+                year:
+                  type: integer
+                title:
+                  type: string
+              example:   # Sample object
+                author: some text
+                year: 2019
+                title: some text
+      responses:
+        '201':
+          description: Successfully Inserted to Citations Table
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+  
+  /experiment_sites:
+    post:
+      summary: Upload meta data to experiment_sites Table
+      operationId: metaExperiment_sites
+      tags:
+        - experiment_sites
+      requestBody:
+        content:
+          application/json:
+            schema:      
+              type: object
+              properties:
+                experiment_name:
+                  type: string
+                specie_name:
+                  type: string
+              example:   
+                experiment_name: 'MAC Season 6: Sorghum BAP'
+                specie_name: 'MAC Field Scanner Season 6 Range 1 Column 1 E'
+      responses:
+        '201':
+          description: Successfully Inserted to Experiment_sites Table
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /experiment_treatments:
+    post:
+      summary: Upload meta-data to Experiment_treatments Table
+      operationId: metaExperiment_treatments
+      tags:
+        - experiment_treatments
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                experiment_name:
+                  type: string
+                treatment_name:
+                  type: string
+              example:   # Sample object
+                experiment_name: 'MAC Season 6: Sorghum BAP'
+                treatment_name: 'MAC Season 6: Sorghum'
+      responses:
+        '201':
+          description: Successfully Inserted to experiment_treatments Table
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /sites_cultivars:
+    post:
+      summary: Upload meta data to sites_cultivars Table
+      operationId: metaSites_cultivars
+      tags:
+        - sites_cultivars
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                site_name:
+                  type: string
+                cultivar_name:
+                  type: string
+                specie_id:
+                  type: integer
+              example:   # Sample object
+                site_name: 'MAC Season 6: Sorghum BAP'
+                cultivar_name: 'MAC Field Scanner Season 6 Range 1 Column 1 E'
+                specie_id: 2588
+      responses:
+        '201':
+          description: Successfully Inserted to sites_cultivars Table
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /citations_sites:
+    post:
+      summary: Upload meta data to citations_sites Table
+      operationId: metaCitations_sites
+      tags:
+        - citations_sites
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                author_name:
+                  type: string
+                year:
+                  type: integer
+                title:
+                  type: string
+                citations_name:
+                  type: string
+              example:   # Sample object
+                author_name: 'Newcomb, Maria'
+                year: 2019
+                title: 'MAC Field Activities'
+                citations_name: 'MAC Field Scanner Season 6 Range 1 Column 1 E'
+      responses:
+        '201':
+          description: Successfully Inserted to citations_sites Table
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
