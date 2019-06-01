@@ -4,7 +4,7 @@ info:
   title: BETYdb-YABA
   description: <h2>The YABA API (BETYdb-YABA) is a Standardized RESTful Web Service API Specification for MetaData Upload to respective tables.</h2>
   license:
-    name: MIT
+    name: BSD 3 Clause
 servers:
   - url: http://localhost:8080/yaba/v1
 paths:
