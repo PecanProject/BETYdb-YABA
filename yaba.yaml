@@ -1,41 +1,52 @@
 openapi: "3.0.0"
 info:
-  version: 0.0.1
+  version: 1.0.1
   title: BETYdb-YABA
   description: <h2>The YABA API (BETYdb-YABA) is a Standardized RESTful Web Service API Specification for MetaData Upload to respective tables.</h2>
   license:
-    name: BSD 3 Clause
+    name: BSD 3-Clause
 servers:
   - url: http://localhost:8080/yaba/v1
 paths:
   /experiments:
     post:
-      summary: Upload metadata to Experiments Table
-      operationId: metaExperiments
+      summary: Upload Experiment Metadata
+      operationId: Meta.insert_experiments
       tags:
         - experiments
       requestBody:
         content:
-          application/json:
-            schema:      # Request body contents
+          multipart/form-data:
+            schema:
               type: object
               properties:
-                name:
+                fileName:
                   type: string
-                start_date:
-                  type: string
-                end_date:
-                  type: string
-                user_id:
-                  type: integer
-              example:   # Sample data
-                name: 'MAC Season 6: Sorghum BAP'
-                start_date: '2018-04-06'
-                end_date: '2018-08-01'
-                user_id: 6000000004
+                  format: base64
       responses:
         '201':
-          description: Successfully Inserted to Experiment Table
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
         default:
           description: Unexpected error
           content:
@@ -45,41 +56,44 @@ paths:
 
   /sites:
     post:
-      summary: Upload metadata to Sites Table
-      operationId: metaSites
+      summary: Upload site or plot metadata to sites table
+      operationId: Meta.insert_sites
       tags:
         - sites
-      parameters:
-        - name: shapefile
-          in: query
-          description: 'Shapefile for a site to get geometry'
-          required: true
-          allowReserved: true
-          example: "sometext"
-          schema:
-            type: string
       requestBody:
         content:
-          application/json:
-            schema:      # Request body contents
+          multipart/form-data:
+            schema:
               type: object
               properties:
-                city:
+                fileName:
                   type: string
-                state:
-                  type: string
-                country:
-                  type: string
-                sitename:
-                  type: string
-              example:   # Sample object
-                city: Maricopa
-                state: Arizona
-                country: USA
-                sitename: MAC Field Scanner Season 7 Range 9 Column 15
+                  format: base64
+      
       responses:
         '201':
-          description: Successfully Inserted to Site Table
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
         default:
           description: Unexpected error
           content:
@@ -89,30 +103,43 @@ paths:
   
   /treatments:
     post:
-      summary: Upload metadata to Treatments Table
-      operationId: metaTreatments
+      summary: Upload Treatments Metadata
+      operationId: Meta.insert_treatments
       tags:
         - treatments
       requestBody:
         content:
-          application/json:
-            schema:      # Request body contents
+          multipart/form-data:
+            schema:
               type: object
               properties:
-                name:
+                fileName:
                   type: string
-                definition:
-                  type: string
-                control:
-                  type: string
-                             
-              example:   # Sample object
-                definition: 'some text'
-                name: 'MAC Season 6: Sorghum'
-                control: 'f'
+                  format: base64
       responses:
         '201':
-          description: Successfully Inserted to Treatments Table
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
         default:
           description: Unexpected error
           content:
@@ -122,27 +149,43 @@ paths:
   
   /cultivars:
     post:
-      summary: Upload meta-data to Cultivars Table
-      operationId: metaCultivars
+      summary: Upload Cultivars Metadata
+      operationId: Meta.insert_cultivars
       tags:
         - cultivars
       requestBody:
         content:
-          application/json:
-            schema:      # Request body contents
+          multipart/form-data:
+            schema:
               type: object
               properties:
-                name:
+                fileName:
                   type: string
-                specie_id:
-                  type: integer
-                
-              example:   # Sample object
-                id: 2588
-                name: 'RIL-CS27_(TX2910/(Macia/R07007)-CS44)-CSF1-PRF2-CS27'
+                  format: base64
       responses:
         '201':
-          description: Successfully Inserted to Cultivars Table
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
         default:
           description: Unexpected error
           content:
@@ -152,29 +195,43 @@ paths:
   
   /citations:
     post:
-      summary: Upload meta data to Citations Table
-      operationId: metaCitations
+      summary: Upload Citations Metadata
+      operationId: Meta.insert_citations
       tags:
         - citations
       requestBody:
         content:
-          application/json:
-            schema:      # Request body contents
+          multipart/form-data:
+            schema:
               type: object
               properties:
-                author:
+                fileName:
                   type: string
-                year:
-                  type: integer
-                title:
-                  type: string
-              example:   # Sample object
-                author: some text
-                year: 2019
-                title: some text
+                  format: base64
       responses:
         '201':
-          description: Successfully Inserted to Citations Table
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
         default:
           description: Unexpected error
           content:
@@ -184,26 +241,43 @@ paths:
   
   /experiment_sites:
     post:
-      summary: Upload meta data to experiment_sites Table
-      operationId: metaExperiment_sites
+      summary: Upload experiment_sites metadata
+      operationId: Meta.insert_experimentSites
       tags:
         - experiment_sites
       requestBody:
         content:
-          application/json:
-            schema:      
+          multipart/form-data:
+            schema:
               type: object
               properties:
-                experiment_name:
+                fileName:
                   type: string
-                specie_name:
-                  type: string
-              example:   
-                experiment_name: 'MAC Season 6: Sorghum BAP'
-                specie_name: 'MAC Field Scanner Season 6 Range 1 Column 1 E'
+                  format: base64
       responses:
         '201':
-          description: Successfully Inserted to Experiment_sites Table
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
         default:
           description: Unexpected error
           content:
@@ -213,26 +287,43 @@ paths:
 
   /experiment_treatments:
     post:
-      summary: Upload meta-data to Experiment_treatments Table
-      operationId: metaExperiment_treatments
+      summary: Upload Experiment_treatments Metadata
+      operationId: Meta.insert_experiment_treatments
       tags:
         - experiment_treatments
       requestBody:
         content:
-          application/json:
-            schema:      # Request body contents
+          multipart/form-data:
+            schema:
               type: object
               properties:
-                experiment_name:
+                fileName:
                   type: string
-                treatment_name:
-                  type: string
-              example:   # Sample object
-                experiment_name: 'MAC Season 6: Sorghum BAP'
-                treatment_name: 'MAC Season 6: Sorghum'
+                  format: base64
       responses:
         '201':
-          description: Successfully Inserted to experiment_treatments Table
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
         default:
           description: Unexpected error
           content:
@@ -242,29 +333,43 @@ paths:
 
   /sites_cultivars:
     post:
-      summary: Upload meta data to sites_cultivars Table
-      operationId: metaSites_cultivars
+      summary: Upload sites_cultivars Metadata
+      operationId: Meta.insert_sitesCultivars
       tags:
         - sites_cultivars
       requestBody:
         content:
-          application/json:
-            schema:      # Request body contents
+          multipart/form-data:
+            schema:
               type: object
               properties:
-                site_name:
+                fileName:
                   type: string
-                cultivar_name:
-                  type: string
-                specie_id:
-                  type: integer
-              example:   # Sample object
-                site_name: 'MAC Season 6: Sorghum BAP'
-                cultivar_name: 'MAC Field Scanner Season 6 Range 1 Column 1 E'
-                specie_id: 2588
+                  format: base64
       responses:
         '201':
-          description: Successfully Inserted to sites_cultivars Table
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
         default:
           description: Unexpected error
           content:
@@ -274,32 +379,43 @@ paths:
   
   /citations_sites:
     post:
-      summary: Upload meta data to citations_sites Table
-      operationId: metaCitations_sites
+      summary: Upload citations_sites Metadata
+      operationId: Meta.insert_citationsSites
       tags:
         - citations_sites
       requestBody:
         content:
-          application/json:
-            schema:      # Request body contents
+          multipart/form-data:
+            schema:
               type: object
               properties:
-                author_name:
+                fileName:
                   type: string
-                year:
-                  type: integer
-                title:
-                  type: string
-                citations_name:
-                  type: string
-              example:   # Sample object
-                author_name: 'Newcomb, Maria'
-                year: 2019
-                title: 'MAC Field Activities'
-                citations_name: 'MAC Field Scanner Season 6 Range 1 Column 1 E'
+                  format: base64
       responses:
         '201':
-          description: Successfully Inserted to citations_sites Table
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
         default:
           description: Unexpected error
           content:
