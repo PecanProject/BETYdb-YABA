@@ -1,0 +1,437 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.1
+  title: BETYdb-YABA
+  description: <h2>The YABA API (BETYdb-YABA) is a Standardized RESTful Web Service API Specification for MetaData Upload to respective tables.</h2>
+  license:
+    name: BSD 3-Clause
+servers:
+  - url: http://localhost:8080/yaba/v1
+paths:
+  /experiments:
+    post:
+      summary: Upload Experiment Metadata
+      operationId: Meta.insert_experiments
+      tags:
+        - experiments
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /sites:
+    post:
+      summary: Upload site or plot metadata to sites table
+      operationId: Meta.insert_sites
+      tags:
+        - sites
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+      
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /treatments:
+    post:
+      summary: Upload Treatments Metadata
+      operationId: Meta.insert_treatments
+      tags:
+        - treatments
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /cultivars:
+    post:
+      summary: Upload Cultivars Metadata
+      operationId: Meta.insert_cultivars
+      tags:
+        - cultivars
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /citations:
+    post:
+      summary: Upload Citations Metadata
+      operationId: Meta.insert_citations
+      tags:
+        - citations
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+  
+  /experiment_sites:
+    post:
+      summary: Upload experiment_sites metadata
+      operationId: Meta.insert_experimentSites
+      tags:
+        - experiment_sites
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /experiment_treatments:
+    post:
+      summary: Upload Experiment_treatments Metadata
+      operationId: Meta.insert_experiment_treatments
+      tags:
+        - experiment_treatments
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /sites_cultivars:
+    post:
+      summary: Upload sites_cultivars Metadata
+      operationId: Meta.insert_sitesCultivars
+      tags:
+        - sites_cultivars
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /citations_sites:
+    post:
+      summary: Upload citations_sites Metadata
+      operationId: Meta.insert_citationsSites
+      tags:
+        - citations_sites
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Voilation
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
+        '403':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - User does not have permission
+                to perform this action
+        '404':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
