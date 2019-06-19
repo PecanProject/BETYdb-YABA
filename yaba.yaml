@@ -1,12 +1,14 @@
 openapi: "3.0.0"
 info:
-  version: 1.0.1
+  version: 1.0.2
   title: BETYdb-YABA
   description: <h2>The YABA API (BETYdb-YABA) is a Standardized RESTful Web Service API Specification for MetaData Upload to respective tables.</h2>
   license:
     name: BSD 3-Clause
 servers:
   - url: http://localhost:8080/yaba/v1
+
+# Paths supported by the server application
 paths:
   /experiments:
     post:
@@ -62,13 +64,23 @@ paths:
         - sites
       requestBody:
         content:
-          multipart/form-data:
+          application/octet-stream:
             schema:
               type: object
               properties:
-                fileName:
+                shp_file:
                   type: string
-                  format: base64
+                  format: binary
+                dbf_file:
+                  type: string
+                  format: binary
+                prj_file:
+                  type: string
+                  format: binary
+                shx_file:
+                  type: string
+                  format: binary
+                
       
       responses:
         '201':
@@ -288,7 +300,7 @@ paths:
   /experiment_treatments:
     post:
       summary: Upload Experiment_treatments Metadata
-      operationId: Meta.insert_experiment_treatments
+      operationId: Meta.insert_experimentTreatments
       tags:
         - experiment_treatments
       requestBody:
