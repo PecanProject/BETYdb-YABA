@@ -2,7 +2,8 @@ import psycopg2
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
 from setup import setup_environment
-
+import traceback
+import logging
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -12,9 +13,11 @@ def insert_table(table,data):
 	engine = setup_environment.get_database()
 	try:
 		data.to_sql(table, engine, if_exists = 'append', index=False)
-
-	except:
-		pass 
+		#print(engine.execute("SELECT * FROM experiments").fetchall())
+	except Exception as e:
+	    # Logs the error appropriately
+		logging.error(traceback.format_exc())
+        
 
 
 def fetch_specie_id(specie_id):
