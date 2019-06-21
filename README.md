@@ -6,7 +6,7 @@ Yet Another BETYdb API (for metadata upload)
 
 Following commands can be used to fetch app codebase to local system.
 
-##Clone app repository
+### Clone app repository
 
 In a directory of your choice, clone the bety repository from github:
 
@@ -18,13 +18,13 @@ git clone https://github.com/saurabh1969/BETYdb-YABA
 Following commands can be used to initialize the database to be used 
 with BETYdb-YABA development.This is one time process.
 
-## Install PostgreSQL
+### Install PostgreSQL
 
 Visit [https://www.postgresql.org/download/](https://www.postgresql.org/download/) to download PostgreSQL.
 
 Steps 1-3 are for just one time purpose.Once done,directly steps of Runing the app can be followed.
 
-## Step 1: Clone bety repository
+### Step 1: Clone bety repository
 
 In a directory BETYdb-YABA, clone the bety repository from github and cd to the bety folder:
 
@@ -34,7 +34,7 @@ git clone https://github.com/PecanProject/bety.git
 cd bety
 ```
 
-## Step 2: Create a `docker-compose.override.yml`
+### Step 2: Create a `docker-compose.override.yml`
 
 You will need to mount the postgres container to port 9000. This can be done by creating a `docker-compose.override.yml` file in the bety folder. 
 
@@ -48,7 +48,7 @@ services:
       - 9000:5432
 ```
 
-## Step 3: Initialize BETY database
+### Step 3: Initialize BETY database
 
 Once you have set up the docker-compose.override.yml file, you should follow these next steps to initialize the database:
 
@@ -62,9 +62,9 @@ docker run -ti --rm --network bety_bety -e REMOTE_SERVERS='6' pecan/bety:terra s
 ```
 
 
-##Running the App
+## Running the App
 
-## Step 1: Bring up all containers for bety
+### Step 1: Bring up all containers for bety
 
 Go to BETYdb-YABA directory.
 ```sh
@@ -73,7 +73,7 @@ cd bety
 docker-compose up
 ```
 
-##Step 2: Bring up the container for flask app
+### Step 2: Bring up the container for flask app
 
 Go to BETYdb-YABA directory.Open other terminal window.
 
