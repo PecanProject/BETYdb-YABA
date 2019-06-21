@@ -8,7 +8,7 @@ import os
 from flask import make_response, abort,Response
 import pandas as pd
 import json
-from db import insert_table
+from db import *
 import geopandas as gpd
 from werkzeug import secure_filename, FileStorage
 
@@ -31,25 +31,32 @@ def save_tempFile(File):
     File.save(a_file_target)
     return None
 
-def insert_experiments(fileName):
+def insert_experiments(username,fileName):
     """
     This function responds to a request for /yaba/v1/experiments
     with csv file
 
 
-    :fileName:      CSV or XLS file with experiments meta data
+    :fileName:      CSV file with experiments meta data
     :return:        201 on success,
     """
-    
-    #Reading the CSV file into DataFrame
-    data = pd.read_csv(fileName,delimiter = ',')
-    
-    #Inserting the data into Tables
-    insert_table(table='experiments',data=data)
+    user_id=fetch_user_id(username)
 
-    return Response(json.dumps("File Received"), mimetype='application/json'), 201
-    
-def insert_sites(shp_file,dbf_file,prj_file,shx_file):
+    if user_id =='':
+        return 403
+    else:
+        #Reading the CSV file into DataFrame
+        data = pd.read_csv(fileName,delimiter = ',')
+        data['user_id']=user_id
+        """data['design'].fillna('some text', inplace=True)
+                data.loc[2,'design'] = 'special'"""
+        try:
+            insert_table(table='experiments',data=data)
+            return Response(json.dumps("File Received"), mimetype='application/json'), 201
+        except:
+            return 400
+     
+def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
     """
     This function responds to a request for  /yaba/v1/sites
     with files
@@ -70,15 +77,20 @@ def insert_sites(shp_file,dbf_file,prj_file,shx_file):
     #Getting the shp file from temp folder
     shp_file_target = os.path.join(os.getcwd(),UPLOAD_FOLDER,shp_file.filename)
     
-    #Reading the file as DataFrame
+    #Reading the shapefile as DataFrame
     data_g=gpd.read_file(shp_file_target)
+    
+    #Reading the csv as Dataframe
+    data = pd.read_csv(fileName,delimiter = ',')
 
-    data = pd.DataFrame(data_g)
-
-    #Inserting in POSTGRES table
-    insert_table(table='sites',data=data)
-
-    return Response(json.dumps("File Received"), mimetype='application/json'), 201
+    data['geometry']=data_g['geometry']
+    
+    try:
+        #Inserting in Bety
+        insert_table(table='sites',data=data)
+        return Response(json.dumps("File Received"), mimetype='application/json'), 201
+    except:
+        return 400
 
 def insert_treatments(fileName):
     """
@@ -94,8 +106,29 @@ def insert_treatments(fileName):
     return Response(json.dumps("File Received"), mimetype='application/json'), 201
 
 def insert_cultivars(fileName):
-    """Yet to be Implemensted"""
-    return Response(json.dumps("File Received"), mimetype='application/json')
+    """
+    This function responds to a request for /yaba/v1/cultivars
+    with csv file
+
+
+    :fileName:      CSV file with cultivars meta data
+    :return:        201 on success
+    """
+    data = pd.read_csv(fileName,delimiter = ',')
+
+    specie_id=fetch_specie_id(data['species'][0])
+
+    new_data = pd.DataFrame(columns=['name', 'specie_id'])
+
+    new_data['name']=data['name']
+    new_data['specie_id']=specie_id
+    #print(new_data.head())
+
+    try:
+        insert_table(table='cultivars',data=data)
+        return Response(json.dumps("File Received"), mimetype='application/json'), 201
+    except:
+        return 400
 
 def insert_citations(fileName):
     """

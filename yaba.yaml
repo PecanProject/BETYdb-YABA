@@ -9,13 +9,19 @@ servers:
   - url: http://localhost:8080/yaba/v1
 
 # Paths supported by the server application
-paths:
+paths:  
   /experiments:
     post:
       summary: Upload Experiment Metadata
       operationId: Meta.insert_experiments
       tags:
         - experiments
+      parameters:
+        - in: query
+          name: username
+          schema:
+            type: string
+          description: Username uploading the csv
       requestBody:
         content:
           multipart/form-data:
@@ -24,7 +30,8 @@ paths:
               properties:
                 fileName:
                   type: string
-                  format: base64
+                  format: binary
+                  
       responses:
         '201':
           description: Successfully Inserted
@@ -68,6 +75,9 @@ paths:
             schema:
               type: object
               properties:
+                fileName:
+                  type: string
+                  format: binary
                 shp_file:
                   type: string
                   format: binary
