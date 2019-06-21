@@ -1,7 +1,9 @@
-FROM python:3.6
+FROM python:3.7-alpine
 
 COPY . /code
 
-#RUN pip install -r requirements.txt
+WORKDIR /code
+
+RUN pip install -r requirements.txt
 
 CMD ["python","server.py"]
