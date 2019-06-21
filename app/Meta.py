@@ -84,6 +84,10 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
     data = pd.read_csv(fileName,delimiter = ',')
 
     data['geometry']=data_g['geometry']
+    data['notes']=data_g['notes']
+    data['soil']='some text'
+    data['soilnotes']='some text'
+
     
     try:
         #Inserting in Bety
@@ -118,14 +122,16 @@ def insert_cultivars(fileName):
 
     specie_id=fetch_specie_id(data['species'][0])
 
-    new_data = pd.DataFrame(columns=['name', 'specie_id'])
+    new_data = pd.DataFrame(columns=['name', 'specie_id','name','ecotype','notes'])
 
     new_data['name']=data['name']
     new_data['specie_id']=specie_id
-    #print(new_data.head())
+    new_data['name']='some text'
+    new_data['ecotype']='some text'
+    new_data['notes']='some text'
 
     try:
-        insert_table(table='cultivars',data=data)
+        insert_table(table='cultivars',data=new_data)
         return Response(json.dumps("File Received"), mimetype='application/json'), 201
     except:
         return 400

@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  yaba-services:
+    build: ./app
+    volumes:
+      - ./app:/code
+    ports:
+      - 5001:8080
+    
