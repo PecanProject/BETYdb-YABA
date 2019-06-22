@@ -6,5 +6,5 @@ services:
     volumes:
       - ./app:/code
     ports:
-      - 5001:8080
+      - 5001:5000
     

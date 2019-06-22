@@ -48,8 +48,8 @@ def insert_experiments(username,fileName):
         #Reading the CSV file into DataFrame
         data = pd.read_csv(fileName,delimiter = ',')
         data['user_id']=user_id
-        """data['design'].fillna('some text', inplace=True)
-                data.loc[2,'design'] = 'special'"""
+        data['design'].fillna('some text', inplace=True)
+                
         try:
             insert_table(table='experiments',data=data)
             return Response(json.dumps("File Received"), mimetype='application/json'), 201
