@@ -105,11 +105,26 @@ curl -F "fileName=@sites.csv"   \
      http://localhost:5001/yaba/v1/sites
 ```
 
+Treatments
+
+```sh
+curl -F "fileName=@input_files/treatments.csv"   \
+     http://localhost:5001/yaba/v1/treatments?username=guestuser
+```
+
 Cultivars
 
 ```sh
 curl -F "fileName=@input_files/cultivars.csv"   \
      http://localhost:5001/yaba/v1/cultivars
+```
+
+
+Citations
+
+```sh
+curl -F "fileName=@input_files/citations.csv"   \
+     http://localhost:5001/yaba/v1/citations?username=guestuser
 ```
 
 Experiments_sites:

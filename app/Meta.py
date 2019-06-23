@@ -40,7 +40,7 @@ def insert_experiments(username,fileName):
     :fileName:      CSV file with experiments meta data
     :return:        201 on success,
     """
-    user_id=fetch_id(username,'users')
+    user_id=fetch_id(username,table='users')
 
     if user_id =='':
         return 403
@@ -96,7 +96,7 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
     except:
         return 400
 
-def insert_treatments(fileName):
+def insert_treatments(username,fileName):
     """
     This function responds to a request for  /yaba/v1/treatments
     with csv file
@@ -105,9 +105,20 @@ def insert_treatments(fileName):
     :return:        201 on success
     """
     
-    data = pd.read_csv(fileName,delimiter = ',')
-    insert_table(table='treatments',data=data)
-    return Response(json.dumps("File Received"), mimetype='application/json'), 201
+    user_id=fetch_id(username,table='users')
+
+    if user_id =='':
+        return 403
+    else:
+        #Reading the CSV file into DataFrame
+        data = pd.read_csv(fileName,delimiter = ',')
+        data['user_id']=user_id
+                
+        try:
+            insert_table(table='treatments',data=data)
+            return Response(json.dumps("File Received"), mimetype='application/json'), 201
+        except:
+            return 400
 
 def insert_cultivars(fileName):
     """
@@ -136,7 +147,7 @@ def insert_cultivars(fileName):
     except:
         return 400
 
-def insert_citations(fileName):
+def insert_citations(username,fileName):
     """
     This function responds to a request for  /yaba/v1/citations
     with csv file
@@ -145,9 +156,21 @@ def insert_citations(fileName):
     :return:        201 on success
     """
     
-    data = pd.read_csv(fileName,delimiter = ',')
-    insert_table(table='citations',data=data)
-    return Response(json.dumps("File Received"), mimetype='application/json'),201
+    user_id=fetch_id(username,table='users')
+
+    if user_id =='':
+        return 403
+    else:
+        #Reading the CSV file into DataFrame
+        data = pd.read_csv(fileName,delimiter = ',')
+        data['user_id']=user_id
+                
+        try:
+            insert_table(table='citations',data=data)
+            #print(data)
+            return Response(json.dumps("File Received"), mimetype='application/json'), 201
+        except:
+            return 400
 
 def insert_experimentSites(fileName):
     """
@@ -164,7 +187,7 @@ def insert_experimentSites(fileName):
 
     new_data = pd.DataFrame(columns=['experiment_id', 'site_id'])
 
-    new_data['experiment_id'] = [fetch_id(x,'experiments') for x in data['experiment_name']]
+    new_data['experiment_id'] = [fetch_id(x,table='experiments') for x in data['experiment_name']]
 
     new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename']]
 
@@ -192,9 +215,9 @@ def insert_experimentTreatments(fileName):
 
     new_data = pd.DataFrame(columns=['experiment_id', 'treatment_id'])
 
-    new_data['experiment_id'] = [fetch_id(x,'experiments') for x in data['experiment_name']]
+    new_data['experiment_id'] = [fetch_id(x,table='experiments') for x in data['experiment_name']]
 
-    new_data['treatment_id'] = [fetch_id(x,'treatments') for x in data['treatment_name']]
+    new_data['treatment_id'] = [fetch_id(x,table='treatments') for x in data['treatment_name']]
 
     try:
         insert_table(table='experiments_treatments',data=new_data)
