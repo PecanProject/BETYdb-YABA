@@ -40,7 +40,7 @@ def insert_experiments(username,fileName):
     :fileName:      CSV file with experiments meta data
     :return:        201 on success,
     """
-    user_id=fetch_user_id(username)
+    user_id=fetch_id(username,'users')
 
     if user_id =='':
         return 403
@@ -150,15 +150,57 @@ def insert_citations(fileName):
     return Response(json.dumps("File Received"), mimetype='application/json'),201
 
 def insert_experimentSites(fileName):
-    """Yet to be Implemensted"""
+    """
+    This function responds to a request for /yaba/v1/experiments_sites
+    with csv file
+
+
+    :fileName:      CSV file with cultivars meta data
+    :return:        201 on success
+    """
+
+    
+    data = pd.read_csv(fileName,delimiter = ',')
+
+    new_data = pd.DataFrame(columns=['experiment_id', 'site_id'])
+
+    new_data['experiment_id'] = [fetch_id(x,'experiments') for x in data['experiment_name']]
+
+    new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename']]
+
+    try:
+        insert_table(table='experiments_sites',data=new_data)
+        return Response(json.dumps("File Received"), mimetype='application/json'), 201
+    except:
+        return 400
 
     
     return Response(json.dumps("File Received"), mimetype='application/json')
 
 def insert_experimentTreatments(fileName):
-    """Yet to be Implemensted"""
+    """
+    This function responds to a request for /yaba/v1/experiments_treatments
+    with csv file
 
-    return Response(json.dumps("File Received"), mimetype='application/json')
+
+    :fileName:      CSV file with cultivars meta data
+    :return:        201 on success
+    """
+    
+    
+    data = pd.read_csv(fileName,delimiter = ',')
+
+    new_data = pd.DataFrame(columns=['experiment_id', 'treatment_id'])
+
+    new_data['experiment_id'] = [fetch_id(x,'experiments') for x in data['experiment_name']]
+
+    new_data['treatment_id'] = [fetch_id(x,'treatments') for x in data['treatment_name']]
+
+    try:
+        insert_table(table='experiments_treatments',data=new_data)
+        return Response(json.dumps("File Received"), mimetype='application/json'), 201
+    except:
+        return 400
 
 def insert_sitesCultivars(fileName):
     """Yet to be Implemensted"""

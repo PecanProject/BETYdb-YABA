@@ -16,24 +16,7 @@ def insert_table(table,data):
 	except Exception as e:
 	    # Logs the error appropriately
 		logging.error(traceback.format_exc())
-        
-
-
-def fetch_user_id(username):
-    # Make PostgreSQL Connection
-	engine = setup_environment.get_database()
-	connection = None
-	try:
-	   connection = engine.connect()
-	   query = 'select id from users where name = :name'
-	   result_set = connection.execute(text(query), name = username)
-	   connection.close()
-	   for r in result_set:
-	   	return r[0]
-	except Exception as e:
-	    # Logs the error appropriately
-		logging.error(traceback.format_exc())
-
+      
 
 def fetch_specie_id(species):
     # Make PostgreSQL Connection
@@ -42,15 +25,59 @@ def fetch_specie_id(species):
 	try:
 	   connection = engine.connect()
 	   query = 'select id from species where scientificname = :name'
-	   result_set = connection.execute(text(query), name = species)
+	   result_set = connection.execute(text(query), name = species).fetchone()
 	   connection.close()
 	   for r in result_set:
-	   	return r[0]
+	   	return r
 	except Exception as e:
 	    # Logs the error appropriately
 		logging.error(traceback.format_exc())
 
 
+def fetch_sites_id(sitename):
+    # Make PostgreSQL Connection
+	engine = setup_environment.get_database()
+	connection = None
+	try:
+	   connection = engine.connect()
+	   query = 'select id from sites where sitename = :name'
+	   result_set = connection.execute(text(query), name = sitename).fetchone()
+	   connection.close()
+	   for r in result_set:
+	   	return r
+	except Exception as e:
+	    # Logs the error appropriately
+		logging.error(traceback.format_exc())
 
 
-	
+def fetch_citations_id(author,year,title):
+    # Make PostgreSQL Connection
+	engine = setup_environment.get_database()
+	connection = None
+	try:
+	   connection = engine.connect()
+	   query = 'select id from citations where author = :author and year = :year and title = :title'
+	   result_set = connection.execute(text(query),author=author,year=year, title = title).fetchone()
+	   connection.close()
+	   for r in result_set:
+	   	return r
+	except Exception as e:
+	    # Logs the error appropriately
+		logging.error(traceback.format_exc())
+
+
+#Fetching Users,experiments,cultivars and treatments tables
+def fetch_id(value,table):
+    # Make PostgreSQL Connection
+	engine = setup_environment.get_database()
+	connection = None
+	try:
+	   connection = engine.connect()
+	   query = 'select id from '+table+' where name = :name'
+	   result_set = connection.execute(text(query), name = value).fetchone()
+	   connection.close()
+	   for r in result_set:
+	   	return r
+	except Exception as e:
+	    # Logs the error appropriately
+		logging.error(traceback.format_exc())

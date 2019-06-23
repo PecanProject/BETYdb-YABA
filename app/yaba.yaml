@@ -261,7 +261,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error" 
   
-  /experiment_sites:
+  /experiments_sites:
     post:
       summary: Upload experiment_sites metadata
       operationId: Meta.insert_experimentSites
@@ -307,7 +307,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /experiment_treatments:
+  /experiments_treatments:
     post:
       summary: Upload Experiment_treatments Metadata
       operationId: Meta.insert_experimentTreatments
