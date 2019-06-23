@@ -90,7 +90,7 @@ Following endpoints can used now(hit from BETYdb-YABA directory,as file path is 
 Experiments:
 
 ```sh
-curl -F "fileName=@/input_files/experiments.csv"   \
+curl -F "fileName=@input_files/experiments.csv"   \
      http://localhost:5001/yaba/v1/experiments?username=guestuser
 ```
 
@@ -98,20 +98,30 @@ Sites
 
 ```sh
 curl -F "fileName=@sites.csv"   \
-     -F "shp_file=@/input_files/S8_two_row_polys.shp"  \
-     -F "dbf_file=@/input_files/S8_two_row_polys.dbf"  \
-     -F "prj_file=@/input_files/S8_two_row_polys.prj"  \
-     -F "shx_file=@/input_files/S8_two_row_polys.shx"  \
+     -F "shp_file=@input_files/S8_two_row_polys.shp"  \
+     -F "dbf_file=@input_files/S8_two_row_polys.dbf"  \
+     -F "prj_file=@input_files/S8_two_row_polys.prj"  \
+     -F "shx_file=@input_files/S8_two_row_polys.shx"  \
      http://localhost:5001/yaba/v1/sites
 ```
 
 Cultivars
 
 ```sh
-curl -F "fileName=@/input_files/cultivars.csv"   \
+curl -F "fileName=@input_files/cultivars.csv"   \
      http://localhost:5001/yaba/v1/cultivars
 ```
 
+Experiments_sites:
 
+```sh
+curl -F "fileName=@input_files/experiments_sites.csv"   \
+     http://localhost:5001/yaba/v1/experiments_sites
+```
+Experiments_treatments:
 
+```sh
+curl -F "fileName=@input_files/experiments_treatments.csv"   \
+     http://localhost:5001/yaba/v1/experiments_treatments
+```
 
