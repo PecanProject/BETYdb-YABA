@@ -2,17 +2,6 @@
 Yet Another BETYdb API (for metadata upload)
 
 
-## Setup App Locally
-
-Following commands can be used to fetch app codebase to local system.
-
-### Clone app repository
-
-In a directory of your choice, clone the bety repository from github:
-
-```sh
-git clone https://github.com/saurabh1969/BETYdb-YABA
-```
 ## Setup BETYdb
 
 Following commands can be used to initialize the database to be used 
@@ -29,14 +18,15 @@ docker-compose run --rm bety sync
 
 ### Bring up container for YABA-API
 
-Go to BETYdb-YABA directory.
 ```sh
 docker-compose up -d yaba_api
 ```
 
+## Running the App (without initialization and synchronization of bety)
+
 ### Bring up the containers at once
 
-####Once initialization and synchroization of bety database is done,the below command can be directly used to start the app.(Skip the "Setup BETYdb" step) 
+#### Once initialization and synchronization of bety database is done,the below command can be directly used to start the app.(Skip the "Setup BETYdb" step) 
 ```sh
 # Bring up full stack
 docker-compose up
