@@ -140,3 +140,16 @@ curl -F "fileName=@input_files/experiments_treatments.csv"   \
      http://localhost:5001/yaba/v1/experiments_treatments
 ```
 
+Sites_cultivars:
+
+```sh
+curl -F "fileName=@input_files/sites_cultivars.csv"   \
+     http://localhost:5001/yaba/v1/sites_cultivars
+```
+
+Citations_sites:
+
+```sh
+curl -F "fileName=@input_files/citations_sites.csv"   \
+     http://localhost:5001/yaba/v1/citations_sites
+```

@@ -226,14 +226,54 @@ def insert_experimentTreatments(fileName):
         return 400
 
 def insert_sitesCultivars(fileName):
-    """Yet to be Implemensted"""
+    """
+    This function responds to a request for /yaba/v1/sites_cultivars
+    with csv file
 
-    return Response(json.dumps("File Received"), mimetype='application/json')
+
+    :fileName:      CSV file with sites_cultivars meta data
+    :return:        201 on success
+    """
+    
+    # iterating over one column - `f` is some function that processes your data
+    data = pd.read_csv(fileName,delimiter = ',')
+
+    new_data = pd.DataFrame(columns=['site_id', 'cultivar_id'])
+
+    new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename']]
+
+    new_data['cultivar_id'] = [fetch_cultivars_id(x[0],x[1]) for x in data[['cultivar_name','specie_id']].values]
+
+    try:
+        insert_table(table='sites_cultivars',data=new_data)
+        return Response(json.dumps("File Received"), mimetype='application/json'), 201
+    except:
+        return 400
 
 def insert_citationsSites(fileName):
-    """Yet to be Implemensted"""
+    """
+    This function responds to a request for /yaba/v1/citations_sites
+    with csv file
 
-    return Response(json.dumps("File Received"), mimetype='application/json')
+
+    :fileName:      CSV file with citations_sites meta data
+    :return:        201 on success
+    """
+    
+    # iterating over one column - `f` is some function that processes your data
+    data = pd.read_csv(fileName,delimiter = ',')
+
+    new_data = pd.DataFrame(columns=['citation_id', 'site_id'])
+
+    new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename']]
+
+    new_data['citation_id'] = [fetch_citations_id(x[0],x[1],x[2]) for x in data[['author','year','title']].values]
+
+    try:
+        insert_table(table='citations_sites',data=new_data)
+        return Response(json.dumps("File Received"), mimetype='application/json'), 201
+    except:
+        return 400
 
 
 

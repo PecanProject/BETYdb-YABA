@@ -50,6 +50,22 @@ def fetch_sites_id(sitename):
 		logging.error(traceback.format_exc())
 
 
+def fetch_cultivars_id(name,specie_id):
+    # Make PostgreSQL Connection
+	engine = setup_environment.get_database()
+	connection = None
+	try:
+	   connection = engine.connect()
+	   query = 'select id from cultivars where name = :name and specie_id = :specie_id'
+	   result_set = connection.execute(text(query), name = name,specie_id=specie_id).fetchone()
+	   connection.close()
+	   for r in result_set:
+	   	return r
+	except Exception as e:
+	    # Logs the error appropriately
+		logging.error(traceback.format_exc())
+
+
 def fetch_citations_id(author,year,title):
     # Make PostgreSQL Connection
 	engine = setup_environment.get_database()
