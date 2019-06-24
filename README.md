@@ -2,7 +2,7 @@
 Yet Another BETYdb API (for metadata upload)
 
 
-## Setup App Locally(One time process)
+## Setup App Locally
 
 Following commands can be used to fetch app codebase to local system.
 
@@ -13,70 +13,30 @@ In a directory of your choice, clone the bety repository from github:
 ```sh
 git clone https://github.com/saurabh1969/BETYdb-YABA
 ```
-## Setup BETYdb Locally(One time process)
+## Setup BETYdb
 
 Following commands can be used to initialize the database to be used 
-with BETYdb-YABA development.This is one time process.
+with YABA development.
 
-### Install PostgreSQL
-
-Visit [https://www.postgresql.org/download/](https://www.postgresql.org/download/) to download PostgreSQL.
-
-Steps 1-3 are for just one time purpose.Once done,directly steps of Runing the app can be followed.
-
-### Step 1: Clone bety repository
-
-In a directory BETYdb-YABA, clone the bety repository from github and cd to the bety folder:
-
-```sh
-cd BETYdb-YABA
-git clone https://github.com/PecanProject/bety.git
-cd bety
-```
-
-### Step 2: Create a `docker-compose.override.yml`
-
-You will need to mount the postgres container to port 9000. This can be done by creating a `docker-compose.override.yml` file in the bety folder. 
-
-Copy and paste the following chunk into the file: 
-
-```sh
-version: "3"
-services:
-  postgres:
-    ports:
-      - 9000:5432
-```
-
-### Step 3: Initialize BETY database
-
-Once you have set up the docker-compose.override.yml file, you should follow these next steps to initialize the database:
-
-```sh
-# Start postgres
-docker-compose -p bety up -d postgres
-# Initialize BETY database
-docker run -ti --rm --network bety_bety -e BETY_INITIALIZE_URL='-w https://terraref.ncsa.illinois.edu/bety/dump/bety0/bety.tar.gz' pecan/bety:terra initialize
-# Sync with server 6 only
-docker run -ti --rm --network bety_bety -e REMOTE_SERVERS='6' pecan/bety:terra sync
+```bash
+docker-compose up -d postgres
+docker-compose run --rm bety initialize
+docker-compose run --rm bety sync
 ```
 
 
 ## Running the App
 
-### Step 1: Bring up all containers for bety
+### Bring up container for YABA-API
 
 Go to BETYdb-YABA directory.
 ```sh
-cd bety
-# Bring up full stack
-docker-compose up
+docker-compose up -d yaba_api
 ```
 
-### Step 2: Bring up the container for flask app
+### Bring up the containers at once
 
-Go to BETYdb-YABA directory.Open other terminal window.
-
+####Once initialization and synchroization of bety database is done,the below command can be directly used to start the app.(Skip the "Setup BETYdb" step) 
 ```sh
 # Bring up full stack
 docker-compose up
@@ -85,16 +45,16 @@ docker-compose up
 
 ## How to hit the endpoints
 
-Following endpoints can used now(hit from BETYdb-YABA directory,as file path is relative) -
+Following endpoints can be used to upload Metadata to respective tables in bety.
 
-Experiments:
+Experiments: (to experiments table):
 
 ```sh
 curl -F "fileName=@input_files/experiments.csv"   \
      http://localhost:5001/yaba/v1/experiments?username=guestuser
 ```
 
-Sites
+Sites: (to sites table)
 
 ```sh
 curl -F "fileName=@sites.csv"   \
@@ -105,14 +65,14 @@ curl -F "fileName=@sites.csv"   \
      http://localhost:5001/yaba/v1/sites
 ```
 
-Treatments
+Treatments: (to treatments table)
 
 ```sh
 curl -F "fileName=@input_files/treatments.csv"   \
      http://localhost:5001/yaba/v1/treatments?username=guestuser
 ```
 
-Cultivars
+Cultivars: (to cultivars table)
 
 ```sh
 curl -F "fileName=@input_files/cultivars.csv"   \
@@ -120,35 +80,35 @@ curl -F "fileName=@input_files/cultivars.csv"   \
 ```
 
 
-Citations
+Citations: (to citations table)
 
 ```sh
 curl -F "fileName=@input_files/citations.csv"   \
      http://localhost:5001/yaba/v1/citations?username=guestuser
 ```
 
-Experiments_sites:
+Experiments_sites: (to experiments_sites table)
 
 ```sh
 curl -F "fileName=@input_files/experiments_sites.csv"   \
      http://localhost:5001/yaba/v1/experiments_sites
 ```
-Experiments_treatments:
+Experiments_treatments: (to experiments_treatments table)
 
 ```sh
 curl -F "fileName=@input_files/experiments_treatments.csv"   \
      http://localhost:5001/yaba/v1/experiments_treatments
 ```
 
-Sites_cultivars:
+Sites_cultivars: (to sites_cultivars table)
 
 ```sh
 curl -F "fileName=@input_files/sites_cultivars.csv"   \
      http://localhost:5001/yaba/v1/sites_cultivars
 ```
 
-Citations_sites:
-
+Citations_sites: (to citations_sites table)
+ 
 ```sh
 curl -F "fileName=@input_files/citations_sites.csv"   \
      http://localhost:5001/yaba/v1/citations_sites

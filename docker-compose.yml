@@ -1,10 +1,45 @@
 version: '3'
 
 services:
-  yaba-services:
+  # postgresql with postgis docker image to hold the data
+  postgres:
+    image: mdillon/postgis:9.5
+    networks:
+      - bety
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 9000:5432
+    restart: unless-stopped
+  # BETY docker image
+  bety:
+    image: pecan/bety:${BRANCH:-latest}
+    networks:
+      - bety
+    ports:
+      - 8000:8000
+    environment:
+      - INITIALIZE_URL=-w https://terraref.ncsa.illinois.edu/bety/dump/bety0/bety.tar.gz
+      - REMOTE_SERVERS=6
+      - UNICORN_WORKER_PROCESSES=1
+      - SECRET_KEY_BASE=thisissomereallllllylongsecretkeyandshouldbelongerthanthis
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  yaba_api:
     build: ./app
     volumes:
       - ./app:/code
     ports:
       - 5001:5000
-    
+    depends_on:
+      - postgres
+  
+volumes:
+  postgres:
+
+networks:
+  bety:
+
+  
