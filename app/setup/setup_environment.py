@@ -2,6 +2,7 @@ import os
 import yaml
 import logging
 
+from sqlalchemy.pool import QueuePool
 from sqlalchemy import create_engine
 
 
@@ -57,5 +58,5 @@ def get_engine(db, user, host, port, passwd):
 
     url = 'postgresql+psycopg2://{user}:{passwd}@{host}:{port}/{db}'.format(
         user=user, passwd=passwd, host=host, port=port, db=db)
-    engine = create_engine(url)
+    engine = create_engine(url,poolclass=QueuePool)
     return engine

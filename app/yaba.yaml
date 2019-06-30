@@ -1,6 +1,6 @@
 openapi: "3.0.0"
 info:
-  version: 1.0.3
+  version: 1.0.4
   title: BETYdb-YABA
   description: <h2>The YABA API (BETYdb-YABA) is a Standardized RESTful Web Service API Specification for MetaData Upload to respective tables.</h2>
   license:
@@ -42,17 +42,40 @@ paths:
               schema:
                 type: string
               example: |-
-                ERROR - Constraint Voilation
-                ERROR - Invalid query parameter
-                ERROR - Required parameter is missing
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '401':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '402':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
         '403':
           description: Forbidden-No access to user
           content:
             application/json:
               schema:
                 type: string
-              example: ERROR - User does not have permission
-                to perform this action
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
         '404':
           description: Not Found
         # Definition of all error statuses
@@ -102,17 +125,40 @@ paths:
               schema:
                 type: string
               example: |-
-                ERROR - Constraint Voilation
-                ERROR - Invalid query parameter
-                ERROR - Required parameter is missing
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '401':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '402':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
         '403':
           description: Forbidden-No access to user
           content:
             application/json:
               schema:
                 type: string
-              example: ERROR - User does not have permission
-                to perform this action
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
         '404':
           description: Not Found
         # Definition of all error statuses
@@ -154,17 +200,40 @@ paths:
               schema:
                 type: string
               example: |-
-                ERROR - Constraint Voilation
-                ERROR - Invalid query parameter
-                ERROR - Required parameter is missing
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '401':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '402':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
         '403':
           description: Forbidden-No access to user
           content:
             application/json:
               schema:
                 type: string
-              example: ERROR - User does not have permission
-                to perform this action
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
         '404':
           description: Not Found
         # Definition of all error statuses
@@ -200,17 +269,40 @@ paths:
               schema:
                 type: string
               example: |-
-                ERROR - Constraint Voilation
-                ERROR - Invalid query parameter
-                ERROR - Required parameter is missing
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '401':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '402':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
         '403':
           description: Forbidden-No access to user
           content:
             application/json:
               schema:
                 type: string
-              example: ERROR - User does not have permission
-                to perform this action
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
         '404':
           description: Not Found
         # Definition of all error statuses
@@ -252,17 +344,40 @@ paths:
               schema:
                 type: string
               example: |-
-                ERROR - Constraint Voilation
-                ERROR - Invalid query parameter
-                ERROR - Required parameter is missing
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '401':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '402':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
         '403':
           description: Forbidden-No access to user
           content:
             application/json:
               schema:
                 type: string
-              example: ERROR - User does not have permission
-                to perform this action
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
         '404':
           description: Not Found
         # Definition of all error statuses
@@ -298,17 +413,40 @@ paths:
               schema:
                 type: string
               example: |-
-                ERROR - Constraint Voilation
-                ERROR - Invalid query parameter
-                ERROR - Required parameter is missing
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '401':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '402':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
         '403':
           description: Forbidden-No access to user
           content:
             application/json:
               schema:
                 type: string
-              example: ERROR - User does not have permission
-                to perform this action
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
         '404':
           description: Not Found
         # Definition of all error statuses
@@ -344,17 +482,40 @@ paths:
               schema:
                 type: string
               example: |-
-                ERROR - Constraint Voilation
-                ERROR - Invalid query parameter
-                ERROR - Required parameter is missing
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '401':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '402':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
         '403':
           description: Forbidden-No access to user
           content:
             application/json:
               schema:
                 type: string
-              example: ERROR - User does not have permission
-                to perform this action
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
         '404':
           description: Not Found
         # Definition of all error statuses
@@ -390,17 +551,40 @@ paths:
               schema:
                 type: string
               example: |-
-                ERROR - Constraint Voilation
-                ERROR - Invalid query parameter
-                ERROR - Required parameter is missing
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '401':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '402':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
         '403':
           description: Forbidden-No access to user
           content:
             application/json:
               schema:
                 type: string
-              example: ERROR - User does not have permission
-                to perform this action
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
         '404':
           description: Not Found
         # Definition of all error statuses
@@ -436,17 +620,40 @@ paths:
               schema:
                 type: string
               example: |-
-                ERROR - Constraint Voilation
-                ERROR - Invalid query parameter
-                ERROR - Required parameter is missing
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '401':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '402':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
         '403':
           description: Forbidden-No access to user
           content:
             application/json:
               schema:
                 type: string
-              example: ERROR - User does not have permission
-                to perform this action
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
         '404':
           description: Not Found
         # Definition of all error statuses
