@@ -9,7 +9,7 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
-      - 9000:5432
+      - 6000:5432
     restart: unless-stopped
   # BETY docker image
   bety:
@@ -38,6 +38,7 @@ services:
   
 volumes:
   postgres:
+
 
 networks:
   bety:
