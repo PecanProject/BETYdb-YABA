@@ -15,6 +15,9 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.exc import OperationalError
 import traceback
 import logging
+from shapely import geos, wkb, wkt
+from shapely.geometry.multipolygon import MultiPolygon
+
 
 
 UPLOAD_FOLDER = 'temp'
@@ -117,13 +120,25 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
     
         #Reading the csv as Dataframe
         data = pd.read_csv(fileName,delimiter = ',')
+        
+        data['geometry'] = data.geometry.astype(str)
+        
+        geos.WKBWriter.defaults['include_srid'] = True
 
+
+
+        for i in range(data.shape[1]):
+            p=MultiPolygon([data_g.iat[i,10]])
+            geos.lgeos.GEOSSetSRID(p._geom, 4326)
+            data.iat[i,6]=p.wkb_hex
+
+        #data['geometry']=data_g['geometry'].wkb_hex
         #Checking necessary columns are there.
         columns=data.columns.values.tolist()
         accepted_columns=['sitename','city','state','country','notes','greenhouse','geometry','time_zone','soil','soilnotes']
         
         if(all(x in accepted_columns for x in columns)):
-            data['geometry']=data_g['geometry']
+            
             data['notes']=data_g['notes']
             data['soil']='some text'
             data['soilnotes']='some text'
@@ -245,7 +260,7 @@ def insert_cultivars(fileName):
         # Logs the error appropriately
         logging.error(traceback.format_exc())
         return 410   
-    
+   
 
 def insert_citations(username,fileName):
     """
