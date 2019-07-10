@@ -86,6 +86,7 @@ def insert_experiments(username,fileName):
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
+        pass
         return 410     
      
 def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
@@ -160,6 +161,7 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
+        pass
         return 410     
 
 def insert_treatments(username,fileName):
@@ -206,6 +208,7 @@ def insert_treatments(username,fileName):
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
+        pass
         return 410
 
 def insert_cultivars(fileName):
@@ -259,6 +262,7 @@ def insert_cultivars(fileName):
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
+        pass
         return 410   
    
 
@@ -304,6 +308,7 @@ def insert_citations(username,fileName):
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
+        pass
         return 410                   
         
 
@@ -351,6 +356,7 @@ def insert_experimentSites(fileName):
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
+        pass
         return 410
 
 def insert_experimentTreatments(fileName):
@@ -398,6 +404,7 @@ def insert_experimentTreatments(fileName):
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
+        pass
         return 410
 
 def insert_sitesCultivars(fileName):
@@ -443,6 +450,7 @@ def insert_sitesCultivars(fileName):
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
+        pass
         return 410
     
 
@@ -491,6 +499,7 @@ def insert_citationsSites(fileName):
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
+        pass
         return 410
     
 
