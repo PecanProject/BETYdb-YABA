@@ -5,12 +5,13 @@ This is the Meta module and supports all the REST actions for the yaba.yaml
 # Importing modules
 import os
 
-from flask import make_response, abort,Response
+from flask import make_response,abort,Response,jsonify
+from flask import json
 import pandas as pd
 import json
 from db import *
 import geopandas as gpd
-from werkzeug import secure_filename, FileStorage
+from werkzeug import secure_filename,FileStorage
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.exc import OperationalError
 import traceback
@@ -27,7 +28,7 @@ UPLOAD_FOLDER = 'temp'
 def save_tempFile(File):
     # Validate that what we have been supplied with is infact a FileStorage
     if not isinstance(File, FileStorage):
-        raise TypeError("storage must be a werkzeug.FileStorage")
+        raise TypeError("Storage must be a werkzeug.FileStorage")
 
     # Sanitise the filename
     a_file_name = secure_filename(File.filename)
@@ -48,9 +49,9 @@ def insert_experiments(username,fileName):
     :fileName:      CSV file with experiments meta data
     :return:        201 on success
                     400 if file is unsuitable or does not contain appropriate columns
-                    401 Intregrity or Constraint error
-                    402 Database Connection Error
-                    403 No user exists
+                    409 Intregrity or Constraint error : 23503 foreign_key_violation | 23505 unique_violation
+                    500 Database Connection Error
+                    401 Unauthorized | No user exists
                     410 Default error.See logs for more information
     """
     
@@ -58,7 +59,7 @@ def insert_experiments(username,fileName):
         user_id=fetch_id(username,table='users')
 
         if user_id =='':
-            return 403
+            return 401
         #Reading the CSV file into DataFrame
         data = pd.read_csv(fileName,delimiter = ',')
 
@@ -70,23 +71,27 @@ def insert_experiments(username,fileName):
             data['user_id']=user_id
             data['design'].fillna('some text', inplace=True)
             insert_table(table='experiments',data=data)
-            return Response(json.dumps("Successfully inserted"), mimetype='application/json'), 201
-                
+            msg = {'Message' : 'Successfully inserted',
+                   'Table Affected' : 'Experiments',
+                    'Lines Inserted': data.shape[0]}
+            
+            return make_response(jsonify(msg), 201)
+
         else:
-            return Response(json.dumps("File not acceptable"), mimetype='application/json'), 400
+            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            return make_response(jsonify(msg), 400)
     
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 402
+        return 500
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 401
+        return 409
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        pass
         return 410     
      
 def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
@@ -100,11 +105,12 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
     :dbf_file:      .dbf file
     :prj_file:      .prj file
     :shx_file:      .shx file
+    :fileName:      CSV file with Sites meta data
     :return:        201 on success
                     400 if file is unsuitable or does not contain appropriate columns
-                    401 Intregrity or Constraint error
-                    402 Database Connection Error
-                    403 No user exists
+                    409 Intregrity or Constraint error : 23503 foreign_key_violation | 23505 unique_violation
+                    500 Database Connection Error
+                    401 Unauthorized | No user exists
                     410 Default error.See logs for more information
     """
     try:
@@ -121,19 +127,18 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
     
         #Reading the csv as Dataframe
         data = pd.read_csv(fileName,delimiter = ',')
+
         
         data['geometry'] = data.geometry.astype(str)
         
         geos.WKBWriter.defaults['include_srid'] = True
 
-
-
-        for i in range(data.shape[1]):
-            p=MultiPolygon([data_g.iat[i,10]])
+        
+        for i in range(data_g.shape[0]):
+            p=data_g.iat[i,10]
             geos.lgeos.GEOSSetSRID(p._geom, 4326)
             data.iat[i,6]=p.wkb_hex
 
-        #data['geometry']=data_g['geometry'].wkb_hex
         #Checking necessary columns are there.
         columns=data.columns.values.tolist()
         accepted_columns=['sitename','city','state','country','notes','greenhouse','geometry','time_zone','soil','soilnotes']
@@ -141,28 +146,44 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
         if(all(x in accepted_columns for x in columns)):
             
             data['notes']=data_g['notes']
-            data['soil']='some text'
-            data['soilnotes']='some text'
+
+            data['soil'].fillna("some text", inplace = True)
+            
+            data['soilnotes'].fillna("some text", inplace = True)
+            
+            data['greenhouse'].fillna("f", inplace = True)
+            
+            
+            data=data.fillna('')
+
+            file_name='sites_n.csv'
+
+            data.to_csv(file_name, encoding='utf-8', index=False)
 
             #Inserting in Bety
-            insert_table(table='sites',data=data)
-            return Response(json.dumps("Successfully inserted"), mimetype='application/json'), 201
-        else:
-            return Response(json.dumps("File not acceptable"), mimetype='application/json'), 400        
+            insert_sites_table(table='sites',data=file_name)
+            msg = {'Message' : 'Successfully inserted',
+                   'Table Affected' : 'Sites',
+                   'Lines Inserted': data_g.shape[0]}
+            
+            return make_response(jsonify(msg), 201)
 
+        else:
+            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            return make_response(jsonify(msg), 400)
+    
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 402
+        return 500
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 401
+        return 409
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        pass
-        return 410     
+        return 410        
 
 def insert_treatments(username,fileName):
     """
@@ -172,16 +193,16 @@ def insert_treatments(username,fileName):
     :fileName:      CSV  with treatments meta data
     :return:        201 on success
                     400 if file is unsuitable or does not contain appropriate columns
-                    401 Intregrity or Constraint error
-                    402 Database Connection Error
-                    403 No user exists
+                    409 Intregrity or Constraint error : 23503 foreign_key_violation | 23505 unique_violation
+                    500 Database Connection Error
+                    401 Unauthorized | No user exists
                     410 Default error.See logs for more information
     """
     try:
         user_id=fetch_id(username,table='users')
 
         if user_id =='':
-            return 403
+            return 401
 
         #Reading the CSV file into DataFrame
         data = pd.read_csv(fileName,delimiter = ',')
@@ -193,23 +214,28 @@ def insert_treatments(username,fileName):
         if(all(x in accepted_columns for x in columns)):
             data['user_id']=user_id
             insert_table(table='treatments',data=data)
-            return Response(json.dumps("Successfully inserted"), mimetype='application/json'), 201
-        else:
-            return Response(json.dumps("File not acceptable"), mimetype='application/json'), 400
+            msg = {'Message' : 'Successfully inserted',
+                   'Table Affected' : 'Treatments',
+                    'Lines Inserted': data.shape[0]}
             
+            return make_response(jsonify(msg), 201)
+
+        else:
+            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            return make_response(jsonify(msg), 400)
+    
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 402
+        return 500
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 401
+        return 409
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        pass
-        return 410
+        return 410   
 
 def insert_cultivars(fileName):
     """
@@ -220,9 +246,9 @@ def insert_cultivars(fileName):
     :fileName:      CSV file with cultivars meta data
     :return:        201 on success
                     400 if file is unsuitable or does not contain appropriate columns
-                    401 Intregrity or Constraint error
-                    402 Database Connection Error
-                    403 No user exists
+                    409 Intregrity or Constraint error : 23503 foreign_key_violation | 23505 unique_violation
+                    500 Database Connection Error
+                    401 Unauthorized | No user exists
                     410 Default error.See logs for more information
     """
     
@@ -247,23 +273,28 @@ def insert_cultivars(fileName):
 
             insert_table(table='cultivars',data=new_data)
 
-            return Response(json.dumps("Successfully inserted"), mimetype='application/json'), 201
+            msg = {'Message' : 'Successfully inserted',
+                   'Table Affected' : 'Cultivars',
+                    'Lines Inserted': data.shape[0]}
+            
+            return make_response(jsonify(msg), 201)
+
         else:
-            return Response(json.dumps("File not acceptable"), mimetype='application/json'), 400
+            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            return make_response(jsonify(msg), 400)
     
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 402
+        return 500
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 401
+        return 409
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        pass
-        return 410   
+        return 410      
    
 
 def insert_citations(username,fileName):
@@ -274,16 +305,16 @@ def insert_citations(username,fileName):
     :fileName:      CSV  with treatments meta data
     :return:        201 on success
                     400 if file is unsuitable or does not contain appropriate columns
-                    401 Intregrity or Constraint error
-                    402 Database Connection Error
-                    403 No user exists
+                    409 Intregrity or Constraint error : 23503 foreign_key_violation | 23505 unique_violation
+                    500 Database Connection Error
+                    401 Unauthorized | No user exists
                     410 Default error.See logs for more information
     """
     try:    
         user_id=fetch_id(username,table='users')
 
         if user_id =='':
-            return 403
+            return 401
         #Checking necessary columns are there.
         columns=data.columns.values.tolist()
         accepted_columns=['author','year','title','journal','vol','pg','url','pdf','doi']
@@ -293,22 +324,27 @@ def insert_citations(username,fileName):
             data = pd.read_csv(fileName,delimiter = ',')
             data['user_id']=user_id
             insert_table(table='citations',data=data)
-            return Response(json.dumps("Successfully inserted"), mimetype='application/json'), 201
+            msg = {'Message' : 'Successfully inserted',
+                   'Table Affected' : 'Citations',
+                    'Lines Inserted': data.shape[0]}
+            
+            return make_response(jsonify(msg), 201)
+
         else:
-            return Response(json.dumps("File not acceptable"), mimetype='application/json'), 400
+            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            return make_response(jsonify(msg), 400)
     
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 402
+        return 500
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 401
+        return 409
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        pass
         return 410                   
         
 
@@ -319,11 +355,11 @@ def insert_experimentSites(fileName):
 
 
     :fileName:      CSV file with cultivars meta data
-    :return:       201 on success
+    :return:        201 on success
                     400 if file is unsuitable or does not contain appropriate columns
-                    401 Intregrity or Constraint error
-                    402 Database Connection Error
-                    403 No user exists
+                    409 Intregrity or Constraint error : 23503 foreign_key_violation | 23505 unique_violation
+                    500 Database Connection Error
+                    401 Unauthorized | No user exists
                     410 Default error.See logs for more information
     """
     try:
@@ -340,23 +376,27 @@ def insert_experimentSites(fileName):
             new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename']]
 
             insert_table(table='experiments_sites',data=new_data)
-            return Response(json.dumps("Successfully inserted"), mimetype='application/json'), 201
+            msg = {'Message' : 'Successfully inserted',
+                   'Table Affected' : 'Experiments_sites',
+                    'Lines Inserted': data.shape[0]}
+            
+            return make_response(jsonify(msg), 201)
 
         else:
-            return Response(json.dumps("File not acceptable"), mimetype='application/json'), 400
+            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            return make_response(jsonify(msg), 400)
     
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 402
+        return 500
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 401
+        return 409
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        pass
         return 410
 
 def insert_experimentTreatments(fileName):
@@ -368,9 +408,9 @@ def insert_experimentTreatments(fileName):
     :fileName:      CSV file with cultivars meta data
     :return:        201 on success
                     400 if file is unsuitable or does not contain appropriate columns
-                    401 Intregrity or Constraint error
-                    402 Database Connection Error
-                    403 No user exists
+                    409 Intregrity or Constraint error : 23503 foreign_key_violation | 23505 unique_violation
+                    500 Database Connection Error
+                    401 Unauthorized | No user exists
                     410 Default error.See logs for more information
     """
     try:
@@ -388,23 +428,27 @@ def insert_experimentTreatments(fileName):
 
             new_data['treatment_id'] = [fetch_id(x,table='treatments') for x in data['treatment_name']]
             insert_table(table='experiments_treatments',data=new_data)
-            return Response(json.dumps("Successfully inserted"), mimetype='application/json'), 201
+            msg = {'Message' : 'Successfully inserted',
+                   'Table Affected' : 'Experiments_treatments',
+                    'Lines Inserted': data.shape[0]}
+            
+            return make_response(jsonify(msg), 201)
 
         else:
-            return Response(json.dumps("File not acceptable"), mimetype='application/json'), 400
+            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            return make_response(jsonify(msg), 400)
     
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 402
+        return 500
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 401
+        return 409
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        pass
         return 410
 
 def insert_sitesCultivars(fileName):
@@ -416,9 +460,9 @@ def insert_sitesCultivars(fileName):
     :fileName:      CSV file with sites_cultivars meta data
     :return:        201 on success
                     400 if file is unsuitable or does not contain appropriate columns
-                    401 Intregrity or Constraint error
-                    402 Database Connection Error
-                    403 No user exists
+                    409 Intregrity or Constraint error : 23503 foreign_key_violation | 23505 unique_violation
+                    500 Database Connection Error
+                    401 Unauthorized | No user exists
                     410 Default error.See logs for more information
     """
     try:
@@ -434,23 +478,27 @@ def insert_sitesCultivars(fileName):
             new_data['cultivar_id'] = [fetch_cultivars_id(x[0],x[1]) for x in data[['cultivar_name','specie_id']].values]
 
             insert_table(table='sites_cultivars',data=new_data)
-            return Response(json.dumps("Successfully inserted"), mimetype='application/json'), 201
+            msg = {'Message' : 'Successfully inserted',
+                   'Table Affected' : 'Sites_cultivars',
+                   'Lines Inserted': data.shape[0]}
+            
+            return make_response(jsonify(msg), 201)
 
         else:
-            return Response(json.dumps("File not acceptable"), mimetype='application/json'), 400
+            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            return make_response(jsonify(msg), 400)
     
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 402
+        return 500
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 401
+        return 409
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        pass
         return 410
     
 
@@ -463,9 +511,9 @@ def insert_citationsSites(fileName):
     :fileName:      CSV file with citations_sites meta data
     :return:        201 on success
                     400 if file is unsuitable or does not contain appropriate columns
-                    401 Intregrity or Constraint error
-                    402 Database Connection Error
-                    403 No user exists
+                    409 Intregrity or Constraint error : 23503 foreign_key_violation | 23505 unique_violation
+                    500 Database Connection Error
+                    401 Unauthorized | No user exists
                     410 Default error.See logs for more information
     """
     
@@ -484,22 +532,27 @@ def insert_citationsSites(fileName):
             new_data['citation_id'] = [fetch_citations_id(x[0],x[1],x[2]) for x in data[['author','year','title']].values]
 
             insert_table(table='citations_sites',data=new_data)
-            return Response(json.dumps("Successfully inserted"), mimetype='application/json'), 201
+            msg = {'Message' : 'Successfully inserted',
+                   'Table Affected' : 'Citations_sites',
+                    'Lines Inserted': data.shape[0]}
+            
+            return make_response(jsonify(msg), 201)
+
         else:
-            return Response(json.dumps("File not acceptable"), mimetype='application/json'), 400
+            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            return make_response(jsonify(msg), 400)
     
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 402
+        return 500
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 401
+        return 409
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        pass
         return 410
     
 

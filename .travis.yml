@@ -4,6 +4,9 @@ python:
     - "3.5"
     - "3.6"
 
+env:
+  - config_file_name=app/credentials.yaml
+
 # install dependencies
 install: 
   - pip install -r app/requirements.txt

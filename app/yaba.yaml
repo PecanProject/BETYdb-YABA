@@ -1,12 +1,12 @@
 openapi: "3.0.0"
 info:
-  version: 1.0.4
+  version: 1.0.5
   title: BETYdb-YABA
   description: <h2>The YABA API (BETYdb-YABA) is a Standardized RESTful Web Service API Specification for MetaData Upload to respective tables.</h2>
   license:
     name: BSD 3-Clause
 servers:
-  - url: http://localhost:8080/yaba/v1
+  - url: http://localhost:5001/yaba/v1
 
 # Paths supported by the server application
 paths:  
@@ -31,6 +31,7 @@ paths:
                 fileName:
                   type: string
                   format: binary
+              
                   
       responses:
         '201':
@@ -45,7 +46,7 @@ paths:
                 ERROR - Uploaded file does not meet the standards.Check the columns
                 ERROR - Uploaded file does not have appropriate columns
                 ERROR - File for wrong table is uploaded
-        '401':
+        '409':
           description: IntegrityError
           content:
             application/json:
@@ -54,7 +55,7 @@ paths:
               example: |-
                 ERROR - Constraint Error
                 
-        '402':
+        '500':
           description: OperationalError
           content:
             application/json:
@@ -65,7 +66,7 @@ paths:
                 ERROR - Incorrect credentials of Postgres Database.
                 ERROR - Postgres Database not available.
                  
-        '403':
+        '401':
           description: Forbidden-No access to user
           content:
             application/json:
@@ -76,7 +77,7 @@ paths:
                ERROR - Invalid query parameter
                ERROR - Required parameter is missing
 
-        '404':
+        '410':
           description: Not Found
         # Definition of all error statuses
         default:
@@ -128,7 +129,7 @@ paths:
                 ERROR - Uploaded file does not meet the standards.Check the columns
                 ERROR - Uploaded file does not have appropriate columns
                 ERROR - File for wrong table is uploaded
-        '401':
+        '409':
           description: IntegrityError
           content:
             application/json:
@@ -137,7 +138,7 @@ paths:
               example: |-
                 ERROR - Constraint Error
                 
-        '402':
+        '500':
           description: OperationalError
           content:
             application/json:
@@ -148,7 +149,7 @@ paths:
                 ERROR - Incorrect credentials of Postgres Database.
                 ERROR - Postgres Database not available.
                  
-        '403':
+        '401':
           description: Forbidden-No access to user
           content:
             application/json:
@@ -159,7 +160,7 @@ paths:
                ERROR - Invalid query parameter
                ERROR - Required parameter is missing
 
-        '404':
+        '410':
           description: Not Found
         # Definition of all error statuses
         default:
@@ -203,7 +204,7 @@ paths:
                 ERROR - Uploaded file does not meet the standards.Check the columns
                 ERROR - Uploaded file does not have appropriate columns
                 ERROR - File for wrong table is uploaded
-        '401':
+        '409':
           description: IntegrityError
           content:
             application/json:
@@ -212,7 +213,7 @@ paths:
               example: |-
                 ERROR - Constraint Error
                 
-        '402':
+        '500':
           description: OperationalError
           content:
             application/json:
@@ -223,7 +224,7 @@ paths:
                 ERROR - Incorrect credentials of Postgres Database.
                 ERROR - Postgres Database not available.
                  
-        '403':
+        '401':
           description: Forbidden-No access to user
           content:
             application/json:
@@ -234,7 +235,7 @@ paths:
                ERROR - Invalid query parameter
                ERROR - Required parameter is missing
 
-        '404':
+        '410':
           description: Not Found
         # Definition of all error statuses
         default:
@@ -272,7 +273,7 @@ paths:
                 ERROR - Uploaded file does not meet the standards.Check the columns
                 ERROR - Uploaded file does not have appropriate columns
                 ERROR - File for wrong table is uploaded
-        '401':
+        '409':
           description: IntegrityError
           content:
             application/json:
@@ -281,7 +282,7 @@ paths:
               example: |-
                 ERROR - Constraint Error
                 
-        '402':
+        '500':
           description: OperationalError
           content:
             application/json:
@@ -292,7 +293,7 @@ paths:
                 ERROR - Incorrect credentials of Postgres Database.
                 ERROR - Postgres Database not available.
                  
-        '403':
+        '401':
           description: Forbidden-No access to user
           content:
             application/json:
@@ -303,7 +304,7 @@ paths:
                ERROR - Invalid query parameter
                ERROR - Required parameter is missing
 
-        '404':
+        '410':
           description: Not Found
         # Definition of all error statuses
         default:
@@ -347,7 +348,7 @@ paths:
                 ERROR - Uploaded file does not meet the standards.Check the columns
                 ERROR - Uploaded file does not have appropriate columns
                 ERROR - File for wrong table is uploaded
-        '401':
+        '409':
           description: IntegrityError
           content:
             application/json:
@@ -356,7 +357,7 @@ paths:
               example: |-
                 ERROR - Constraint Error
                 
-        '402':
+        '500':
           description: OperationalError
           content:
             application/json:
@@ -367,7 +368,7 @@ paths:
                 ERROR - Incorrect credentials of Postgres Database.
                 ERROR - Postgres Database not available.
                  
-        '403':
+        '401':
           description: Forbidden-No access to user
           content:
             application/json:
@@ -378,7 +379,7 @@ paths:
                ERROR - Invalid query parameter
                ERROR - Required parameter is missing
 
-        '404':
+        '410':
           description: Not Found
         # Definition of all error statuses
         default:
@@ -416,7 +417,7 @@ paths:
                 ERROR - Uploaded file does not meet the standards.Check the columns
                 ERROR - Uploaded file does not have appropriate columns
                 ERROR - File for wrong table is uploaded
-        '401':
+        '409':
           description: IntegrityError
           content:
             application/json:
@@ -425,7 +426,7 @@ paths:
               example: |-
                 ERROR - Constraint Error
                 
-        '402':
+        '500':
           description: OperationalError
           content:
             application/json:
@@ -436,7 +437,7 @@ paths:
                 ERROR - Incorrect credentials of Postgres Database.
                 ERROR - Postgres Database not available.
                  
-        '403':
+        '401':
           description: Forbidden-No access to user
           content:
             application/json:
@@ -447,7 +448,7 @@ paths:
                ERROR - Invalid query parameter
                ERROR - Required parameter is missing
 
-        '404':
+        '410':
           description: Not Found
         # Definition of all error statuses
         default:
@@ -485,7 +486,7 @@ paths:
                 ERROR - Uploaded file does not meet the standards.Check the columns
                 ERROR - Uploaded file does not have appropriate columns
                 ERROR - File for wrong table is uploaded
-        '401':
+        '409':
           description: IntegrityError
           content:
             application/json:
@@ -494,7 +495,7 @@ paths:
               example: |-
                 ERROR - Constraint Error
                 
-        '402':
+        '500':
           description: OperationalError
           content:
             application/json:
@@ -505,7 +506,7 @@ paths:
                 ERROR - Incorrect credentials of Postgres Database.
                 ERROR - Postgres Database not available.
                  
-        '403':
+        '401':
           description: Forbidden-No access to user
           content:
             application/json:
@@ -516,7 +517,7 @@ paths:
                ERROR - Invalid query parameter
                ERROR - Required parameter is missing
 
-        '404':
+        '410':
           description: Not Found
         # Definition of all error statuses
         default:
@@ -554,7 +555,7 @@ paths:
                 ERROR - Uploaded file does not meet the standards.Check the columns
                 ERROR - Uploaded file does not have appropriate columns
                 ERROR - File for wrong table is uploaded
-        '401':
+        '409':
           description: IntegrityError
           content:
             application/json:
@@ -563,7 +564,7 @@ paths:
               example: |-
                 ERROR - Constraint Error
                 
-        '402':
+        '500':
           description: OperationalError
           content:
             application/json:
@@ -574,7 +575,7 @@ paths:
                 ERROR - Incorrect credentials of Postgres Database.
                 ERROR - Postgres Database not available.
                  
-        '403':
+        '401':
           description: Forbidden-No access to user
           content:
             application/json:
@@ -585,7 +586,7 @@ paths:
                ERROR - Invalid query parameter
                ERROR - Required parameter is missing
 
-        '404':
+        '410':
           description: Not Found
         # Definition of all error statuses
         default:
@@ -623,7 +624,7 @@ paths:
                 ERROR - Uploaded file does not meet the standards.Check the columns
                 ERROR - Uploaded file does not have appropriate columns
                 ERROR - File for wrong table is uploaded
-        '401':
+        '409':
           description: IntegrityError
           content:
             application/json:
@@ -632,7 +633,7 @@ paths:
               example: |-
                 ERROR - Constraint Error
                 
-        '402':
+        '500':
           description: OperationalError
           content:
             application/json:
@@ -643,7 +644,7 @@ paths:
                 ERROR - Incorrect credentials of Postgres Database.
                 ERROR - Postgres Database not available.
                  
-        '403':
+        '401':
           description: Forbidden-No access to user
           content:
             application/json:
@@ -654,7 +655,7 @@ paths:
                ERROR - Invalid query parameter
                ERROR - Required parameter is missing
 
-        '404':
+        '410':
           description: Not Found
         # Definition of all error statuses
         default:

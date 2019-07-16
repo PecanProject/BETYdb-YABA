@@ -21,7 +21,7 @@ def home():
     """
     This function just responds to the browser URL
     localhost:5000/  
-    (on docker: localhost:5001/)
+    (on docker:     localhost:5001/)
     :return:        the below json message
     """
     return Response(json.dumps("Welcome to YABA API Index Route"), mimetype='application/json')

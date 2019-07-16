@@ -1,4 +1,5 @@
 import psycopg2
+import csv
 from sqlalchemy.sql import text
 from setup import setup_environment
 
@@ -6,6 +7,20 @@ def insert_table(table,data):
 	#Make PostgreSQL Connection
 	engine = setup_environment.get_database()
 	data.to_sql(table, engine, if_exists = 'append', index=False)
+
+def insert_sites_table(table,data):
+	#Make PostgreSQL Connection
+	engine = setup_environment.get_database()
+	connection = None
+	connection = engine.raw_connection()
+	cur = connection.cursor()
+	with open(data, 'r') as f:
+		reader = csv.reader(f)
+		next(reader) # Skip the header row.
+		for row in reader:
+			cur.execute("INSERT INTO sites (sitename,city,state,country,notes,greenhouse,geometry,time_zone,soil,soilnotes) VALUES (%s, %s, %s, %s,%s, %s, ST_Force3D(%s), %s,%s, %s)",row)
+			print(row)
+		connection.commit()
      
 
 def fetch_specie_id(species):
