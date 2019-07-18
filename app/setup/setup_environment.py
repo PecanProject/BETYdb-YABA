@@ -20,7 +20,7 @@ def get_database():
     return engine
 
 
-def get_connection_from_config(config_file_name=os.environ['config_file_name']):
+def get_connection_from_config(config_file_name='credentials.yaml'):
     """
     Sets up database connection from config file.
     Input:

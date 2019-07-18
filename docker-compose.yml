@@ -4,20 +4,20 @@ services:
   # postgresql with postgis docker image to hold the data
   postgres:
     image: mdillon/postgis:9.5
-    networks:
-      - bety
     volumes:
       - postgres:/var/lib/postgresql/data
+    networks:
+      - bety
     ports:
       - 9000:5432
     restart: unless-stopped
   # BETY docker image
   bety:
     image: pecan/bety:${BRANCH:-latest}
-    networks:
-      - bety
     ports:
       - 8000:8000
+    networks:
+      - bety
     environment:
       - INITIALIZE_URL=-w https://terraref.ncsa.illinois.edu/bety/dump/bety0/bety.tar.gz
       - REMOTE_SERVERS=6
@@ -29,6 +29,8 @@ services:
 
   yaba_api:
     build: ./app
+    networks:
+      - bety
     volumes:
       - ./app:/code
     ports:
@@ -39,8 +41,8 @@ services:
 volumes:
   postgres:
 
-
 networks:
   bety:
+
 
   
