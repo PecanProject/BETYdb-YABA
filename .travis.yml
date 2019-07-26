@@ -8,7 +8,7 @@ services:
 
 # install dependencies
 install: 
-  - pip install -r app/requirements.txt
+  - pip install nose2
   - pip install codecov
   - pip install docker-compose
 
