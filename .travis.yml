@@ -8,15 +8,16 @@ services:
 
 # install dependencies
 install: 
-  - pip install nose2
-  - pip install codecov
   - pip install docker-compose
-
-before_script:
   - docker-compose up -d postgres
   - docker-compose run --rm bety initialize
   - docker-compose run --rm bety sync
   - docker-compose up -d yaba_api
+
+before_script:
+  - pip install nose2
+  - pip install codecov
+  
 
 # run scripts
 script:
