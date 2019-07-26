@@ -31,6 +31,12 @@ paths:
                 fileName:
                   type: string
                   format: binary
+              example:
+                CSV:
+                  summary: A CSV file for experiment metadata Upload.
+                  text/csv: |-
+                    name,start_date,end_date,description,design
+                    MAC Season 8: Border ,2019-01-01,2019-03-31,text,text
               
                   
       responses:

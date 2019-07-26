@@ -17,7 +17,8 @@ from sqlalchemy.exc import OperationalError
 import traceback
 import logging
 from shapely import geos, wkb, wkt
-from shapely.geometry.multipolygon import MultiPolygon
+from shapely.geometry import Polygon
+from fiona.crs import from_epsg
 
 
 
@@ -123,21 +124,30 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
         shp_file_target = os.path.join(os.getcwd(),UPLOAD_FOLDER,shp_file.filename)
     
         #Reading the shapefile as DataFrame
-        data_g=gpd.read_file(shp_file_target)
+        data_g1=gpd.read_file(shp_file_target)
     
         #Reading the csv as Dataframe
         data = pd.read_csv(fileName,delimiter = ',')
+        
 
         
-        data['geometry'] = data.geometry.astype(str)
+        #data['geometry'] = data.geometry.astype(str)
         
-        geos.WKBWriter.defaults['include_srid'] = True
-
-        
-        for i in range(data_g.shape[0]):
+        """for i in range(data_g.shape[0]):
             p=data_g.iat[i,10]
             geos.lgeos.GEOSSetSRID(p._geom, 4326)
-            data.iat[i,6]=p.wkb_hex
+            data.iat[i,6]=p.wkb_hex"""
+
+        data_g  = data_g1.to_crs({'init': 'epsg:4326'})
+
+        flat_list = []
+        for index, row in data_g.iterrows():
+            for pt in list(row['geometry'].exterior.coords):
+                pt=pt+(115,)
+                flat_list.append(pt)
+            poly = Polygon(flat_list)
+            data.loc[index, 'geometry'] = poly
+
 
         #Checking necessary columns are there.
         columns=data.columns.values.tolist()
@@ -147,7 +157,13 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
             
             data['notes']=data_g['notes']
 
-            data['soil'].fillna("some text", inplace = True)
+            #data['geometry']=data_g['geometry']
+
+            #data['soil'].fillna("some text", inplace = True)
+
+            data['time_zone'].fillna("America/Phoenix", inplace = True)
+
+            
             
             data['soilnotes'].fillna("some text", inplace = True)
             
@@ -331,7 +347,7 @@ def insert_citations(username,fileName):
             return make_response(jsonify(msg), 201)
 
         else:
-            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            msg = {'Message' : 'File not acceptable and Check the format of file or columns'}
             return make_response(jsonify(msg), 400)
     
     except OperationalError:
@@ -539,7 +555,7 @@ def insert_citationsSites(fileName):
             return make_response(jsonify(msg), 201)
 
         else:
-            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            msg = {'Message' : 'File not acceptable and Check the format of file or columns'}
             return make_response(jsonify(msg), 400)
     
     except OperationalError:

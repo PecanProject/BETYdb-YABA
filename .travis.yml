@@ -1,21 +1,26 @@
 language: python
 
 python:
-    - "3.5"
-    - "3.6"
+  - "3.6"
 
-env:
-  - config_file_name=app/credentials.yaml
+services:
+  -docker
 
 # install dependencies
 install: 
   - pip install -r app/requirements.txt
   - pip install codecov
+  - pip install docker-compose
+
+before_script:
+  - docker-compose up -d postgres
+  - docker-compose run --rm bety initialize
+  - docker-compose run --rm bety sync
+  - docker-compose up -d yaba_api
 
 # run scripts
 script:
-  - coverage erase
-  - coverage run app/yaba_test.py && coverage report app/yaba_test.py
+  - nose2 --verbose
 
 after_success:
-  - codecov
+  - bash < (curl -s https://codecov.io/bash)
