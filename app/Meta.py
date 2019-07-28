@@ -4,18 +4,18 @@ This is the Meta module and supports all the REST actions for the yaba.yaml
 
 # Importing modules
 import os
+import json
+import geopandas as gpd
+import traceback
+import logging
+import pandas as pd
 
 from flask import make_response,abort,Response,jsonify
 from flask import json
-import pandas as pd
-import json
 from db import *
-import geopandas as gpd
 from werkzeug import secure_filename,FileStorage
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.exc import OperationalError
-import traceback
-import logging
 from shapely import geos, wkb, wkt
 from shapely.geometry import Polygon
 from fiona.crs import from_epsg
@@ -23,7 +23,6 @@ from fiona.crs import from_epsg
 
 
 UPLOAD_FOLDER = 'temp'
-
 
 
 def save_tempFile(File):
@@ -34,10 +33,9 @@ def save_tempFile(File):
     # Sanitise the filename
     a_file_name = secure_filename(File.filename)
 
-    # Build target
-    a_file_target = os.path.join(os.getcwd(),UPLOAD_FOLDER,a_file_name)
+    UPLOAD_PATH=os.path.join(os.getcwd(),UPLOAD_FOLDER,a_file_name)
     # Save file 
-    File.save(a_file_target)
+    File.save(UPLOAD_PATH)
     return None
 
 def insert_experiments(username,fileName):
@@ -59,7 +57,7 @@ def insert_experiments(username,fileName):
     try:
         user_id=fetch_id(username,table='users')
 
-        if user_id =='':
+        if not user_id:
             return 401
         #Reading the CSV file into DataFrame
         data = pd.read_csv(fileName,delimiter = ',')
@@ -74,7 +72,7 @@ def insert_experiments(username,fileName):
             insert_table(table='experiments',data=data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Experiments',
-                    'Lines Inserted': data.shape[0]}
+                   'Lines Inserted': data.shape[0]}
             
             return make_response(jsonify(msg), 201)
 
@@ -114,7 +112,14 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
                     401 Unauthorized | No user exists
                     410 Default error.See logs for more information
     """
-    try:
+    try:      
+        #Reading the csv as Dataframe
+        data = pd.read_csv(fileName,delimiter = ',')
+
+        #Checking necessary columns are there.
+        columns=data.columns.values.tolist()
+        accepted_columns=['sitename','city','state','country','notes','greenhouse','geometry','time_zone','soil','soilnotes']
+        
         save_tempFile(shp_file)
         save_tempFile(dbf_file)
         save_tempFile(prj_file)
@@ -122,14 +127,9 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
 
         #Getting the shp file from temp folder
         shp_file_target = os.path.join(os.getcwd(),UPLOAD_FOLDER,shp_file.filename)
-    
-        #Reading the shapefile as DataFrame
-        data_g1=gpd.read_file(shp_file_target)
-    
-        #Reading the csv as Dataframe
-        data = pd.read_csv(fileName,delimiter = ',')
-        
 
+        #Reading the shapefile as DataFrame
+        data_g1=gpd.read_file(shp_file_target)              
         
         #data['geometry'] = data.geometry.astype(str)
         
@@ -149,9 +149,6 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
             data.loc[index, 'geometry'] = poly
 
 
-        #Checking necessary columns are there.
-        columns=data.columns.values.tolist()
-        accepted_columns=['sitename','city','state','country','notes','greenhouse','geometry','time_zone','soil','soilnotes']
         
         if(all(x in accepted_columns for x in columns)):
             
@@ -199,7 +196,13 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 410        
+        return 410
+    finally:
+        os.remove(shp_file)
+        os.remove(dbf_file)
+        os.remove(prj_file)
+        os.remove(shx_file)
+        os.remove(file_name)        
 
 def insert_treatments(username,fileName):
     """
@@ -217,7 +220,7 @@ def insert_treatments(username,fileName):
     try:
         user_id=fetch_id(username,table='users')
 
-        if user_id =='':
+        if not user_id:
             return 401
 
         #Reading the CSV file into DataFrame
@@ -312,7 +315,6 @@ def insert_cultivars(fileName):
         logging.error(traceback.format_exc())
         return 410      
    
-
 def insert_citations(username,fileName):
     """
     This function responds to a request for  /yaba/v1/citations
@@ -329,15 +331,17 @@ def insert_citations(username,fileName):
     try:    
         user_id=fetch_id(username,table='users')
 
-        if user_id =='':
+        if not user_id:
             return 401
+
+        data = pd.read_csv(fileName,delimiter = ',')
         #Checking necessary columns are there.
         columns=data.columns.values.tolist()
         accepted_columns=['author','year','title','journal','vol','pg','url','pdf','doi']
      
         if(all(x in accepted_columns for x in columns)):
             #Reading the CSV file into DataFrame
-            data = pd.read_csv(fileName,delimiter = ',')
+            
             data['user_id']=user_id
             insert_table(table='citations',data=data)
             msg = {'Message' : 'Successfully inserted',
@@ -363,7 +367,6 @@ def insert_citations(username,fileName):
         logging.error(traceback.format_exc())
         return 410                   
         
-
 def insert_experimentSites(fileName):
     """
     This function responds to a request for /yaba/v1/experiments_sites
@@ -387,9 +390,9 @@ def insert_experimentSites(fileName):
         if(all(x in accepted_columns for x in columns)):
             new_data = pd.DataFrame(columns=['experiment_id', 'site_id'])
 
-            new_data['experiment_id'] = [fetch_id(x,table='experiments') for x in data['experiment_name']]
+            new_data['experiment_id'] = [fetch_id(x,table='experiments') for x in data['experiment_name'].values]
 
-            new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename']]
+            new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename'].values]
 
             insert_table(table='experiments_sites',data=new_data)
             msg = {'Message' : 'Successfully inserted',
@@ -440,9 +443,9 @@ def insert_experimentTreatments(fileName):
         if(all(x in accepted_columns for x in columns)):
             new_data = pd.DataFrame(columns=['experiment_id', 'treatment_id'])
 
-            new_data['experiment_id'] = [fetch_id(x,table='experiments') for x in data['experiment_name']]
+            new_data['experiment_id'] = [fetch_id(x,table='experiments') for x in data['experiment_name'].values]
 
-            new_data['treatment_id'] = [fetch_id(x,table='treatments') for x in data['treatment_name']]
+            new_data['treatment_id'] = [fetch_id(x,table='treatments') for x in data['treatment_name'].values]
             insert_table(table='experiments_treatments',data=new_data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Experiments_treatments',
@@ -490,7 +493,7 @@ def insert_sitesCultivars(fileName):
 
         if(all(x in accepted_columns for x in columns)):
             new_data = pd.DataFrame(columns=['site_id', 'cultivar_id'])
-            new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename']]
+            new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename'].values]
             new_data['cultivar_id'] = [fetch_cultivars_id(x[0],x[1]) for x in data[['cultivar_name','specie_id']].values]
 
             insert_table(table='sites_cultivars',data=new_data)
@@ -538,12 +541,12 @@ def insert_citationsSites(fileName):
 
         #Checking necessary columns are there.
         columns=data.columns.values.tolist()
-        accepted_columns=['sitename','cultivar_name']    
+        accepted_columns=['author','year','title','sitename']    
 
         if(all(x in accepted_columns for x in columns)):
-            new_data = pd.DataFrame(columns=['citation_id','author','year','title'])
+            new_data = pd.DataFrame(columns=['citation_id','site_id'])
 
-            new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename']]
+            new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename'].values]
 
             new_data['citation_id'] = [fetch_citations_id(x[0],x[1],x[2]) for x in data[['author','year','title']].values]
 
@@ -555,7 +558,8 @@ def insert_citationsSites(fileName):
             return make_response(jsonify(msg), 201)
 
         else:
-            msg = {'Message' : 'File not acceptable and Check the format of file or columns'}
+            msg = {'Message' : 'File not acceptable and Check the format of file or columns',
+                    'Table':'citations_sites'}
             return make_response(jsonify(msg), 400)
     
     except OperationalError:
