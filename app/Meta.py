@@ -1,7 +1,6 @@
 """
 This is the Meta module and supports all the REST actions for the yaba.yaml
 """
-
 # Importing modules
 import os
 import json
@@ -23,6 +22,9 @@ from fiona.crs import from_epsg
 
 
 UPLOAD_FOLDER = 'temp'
+
+def fetchingUserId(username):
+  return lambda id: fetch_id(username, table='users')
 
 
 def save_tempFile(File):
@@ -55,7 +57,7 @@ def insert_experiments(username,fileName):
     """
     
     try:
-        user_id=fetch_id(username,table='users')
+        user_id=fetch_id(username, table='users')
 
         if not user_id:
             return 401
@@ -218,7 +220,7 @@ def insert_treatments(username,fileName):
                     410 Default error.See logs for more information
     """
     try:
-        user_id=fetch_id(username,table='users')
+        user_id=fetch_id(username, table='users')
 
         if not user_id:
             return 401
@@ -305,11 +307,13 @@ def insert_cultivars(fileName):
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 500
+        msg = {'Message' : 'Database Conection Error'}
+        return make_response(jsonify(msg), 500)
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 409
+        msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "unique_name_per_species"'}
+        return make_response(jsonify(msg), 409)
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
@@ -329,7 +333,7 @@ def insert_citations(username,fileName):
                     410 Default error.See logs for more information
     """
     try:    
-        user_id=fetch_id(username,table='users')
+        user_id=fetch_id(username, table='users')
 
         if not user_id:
             return 401
@@ -357,11 +361,13 @@ def insert_citations(username,fileName):
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 500
+        msg = {'Message' : 'Database Conection Error'}
+        return make_response(jsonify(msg), 500)
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 409
+        msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violation.'}
+        return make_response(jsonify(msg), 409)
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
@@ -373,7 +379,7 @@ def insert_experimentSites(fileName):
     with csv file
 
 
-    :fileName:      CSV file with cultivars meta data
+    :fileName:      CSV file with experimentsSites meta data
     :return:        201 on success
                     400 if file is unsuitable or does not contain appropriate columns
                     409 Intregrity or Constraint error : 23503 foreign_key_violation | 23505 unique_violation
@@ -390,10 +396,13 @@ def insert_experimentSites(fileName):
         if(all(x in accepted_columns for x in columns)):
             new_data = pd.DataFrame(columns=['experiment_id', 'site_id'])
 
-            new_data['experiment_id'] = [fetch_id(x,table='experiments') for x in data['experiment_name'].values]
+            new_data['experiment_id'] = data.apply(lambda row: fetch_id(row['experiment_name'],table='experiments'), axis=1)
 
-            new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename'].values]
+            #new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename'].values]
+            new_data['site_id'] = data.apply(lambda row: fetch_sites_id(row['sitename']), axis=1)
 
+            
+            #print(new_data)
             insert_table(table='experiments_sites',data=new_data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Experiments_sites',
@@ -408,15 +417,17 @@ def insert_experimentSites(fileName):
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 500
+        msg = {'Message' : 'Database Conection Error '}
+        return make_response(jsonify(msg), 500)
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 409
+        msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violation.'}
+        return make_response(jsonify(msg), 409)
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 410
+        return 410 
 
 def insert_experimentTreatments(fileName):
     """
@@ -424,7 +435,7 @@ def insert_experimentTreatments(fileName):
     with csv file
 
 
-    :fileName:      CSV file with cultivars meta data
+    :fileName:      CSV file with experiments_treatments meta data
     :return:        201 on success
                     400 if file is unsuitable or does not contain appropriate columns
                     409 Intregrity or Constraint error : 23503 foreign_key_violation | 23505 unique_violation
@@ -443,9 +454,11 @@ def insert_experimentTreatments(fileName):
         if(all(x in accepted_columns for x in columns)):
             new_data = pd.DataFrame(columns=['experiment_id', 'treatment_id'])
 
-            new_data['experiment_id'] = [fetch_id(x,table='experiments') for x in data['experiment_name'].values]
+            #new_data['experiment_id'] = [fetch_id(x,table='experiments') for x in data['experiment_name'].values]
+            new_data['experiment_id'] = data.apply(lambda row: fetch_id(row['experiment_name'],table='experiments'), axis=1)
 
-            new_data['treatment_id'] = [fetch_id(x,table='treatments') for x in data['treatment_name'].values]
+            #new_data['treatment_id'] = [fetch_id(x,table='treatments') for x in data['treatment_name'].values]
+            new_data['treatment_id'] = data.apply(lambda row: fetch_id(row['treatment_name'],table='treatments'), axis=1)
             insert_table(table='experiments_treatments',data=new_data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Experiments_treatments',
@@ -460,11 +473,13 @@ def insert_experimentTreatments(fileName):
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 500
+        msg = {'Message' : 'Database Conection Error'}
+        return make_response(jsonify(msg), 500)
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 409
+        msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violation.'}
+        return make_response(jsonify(msg), 409)
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
@@ -493,10 +508,14 @@ def insert_sitesCultivars(fileName):
 
         if(all(x in accepted_columns for x in columns)):
             new_data = pd.DataFrame(columns=['site_id', 'cultivar_id'])
-            new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename'].values]
-            new_data['cultivar_id'] = [fetch_cultivars_id(x[0],x[1]) for x in data[['cultivar_name','specie_id']].values]
+            #new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename'].values]
+            new_data['site_id'] = data.apply(lambda row: fetch_sites_id(row['sitename']), axis=1)
+
+            #new_data['cultivar_id'] = [fetch_cultivars_id(x[0],x[1]) for x in data[['cultivar_name','specie_id']].values]
+            new_data['cultivar_id'] = data.apply(lambda row: fetch_cultivars_id(row['cultivar_name'],row['specie_id']), axis=1)
 
             insert_table(table='sites_cultivars',data=new_data)
+            #print(new_data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Sites_cultivars',
                    'Lines Inserted': data.shape[0]}
@@ -510,17 +529,18 @@ def insert_sitesCultivars(fileName):
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 500
+        msg = {'Message' : 'Database Conection Error or Inconsistent Data'}
+        return make_response(jsonify(msg), 500)
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 409
+        msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violation.'}
+        return make_response(jsonify(msg), 409)
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
         return 410
     
-
 def insert_citationsSites(fileName):
     """
     This function responds to a request for /yaba/v1/citations_sites
@@ -546,11 +566,14 @@ def insert_citationsSites(fileName):
         if(all(x in accepted_columns for x in columns)):
             new_data = pd.DataFrame(columns=['citation_id','site_id'])
 
-            new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename'].values]
+            #new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename'].values]
+            new_data['site_id'] = data.apply(lambda row: fetch_sites_id(row['sitename']), axis=1)
 
-            new_data['citation_id'] = [fetch_citations_id(x[0],x[1],x[2]) for x in data[['author','year','title']].values]
+            #new_data['citation_id'] = [fetch_citations_id(x[0],x[1],x[2]) for x in data[['author','year','title']].values]
+            new_data['citation_id'] = data.apply(lambda row: fetch_citations_id(row['author'],row['year'],row['title']), axis=1)
 
             insert_table(table='citations_sites',data=new_data)
+            #print(new_data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Citations_sites',
                     'Lines Inserted': data.shape[0]}
@@ -565,11 +588,13 @@ def insert_citationsSites(fileName):
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 500
+        msg = {'Message' : 'Database Conection Error'}
+        return make_response(jsonify(msg), 500)
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 409
+        msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violation.'}
+        return make_response(jsonify(msg), 409)
     except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())

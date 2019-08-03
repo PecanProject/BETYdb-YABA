@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+        <meta charset="UTF-8">
+        <title>PEcAn</title>
+    
+    
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div class ='row'>
+        {% block content %}
+        <div style='margin-left: 50px; width: 45%;'>
+        
+            
+            <div style='padding-top: 20px;'><h3>
+             PEcAN Simple Application To Load CSV to SQLite
+            </h3></div>
+        </div> <!--ends intro -->
+
+        <div style='margin-left: 50px; width: 45%;'>
+                <div class="alert alert-info" role="alert">
+                <strong>Check It!</strong> Insert your ID to get the row  ...
+                </div>
+                </form>
+                <form action = "search" method = "POST">
+                 <p>ID: <input class="form-control" type = "number" name = "id" style='width: 50%;' /></p>
+                 
+                 <br>
+
+                 <p><input class="btn-primary" type = "submit" value = "Insert ID" /></p>
+                </form>
+        </div>
+        {% endblock content %}
+    </div>
+
+            <div class="alert alert-success" role="alert" style='width: 90%; margin-left: 50px;'>
+        <strong>Check it out!</strong> Here is your data table below (Showing only 5 rows)...
+        </div>
+        <div style="overflow-x: auto; overflow-y: auto">
+
+            <table class = 'table table-condensed' style = 'margin-left: 50px; margin-right: 50px; width: 50%;'>
+                <thead>
+                    <tr>
+                    <th>Checked</th>
+                    <th>Result_type</th>
+                    <th>ID</th>
+                    <th>Citation_id</th>
+                    <th>Site_id</th>
+                    <th>Treatment_id</th>
+                    <th>Sitename</th>
+                    <th>City</th>
+                    <th>Lat</th>
+                    <th>Lon</th>
+                    <th>Scientificname</th>
+                    <th>Commonname</th>
+                    <th>Genus</th>
+                    <th>Species_id</th>
+                    <th>Cultivar_id</th>
+                    <th>Author</th>
+                    <th>Citation_year</th>
+                    <th>Treatment</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Raw Date</th>
+                    <th>Month</th>
+                    <th>Year</th>
+                    <th>Dateloc</th>
+                    <th>Trait</th>
+                    <th>Trait_description</th>
+                    <th>Mean</th>
+                    <th>Units</th>
+                    <th>N</th>
+                    <th>Statname</th>
+                    <th>Stat</th>
+                    <th>Notes</th>
+                    <th>Access_level</th>
+                    <th>Cultivar</th>
+                    <th>Entity</th>
+                    <th>Method_name</th>
+                    </tr>
+                </thead>
+
+             {% for result in results %}
+                <tr>
+                   <td>{{result[1]}}</td>
+                   <td>{{result[2]}}</td>
+                   <td>{{result[3]}}</td>
+                   <td>{{result[4]}}</td>
+                   <td>{{result[5]}}</td>
+                   <td>{{result[6]}}</td>
+                   <td>{{result[7]}}</td>
+                   <td>{{result[8]}}</td>
+                   <td>{{result[9]}}</td>
+                   <td>{{result[10]}}</td>
+                   <td>{{result[11]}}</td>
+                   <td>{{result[12]}}</td>
+                   <td>{{result[13]}}</td>
+                   <td>{{result[14]}}</td>
+                   <td>{{result[15]}}</td>
+                   <td>{{result[16]}}</td>
+                   <td>{{result[17]}}</td>
+                   <td>{{result[18]}}</td>
+                   <td>{{result[19]}}</td>
+                   <td>{{result[20]}}</td>
+                   <td>{{result[21]}}</td>
+                   <td>{{result[22]}}</td>
+                   <td>{{result[23]}}</td>
+                   <td>{{result[24]}}</td>
+                   <td>{{result[25]}}</td>
+                   <td>{{result[26]}}</td>
+                   <td>{{result[27]}}</td>
+                   <td>{{result[28]}}</td>
+                   <td>{{result[29]}}</td>
+                   <td>{{result[30]}}</td>
+                   <td>{{result[31]}}</td>
+                   <td>{{result[32]}}</td>
+                   <td>{{result[33]}}</td>
+                   <td>{{result[34]}}</td>
+                   <td>{{result[35]}}</td>
+                   <td>{{result[36]}}</td>
+                   </tr>
+             {% endfor %}
+             </table>
+        </div>
+    </body>
+</html>
