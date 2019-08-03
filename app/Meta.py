@@ -23,10 +23,6 @@ from fiona.crs import from_epsg
 
 UPLOAD_FOLDER = 'temp'
 
-def fetchingUserId(username):
-  return lambda id: fetch_id(username, table='users')
-
-
 def save_tempFile(File):
     # Validate that what we have been supplied with is infact a FileStorage
     if not isinstance(File, FileStorage):
