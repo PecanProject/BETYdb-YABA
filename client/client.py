@@ -82,7 +82,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def _url(path):
-    return 'http://localhost:5000/yaba/v1/' + path
+    return 'http://yaba_api:5000/yaba/v1/' + path
 
 def postRequest(request,endpoint):
     if 'fileName' not in request.files:
