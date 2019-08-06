@@ -1,6 +1,8 @@
 # users_test/test_users.py
 import unittest
 import requests
+import time
+
 
 BASE_URL = 'http://localhost:5001/'
 
@@ -34,7 +36,7 @@ class BasicTests(unittest.TestCase):
 
         files= {'fileName': open(csv_path, 'rb'),
                 'shp_file': open(shp_file, 'rb'),
-                'dbf_file': open(dbf_file, 'rb'),
+                'dbf_file':open(dbf_file, 'rb'),
                 'prj_file': open(prj_file, 'rb'),
                 'shx_file': open(shx_file, 'rb')}
 
@@ -108,4 +110,5 @@ class BasicTests(unittest.TestCase):
 
 
 if __name__ == "__main__":
+    time.sleep(3)
     unittest.main()
