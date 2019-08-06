@@ -2,7 +2,7 @@
 import unittest
 import requests
 
-BASE_URL = 'http://yaba_api:5000/'
+BASE_URL = 'http://localhost:5001/'
 
 
 class BasicTests(unittest.TestCase):
@@ -19,7 +19,7 @@ class BasicTests(unittest.TestCase):
         csv_path = 'input_files/experiments.csv'
         files = {'fileName': open(csv_path, 'rb')}
         response = requests.post(
-            'http://yaba_api:5000/yaba/v1/experiments?username=guestuser', files=files)
+            'http://localhost:5001/yaba/v1/experiments?username=guestuser', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -32,7 +32,7 @@ class BasicTests(unittest.TestCase):
         prj_file = 'input_files/S8_two_row_polys.prj'
         shx_file = 'input_files/S8_two_row_polys.shx'
 
-        resp = self.app.post('http://yaba_api:5000/yaba/v1/sites',
+        resp = self.app.post('http://localhost:5001/yaba/v1/sites',
                              upload_files=[('fileName', csv_path), ('shp_file', shp_file),
                                            ('dbf_file', dbf_file), ('prj_file', prj_file), ('shx_file', shx_file)])
         self.assertEqual(resp.status_code, 201)
@@ -43,7 +43,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://yaba_api:5000/yaba/v1/treatments?username=guestuser', files=files)
+            'http://localhost:5001/yaba/v1/treatments?username=guestuser', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -52,7 +52,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://yaba_api:5000/yaba/v1/cultivars', files=files)
+            'http://localhost:5001/yaba/v1/cultivars', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -61,7 +61,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://yaba_api:5000/yaba/v1/citations?username=guestuser', files=files)
+            'http://localhost:5001/yaba/v1/citations?username=guestuser', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -70,7 +70,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://yaba_api:5000/yaba/v1/experiments_sites', files=files)
+            'http://localhost:5001/yaba/v1/experiments_sites', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -79,7 +79,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://yaba_api:5000/yaba/v1/experiments_treatments', files=files)
+            'http://localhost:5001/yaba/v1/experiments_treatments', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -88,7 +88,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://yaba_api:5000/yaba/v1/sites_cultivars', files=files)
+            'http://localhost:5001/yaba/v1/sites_cultivars', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -97,7 +97,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://yaba_api:5000/yaba/v1/citations_sites', files=files)
+            'http://localhost:5001/yaba/v1/citations_sites', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
