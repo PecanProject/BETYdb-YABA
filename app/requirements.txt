@@ -1,7 +1,6 @@
 requests==2.18.4
 psycopg2-binary
 pandas
-unittest
 connexion==2.2.0
 Flask==0.12.2
 Werkzeug==0.14.1
