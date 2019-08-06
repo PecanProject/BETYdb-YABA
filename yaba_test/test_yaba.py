@@ -32,11 +32,16 @@ class BasicTests(unittest.TestCase):
         prj_file = 'input_files/S8_two_row_polys.prj'
         shx_file = 'input_files/S8_two_row_polys.shx'
 
-        resp = self.app.post('http://localhost:5001/yaba/v1/sites',
-                             upload_files=[('fileName', csv_path), ('shp_file', shp_file),
-                                           ('dbf_file', dbf_file), ('prj_file', prj_file), ('shx_file', shx_file)])
-        self.assertEqual(resp.status_code, 201)
-        self.assertIn(b'Successfully inserted', resp.body)
+        files= {'fileName': open(csv_path, 'rb'),
+                'shp_file': open(shp_file, 'rb'),
+                'dbf_file': open(dbf_file, 'rb'),
+                'prj_file': open(prj_file, 'rb'),
+                'shx_file': open(shx_file, 'rb')}
+
+        response = requests.post('http://localhost:5001/yaba/v1/sites',
+                            files=files)
+        self.assertEqual(response.status_code, 201)
+        self.assertIn(b'Successfully inserted', response.body)
 
     def test_insert_treatments(self):
         csv_filename = 'treatments.csv'
