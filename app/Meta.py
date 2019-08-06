@@ -3,6 +3,7 @@ This is the Meta module and supports all the REST actions for the yaba.yaml
 """
 # Importing modules
 import os
+import numpy as np
 import json
 import geopandas as gpd
 import traceback
@@ -22,6 +23,7 @@ from fiona.crs import from_epsg
 
 
 UPLOAD_FOLDER = 'temp'
+
 
 def save_tempFile(File):
     # Validate that what we have been supplied with is infact a FileStorage
@@ -81,12 +83,14 @@ def insert_experiments(username,fileName):
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 500
+        msg = {'Message' : 'Database Conection Error'}
+        return make_response(jsonify(msg), 500)
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 409
-    except Exception as e:
+        msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "unique_name_per_species"'}
+        return make_response(jsonify(msg), 409)
+    except Exception :
         # Logs the error appropriately
         logging.error(traceback.format_exc())
         return 410     
@@ -118,13 +122,18 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
         columns=data.columns.values.tolist()
         accepted_columns=['sitename','city','state','country','notes','greenhouse','geometry','time_zone','soil','soilnotes']
         
+        #Saving files temporarily.(Will be deleted later)
         save_tempFile(shp_file)
         save_tempFile(dbf_file)
         save_tempFile(prj_file)
         save_tempFile(shx_file)
 
-        #Getting the shp file from temp folder
+        #Getting the files path from temp folder
         shp_file_target = os.path.join(os.getcwd(),UPLOAD_FOLDER,shp_file.filename)
+        dbf_file_target = os.path.join(os.getcwd(),UPLOAD_FOLDER,dbf_file.filename)
+        prj_file_target = os.path.join(os.getcwd(),UPLOAD_FOLDER,prj_file.filename)
+        shx_file_target = os.path.join(os.getcwd(),UPLOAD_FOLDER,shx_file.filename)
+
 
         #Reading the shapefile as DataFrame
         data_g1=gpd.read_file(shp_file_target)              
@@ -145,25 +154,13 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
                 flat_list.append(pt)
             poly = Polygon(flat_list)
             data.loc[index, 'geometry'] = poly
-
-
         
         if(all(x in accepted_columns for x in columns)):
-            
             data['notes']=data_g['notes']
-
             #data['geometry']=data_g['geometry']
-
-            #data['soil'].fillna("some text", inplace = True)
-
-            data['time_zone'].fillna("America/Phoenix", inplace = True)
-
-            
-            
-            data['soilnotes'].fillna("some text", inplace = True)
-            
-            data['greenhouse'].fillna("f", inplace = True)
-            
+            data['time_zone'].fillna("America/Phoenix", inplace = True)         
+            data['soilnotes'].fillna("some text", inplace = True)            
+            data['greenhouse'].fillna("f", inplace = True)            
             
             data=data.fillna('')
 
@@ -186,20 +183,22 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 500
+        msg = {'Message' : 'Database Conection Error'}
+        return make_response(jsonify(msg), 500)
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 409
-    except Exception as e:
+        msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "unique_name_per_species"'}
+        return make_response(jsonify(msg), 409)
+    except Exception:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
         return 410
     finally:
-        os.remove(shp_file)
-        os.remove(dbf_file)
-        os.remove(prj_file)
-        os.remove(shx_file)
+        os.remove(shp_file_target)
+        os.remove(dbf_file_target)
+        os.remove(prj_file_target)
+        os.remove(shx_file_target)
         os.remove(file_name)        
 
 def insert_treatments(username,fileName):
@@ -244,12 +243,14 @@ def insert_treatments(username,fileName):
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 500
+        msg = {'Message' : 'Database Conection Error'}
+        return make_response(jsonify(msg), 500)
     except IntegrityError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 409
-    except Exception as e:
+        msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "unique_name_per_species"'}
+        return make_response(jsonify(msg), 409)
+    except Exception :
         # Logs the error appropriately
         logging.error(traceback.format_exc())
         return 410   
@@ -284,7 +285,6 @@ def insert_cultivars(fileName):
 
             new_data['name']=data['name']
             new_data['specie_id']=specie_id
-            new_data['name']='some text'
             new_data['ecotype']='some text'
             new_data['notes']='some text'
 
@@ -292,7 +292,7 @@ def insert_cultivars(fileName):
 
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Cultivars',
-                    'Lines Inserted': data.shape[0]}
+                   'Lines Inserted': data.shape[0]}
             
             return make_response(jsonify(msg), 201)
 
@@ -310,7 +310,7 @@ def insert_cultivars(fileName):
         logging.error(traceback.format_exc())
         msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "unique_name_per_species"'}
         return make_response(jsonify(msg), 409)
-    except Exception as e:
+    except Exception :
         # Logs the error appropriately
         logging.error(traceback.format_exc())
         return 410      
@@ -340,8 +340,7 @@ def insert_citations(username,fileName):
         accepted_columns=['author','year','title','journal','vol','pg','url','pdf','doi']
      
         if(all(x in accepted_columns for x in columns)):
-            #Reading the CSV file into DataFrame
-            
+            #Reading the CSV file into DataFrame            
             data['user_id']=user_id
             insert_table(table='citations',data=data)
             msg = {'Message' : 'Successfully inserted',
@@ -364,7 +363,7 @@ def insert_citations(username,fileName):
         logging.error(traceback.format_exc())
         msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violation.'}
         return make_response(jsonify(msg), 409)
-    except Exception as e:
+    except Exception :
         # Logs the error appropriately
         logging.error(traceback.format_exc())
         return 410                   
@@ -391,14 +390,8 @@ def insert_experimentSites(fileName):
      
         if(all(x in accepted_columns for x in columns)):
             new_data = pd.DataFrame(columns=['experiment_id', 'site_id'])
-
             new_data['experiment_id'] = data.apply(lambda row: fetch_id(row['experiment_name'],table='experiments'), axis=1)
-
-            #new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename'].values]
-            new_data['site_id'] = data.apply(lambda row: fetch_sites_id(row['sitename']), axis=1)
-
-            
-            #print(new_data)
+            new_data['site_id'] = data.apply(lambda row: fetch_sites_id(row['sitename']), axis=1)            
             insert_table(table='experiments_sites',data=new_data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Experiments_sites',
@@ -420,7 +413,7 @@ def insert_experimentSites(fileName):
         logging.error(traceback.format_exc())
         msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violation.'}
         return make_response(jsonify(msg), 409)
-    except Exception as e:
+    except Exception :
         # Logs the error appropriately
         logging.error(traceback.format_exc())
         return 410 
@@ -449,11 +442,7 @@ def insert_experimentTreatments(fileName):
 
         if(all(x in accepted_columns for x in columns)):
             new_data = pd.DataFrame(columns=['experiment_id', 'treatment_id'])
-
-            #new_data['experiment_id'] = [fetch_id(x,table='experiments') for x in data['experiment_name'].values]
             new_data['experiment_id'] = data.apply(lambda row: fetch_id(row['experiment_name'],table='experiments'), axis=1)
-
-            #new_data['treatment_id'] = [fetch_id(x,table='treatments') for x in data['treatment_name'].values]
             new_data['treatment_id'] = data.apply(lambda row: fetch_id(row['treatment_name'],table='treatments'), axis=1)
             insert_table(table='experiments_treatments',data=new_data)
             msg = {'Message' : 'Successfully inserted',
@@ -476,7 +465,7 @@ def insert_experimentTreatments(fileName):
         logging.error(traceback.format_exc())
         msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violation.'}
         return make_response(jsonify(msg), 409)
-    except Exception as e:
+    except Exception :
         # Logs the error appropriately
         logging.error(traceback.format_exc())
         return 410
@@ -504,14 +493,9 @@ def insert_sitesCultivars(fileName):
 
         if(all(x in accepted_columns for x in columns)):
             new_data = pd.DataFrame(columns=['site_id', 'cultivar_id'])
-            #new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename'].values]
             new_data['site_id'] = data.apply(lambda row: fetch_sites_id(row['sitename']), axis=1)
-
-            #new_data['cultivar_id'] = [fetch_cultivars_id(x[0],x[1]) for x in data[['cultivar_name','specie_id']].values]
             new_data['cultivar_id'] = data.apply(lambda row: fetch_cultivars_id(row['cultivar_name'],row['specie_id']), axis=1)
-
             insert_table(table='sites_cultivars',data=new_data)
-            #print(new_data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Sites_cultivars',
                    'Lines Inserted': data.shape[0]}
@@ -532,7 +516,7 @@ def insert_sitesCultivars(fileName):
         logging.error(traceback.format_exc())
         msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violation.'}
         return make_response(jsonify(msg), 409)
-    except Exception as e:
+    except Exception :
         # Logs the error appropriately
         logging.error(traceback.format_exc())
         return 410
@@ -561,24 +545,19 @@ def insert_citationsSites(fileName):
 
         if(all(x in accepted_columns for x in columns)):
             new_data = pd.DataFrame(columns=['citation_id','site_id'])
-
-            #new_data['site_id'] = [fetch_sites_id(x) for x in data['sitename'].values]
             new_data['site_id'] = data.apply(lambda row: fetch_sites_id(row['sitename']), axis=1)
-
-            #new_data['citation_id'] = [fetch_citations_id(x[0],x[1],x[2]) for x in data[['author','year','title']].values]
             new_data['citation_id'] = data.apply(lambda row: fetch_citations_id(row['author'],row['year'],row['title']), axis=1)
 
             insert_table(table='citations_sites',data=new_data)
-            #print(new_data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Citations_sites',
-                    'Lines Inserted': data.shape[0]}
+                   'Lines Inserted': data.shape[0]}
             
             return make_response(jsonify(msg), 201)
 
         else:
             msg = {'Message' : 'File not acceptable and Check the format of file or columns',
-                    'Table':'citations_sites'}
+                   'Table':'citations_sites'}
             return make_response(jsonify(msg), 400)
     
     except OperationalError:
@@ -591,7 +570,7 @@ def insert_citationsSites(fileName):
         logging.error(traceback.format_exc())
         msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violation.'}
         return make_response(jsonify(msg), 409)
-    except Exception as e:
+    except Exception :
         # Logs the error appropriately
         logging.error(traceback.format_exc())
         return 410
