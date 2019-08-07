@@ -12,7 +12,7 @@ install:
   - docker-compose up -d postgres
   - docker-compose run --rm bety initialize
   - docker-compose run --rm bety sync
-  - docker-compose up -d yaba_api
+  - docker-compose up -d 
 
 before_script:
   - pip install nose2
