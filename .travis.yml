@@ -12,7 +12,8 @@ install:
   - docker-compose up -d postgres
   - docker-compose run --rm bety initialize
   - docker-compose run --rm bety sync
-  - docker-compose up -d yaba_api
+  - docker-compose up -d
+  - docker ps -a
 
 before_script:
   - pip install nose2
@@ -21,7 +22,6 @@ before_script:
   
 # run scripts
 script:
-  - "travis_wait 30 sleep 1800 &"
   - nose2 --verbose
 
 after_success:
