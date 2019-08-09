@@ -7,11 +7,14 @@ from flask import Flask, g, render_template,request,redirect,Response
 import connexion
 import json
 from time import sleep
+from gevent.pywsgi import WSGIServer
 
 
 
 # Create the application instance
 app = connexion.App(__name__, specification_dir="./")
+
+sleep(5)
 
 # Read the swagger.yml file to configure the endpoints
 app.add_api("yaba.yaml",validate_responses=False)
@@ -30,4 +33,6 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(host="localhost",port=5000,debug=False)
+    #app.run(host="localhost",port=5000,debug=False)
+    http_server = WSGIServer(('0.0.0.0', 5000), app)
+    http_server.serve_forever()

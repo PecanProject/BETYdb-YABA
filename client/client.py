@@ -61,7 +61,7 @@ def experiments_treatments():
 @app.route('/sites_cultivars',methods = ['POST'])
 def sites_cultivars():    
     if request.method == 'POST':
-        respose=postRequest(request,'sites_cultivars')
+        response=postRequest(request,'sites_cultivars')
         return Response(response.text,mimetype="application/json") 
 
 @app.route('/citations_sites',methods = ['POST'])
@@ -94,7 +94,6 @@ def postRequest(request,endpoint):
         return redirect(request.url)
     if file and allowed_file(file.filename):
         payload = {'fileName':file}
-        headers = {'content-type': 'application/json'}
         flash('File successfully uploaded')
         sleep(2)
         response = requests.post(_url(endpoint),files=payload)
@@ -116,7 +115,6 @@ def postRequest_With_UserName(request,endpoint):
         username=request.args['username']
         payload = {'fileName':file}
         params={'username':username}
-        headers = {'content-type': 'application/json'}
         flash('File successfully uploaded')
         sleep(2)
         response = requests.post(_url(endpoint),files=payload,params=params)
@@ -127,5 +125,5 @@ def postRequest_With_UserName(request,endpoint):
         return redirect(request.url)
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0",port=6000,debug=True,processes=2)
+    app.run(host="0.0.0.0",port=6000,debug=True)
 
