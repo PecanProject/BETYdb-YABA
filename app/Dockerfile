@@ -11,4 +11,4 @@ RUN pip install git+https://github.com/aleju/imgaug --no-deps &&\
     pip install -r requirements.txt    
 
 
-CMD ["python","server.py"]
+CMD ["python","wsgi.py"]
