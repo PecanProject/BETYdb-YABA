@@ -32,7 +32,7 @@ def home():
     return Response(json.dumps("Welcome to YABA API Index Route"), mimetype='application/json')
 
 
-if __name__ == "__main__":
-    #app.run(host="localhost",port=5000,debug=False)
-    http_server = WSGIServer(('0.0.0.0', 5000), app)
-    http_server.serve_forever()
+# if __name__ == "__main__":
+#     #app.run(host="localhost",port=5000,debug=False)
+#     http_server = WSGIServer(('0.0.0.0', 5000), app)
+#     http_server.serve_forever()
