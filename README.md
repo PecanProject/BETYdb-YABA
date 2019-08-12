@@ -47,7 +47,7 @@ curl -F "fileName=@input_files/experiments.csv"   \
 Sites: (to sites table)
 
 ```sh
-curl -F "fileName=@sites.csv"   \
+curl -F "fileName=@input_files/sites.csv"   \
      -F "shp_file=@input_files/S8_two_row_polys.shp"  \
      -F "dbf_file=@input_files/S8_two_row_polys.dbf"  \
      -F "prj_file=@input_files/S8_two_row_polys.prj"  \
