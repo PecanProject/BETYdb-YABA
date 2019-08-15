@@ -7,7 +7,7 @@ from flask import Flask, g, render_template,request,redirect,Response
 import connexion
 import json
 from time import sleep
-from gevent.pywsgi import WSGIServer
+#from gevent.pywsgi import WSGIServer
 
 
 
@@ -32,7 +32,7 @@ def home():
     return Response(json.dumps("Welcome to YABA API Index Route"), mimetype='application/json')
 
 
-# if __name__ == "__main__":
-#     #app.run(host="localhost",port=5000,debug=False)
-#     http_server = WSGIServer(('0.0.0.0', 5000), app)
-#     http_server.serve_forever()
+if __name__ == "__main__":
+    app.run(host="0.0.0.0",port=5000,debug=False)
+    #http_server = WSGIServer(('0.0.0.0', 5000), app)
+    #http_server.serve_forever()

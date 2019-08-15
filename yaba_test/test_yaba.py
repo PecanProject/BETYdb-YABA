@@ -43,7 +43,7 @@ class BasicTests(unittest.TestCase):
         response = requests.post('http://0.0.0.0:5001/yaba/v1/sites',
                             files=files)
         self.assertEqual(response.status_code, 201)
-        self.assertIn(b'Successfully inserted', response.body)
+        self.assertTrue(response.ok)
 
     def test_insert_treatments(self):
         csv_filename = 'treatments.csv'
@@ -110,5 +110,5 @@ class BasicTests(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    time.sleep(3)
+    time.sleep(1)
     unittest.main()

@@ -1,6 +1,5 @@
 requests==2.18.4
 psycopg2-binary
-gunicorn
 WSGIserver
 gevent
 pandas
