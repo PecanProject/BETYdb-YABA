@@ -4,6 +4,8 @@
 
 import requests
 from flask import Flask, g, render_template,request,redirect,Response,flash,jsonify, make_response
+from flask import request
+
 import json
 from time import sleep
 
@@ -24,14 +26,20 @@ def index():
 @app.route('/experiments',methods = ['POST'])
 def experiments():    
     if request.method == 'POST':
-        response=postRequest_With_UserName(request,'experiments')
+        response=postRequest(request,'experiments')
+        return Response(response.text,mimetype="application/json")
+
+@app.route('/sites',methods = ['POST'])
+def sites():    
+    if request.method == 'POST':
+        response=postRequest_with_shpFile(request,'sites')
         return Response(response.text,mimetype="application/json")
 
         
 @app.route('/treatments',methods = ['POST'])
 def treatments():    
     if request.method == 'POST':
-        response=postRequest_With_UserName(request,'treatments')
+        response=postRequest(request,'treatments')
         return Response(response.text,mimetype="application/json")
 
 @app.route('/cultivars',methods = ['POST'])
@@ -43,14 +51,14 @@ def cultivars():
 @app.route('/citations',methods = ['POST'])
 def citations():    
     if request.method == 'POST':
-        response=postRequest_With_UserName(request,'citations')
+        response=postRequest(request,'citations')
         return Response(response.text,mimetype="application/json") 
 
 @app.route('/experiments_sites',methods = ['POST'])
 def experiments_sites():    
     if request.method == 'POST':
-        resposne=postRequest(request,'experiments_sites')
-        return Response(response.text,mimetype="application/json")  
+        response=postRequest(request,'experiments_sites')
+        return Response(response.text,mimetype="application/json") 
 
 @app.route('/experiments_treatments',methods = ['POST'])
 def experiments_treatments():    
@@ -95,29 +103,48 @@ def postRequest(request,endpoint):
     if file and allowed_file(file.filename):
         payload = {'fileName':file}
         flash('File successfully uploaded')
-        sleep(2)
-        response = requests.post(_url(endpoint),files=payload)
+
+        if 'username' not in request.args:
+            sleep(1)
+            response = requests.post(_url(endpoint),files=payload)
+            
+        else:
+            username=request.args['username']
+            params={'username':username}
+            sleep(1)
+            response = requests.post(_url(endpoint),files=payload,params=params)
+
         return response
             
     else:
         flash('Allowed file types are csv, xls, xlsx')
         return redirect(request.url)
 
-def postRequest_With_UserName(request,endpoint):
+def postRequest_with_shpFile(request,endpoint):
     if 'fileName' not in request.files:
         flash('No file part')
         return redirect(request.url)
-    file = request.files['fileName']
+
+    file     = request.files['fileName']
+    shp_file = request.files['shp_file']
+    dbf_file = request.files['dbf_file']
+    prj_file = request.files['prj_file']
+    shx_file = request.files['shx_file']
+        
     if not file.filename:
         flash('No file selected for uploading')
         return redirect(request.url)
     if file and allowed_file(file.filename):
-        username=request.args['username']
-        payload = {'fileName':file}
-        params={'username':username}
+        #payload = {'fileName':file}
+        payload= {'fileName': file,
+                 'shp_file' : shp_file,
+                 'dbf_file' : dbf_file,
+                 'prj_file' : prj_file,
+                 'shx_file' : shx_file }
+
         flash('File successfully uploaded')
-        sleep(2)
-        response = requests.post(_url(endpoint),files=payload,params=params)
+        sleep(1)
+        response = requests.post(_url(endpoint),files=payload)
         return response
             
     else:

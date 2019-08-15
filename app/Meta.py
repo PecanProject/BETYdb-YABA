@@ -406,7 +406,7 @@ def insert_experimentSites(fileName):
     except OperationalError:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        msg = {'Message' : 'Database Conection Error '}
+        msg = {'Message' : 'Database Conection Error'}
         return make_response(jsonify(msg), 500)
     except IntegrityError:
         # Logs the error appropriately
