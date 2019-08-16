@@ -9,7 +9,7 @@ services:
 # install dependencies
 install: 
   - pip install nose2
-  - pip install --user codecov
+  - pip install codecov
   - pip install docker-compose
   - docker-compose up -d postgres
   - docker-compose run --rm bety initialize
