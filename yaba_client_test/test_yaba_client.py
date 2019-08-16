@@ -38,6 +38,15 @@ class BasicTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.ok)
 
+    def test_insert_citations(self):
+        csv_filename = 'citations.csv'
+        csv_path = 'input_files/citations.csv'
+        files = {'fileName': open(csv_path, 'rb')}
+        response = requests.post(
+            'http://0.0.0.0:6001/citations?username=guestuser', files=files)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.ok)
+
     def test_insert_treatments(self):
         csv_filename = 'treatments.csv'
         csv = 'input_files/'+csv_filename
