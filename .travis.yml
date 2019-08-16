@@ -8,6 +8,8 @@ services:
 
 # install dependencies
 install: 
+  - pip install nose2
+  - pip install codecov
   - pip install docker-compose
   - docker-compose up -d postgres
   - docker-compose run --rm bety initialize
@@ -16,9 +18,7 @@ install:
   - docker ps -a
 
 before_script:
-  - pip install nose2
-  - pip install codecov
-
+  - sleep 20
   
 # run scripts
 script:
