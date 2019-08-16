@@ -4,7 +4,7 @@ import requests
 import time
 
 
-BASE_URL = 'http://localhost:5001/'
+BASE_URL = 'http://0.0.0.0:5001/'
 
 
 class BasicTests(unittest.TestCase):
@@ -21,7 +21,7 @@ class BasicTests(unittest.TestCase):
         csv_path = 'input_files/experiments.csv'
         files = {'fileName': open(csv_path, 'rb')}
         response = requests.post(
-            'http://localhost:5001/yaba/v1/experiments?username=guestuser', files=files)
+            'http://0.0.0.0:5001/yaba/v1/experiments?username=guestuser', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -40,7 +40,7 @@ class BasicTests(unittest.TestCase):
                 'prj_file': open(prj_file, 'rb'),
                 'shx_file': open(shx_file, 'rb')}
 
-        response = requests.post('http://localhost:5001/yaba/v1/sites',
+        response = requests.post('http://0.0.0.0:5001/yaba/v1/sites',
                             files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
@@ -50,7 +50,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://localhost:5001/yaba/v1/treatments?username=guestuser', files=files)
+            'http://0.0.0.0:5001/yaba/v1/treatments?username=guestuser', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -59,7 +59,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://localhost:5001/yaba/v1/cultivars', files=files)
+            'http://0.0.0.0:5001/yaba/v1/cultivars', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -68,16 +68,17 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://localhost:5001/yaba/v1/citations?username=guestuser', files=files)
+            'http://0.0.0.0:5001/yaba/v1/citations?username=guestuser', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
+        
 
     def test_insert_experimentSites(self):
         csv_filename = 'experiments_sites.csv'
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://localhost:5001/yaba/v1/experiments_sites', files=files)
+            'http://0.0.0.0:5001/yaba/v1/experiments_sites', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -86,7 +87,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://localhost:5001/yaba/v1/experiments_treatments', files=files)
+            'http://0.0.0.0:5001/yaba/v1/experiments_treatments', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -95,7 +96,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://localhost:5001/yaba/v1/sites_cultivars', files=files)
+            'http://0.0.0.0:5001/yaba/v1/sites_cultivars', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -104,11 +105,11 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://localhost:5001/yaba/v1/citations_sites', files=files)
+            'http://0.0.0.0:5001/yaba/v1/citations_sites', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
 
 if __name__ == "__main__":
-    time.sleep(3)
+    time.sleep(1)
     unittest.main()
