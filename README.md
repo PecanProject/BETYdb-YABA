@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/saurabh1969/BETYdb-YABA.svg?branch=client)](https://travis-ci.org/saurabh1969/BETYdb-YABA)
+
+
+
 # BETYdb-YABA
 Yet Another BETYdb API (for metadata upload)
 
