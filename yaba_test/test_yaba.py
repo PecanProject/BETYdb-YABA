@@ -62,6 +62,15 @@ class BasicTests(unittest.TestCase):
             'http://0.0.0.0:5001/yaba/v1/cultivars', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
+
+    def test_insert_citations(self):
+        csv_filename = 'citations.csv'
+        csv = 'input_files/'+csv_filename
+        files = {'fileName': open(csv, 'rb')}
+        response = requests.post(
+            'http://0.0.0.0:5001/yaba/v1/citations?username=guestuser', files=files)
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue(response.ok)
         
 
     def test_insert_experimentSites(self):
