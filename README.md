@@ -1,3 +1,5 @@
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+
 [![Build Status](https://travis-ci.org/saurabh1969/BETYdb-YABA.svg?branch=api)](https://travis-ci.org/saurabh1969/BETYdb-YABA)
 
 
