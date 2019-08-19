@@ -22,7 +22,7 @@ before_script:
   
 # run scripts
 script:
-  - nosetests --with-coverage -vvv
+  - coverage run yaba_test/test_yaba.py
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
