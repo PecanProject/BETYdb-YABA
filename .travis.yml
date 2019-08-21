@@ -1,0 +1,30 @@
+language: python
+
+python:
+  - "3.6"
+
+services:
+  -docker
+
+# install dependencies
+install: 
+  - pip install nose2
+  - pip install codecov
+  - pip install coverage-badge
+  - pip install docker-compose
+  - docker-compose up -d postgres
+  - docker-compose run --rm bety initialize
+  - docker-compose run --rm bety sync
+  - docker-compose up -d
+  - docker ps -a
+
+before_script:
+  - sleep 20
+  
+# run scripts
+script:
+  - nose2 --with-coverage
+  - coverage-badge
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

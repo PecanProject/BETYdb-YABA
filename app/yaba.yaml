@@ -1,0 +1,752 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.5
+  title: BETYdb-YABA
+  description: <h2>The YABA API (BETYdb-YABA) is a Standardized RESTful Web Service API Specification for MetaData Upload to respective tables.</h2>
+  license:
+    name: BSD 3-Clause
+servers:
+  - url: http://localhost:5001/yaba/v1
+
+# Paths supported by the server application
+paths:  
+  /experiments:
+    post:
+      summary: Upload Experiment Metadata
+      operationId: Meta.insert_experiments
+      tags:
+        - experiments
+      parameters:
+        - in: query
+          name: username
+          schema:
+            type: string
+          description: Username uploading the csv
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: binary
+              example:
+                CSV:
+                  summary: A CSV file for experiment metadata Upload.Below is the schema of csv file with example row.
+                  text/csv: |-
+                    name,start_date,end_date,description,design
+                    'MAC Season 8: Border','2019-01-01','2019-03-31','ProMix BRK20 14-14-14 Osmocote pots; pre-filled by Hummert Sorghum seed Conviron Growth House'....,'Grain Sorghum also planted to fill out empty plots'
+                  
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1676963884'
+              
+                  
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '409':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '500':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
+        '401':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
+        '410':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /sites:
+    post:
+      summary: Upload site or plot metadata to sites table
+      operationId: Meta.insert_sites
+      tags:
+        - sites
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: binary
+                shp_file:
+                  type: string
+                  format: binary
+                dbf_file:
+                  type: string
+                  format: binary
+                prj_file:
+                  type: string
+                  format: binary
+                shx_file:
+                  type: string
+                  format: binary
+              example:
+                CSV:
+                  summary: A CSV file for experiment metadata Upload.Below is the schema of csv file with example row.
+                  text/csv: |-
+                    sitename,city,state,country,notes,greenhouse,geometry,time_zone,soil,soilnotes
+                    'MAC Field Scanner Season 8 Range 1 Column 1 W','Maricopa','Arizona','USA','This site represents the the whole wo...',...,'America/Phoenix','soil','soilnotes,
+                  
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=347205052'
+      
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '409':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '500':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
+        '401':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
+        '410':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /treatments:
+    post:
+      summary: Upload Treatments Metadata
+      operationId: Meta.insert_treatments
+      tags:
+        - treatments
+      parameters:
+        - in: query
+          name: username
+          schema:
+            type: string
+          description: Username uploading the csv
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+              example:
+                CSV:
+                  summary: A CSV file for experiment metadata Upload.Below is the schema of csv file with example row.
+                  text/csv: |-
+                    name,definition,control
+                    ' MAC Sorghum Season ','Pre-plant Nitrogen fertilizer incorporated in the field',t
+                  
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=2041366690'
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '409':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '500':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
+        '401':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
+        '410':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /cultivars:
+    post:
+      summary: Upload Cultivars Metadata
+      operationId: Meta.insert_cultivars
+      tags:
+        - cultivars
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+              example:
+                CSV:
+                  summary: A CSV file for cultivars metadata Upload.Below is the schema of csv file with example row.
+                  text/csv: |-
+                    name,ecotype,notes,species
+                    'DP_074','RIL','RIL','Sorghum bicolor'
+                  
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1280032116'
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '409':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '500':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
+        '401':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
+        '410':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /citations:
+    post:
+      summary: Upload Citations Metadata
+      operationId: Meta.insert_citations
+      tags:
+        - citations
+      parameters:
+        - in: query
+          name: username
+          schema:
+            type: string
+          description: Username uploading the csv
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+              example:
+                CSV:
+                  summary: A CSV file for citations metadata Upload.Below is the schema of csv file with example row.
+                  text/csv: |-
+                    author,year,title,journal,vol,pg,url,pdf,doi
+                    "Newcomb, Maria",2019,'Maricopa Agricultural Center Field Measurements and Activities,Journal of Experimental Botany',44,907-920 ,'http://jxb.oxfordjournals.org/cgi/content/abstract/44/5/907?ijkey=c47a46efb0770b07ce74b3affc2bcf364cbba8b7&keytype2=tf_ipsecsha,http://jxb.oxfordjournhls.org/cgi/reprint/44/5/907.pdf,10.1038/nature02403'
+
+                  
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1613500696'
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '409':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '500':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
+        '401':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
+        '410':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+  
+  /experiments_sites:
+    post:
+      summary: Upload experiment_sites metadata
+      operationId: Meta.insert_experimentSites
+      tags:
+        - experiment_sites
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+              example:
+                CSV:
+                  summary: A CSV file for experiment_sites metadata Upload.Below is the schema of csv file with example row.
+                  text/csv: |-
+                    experiment_name,sitename
+                    'MAC Season 8: Border' ,'MAC Field Scanner Season 5 Range 39 Column 1 E'
+                  
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1613500696'
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '409':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '500':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
+        '401':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
+        '410':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /experiments_treatments:
+    post:
+      summary: Upload Experiment_treatments Metadata
+      operationId: Meta.insert_experimentTreatments
+      tags:
+        - experiment_treatments
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+              example:
+                CSV:
+                  summary: A CSV file for experiments_treatments metadata Upload.Below is the schema of csv file with example row.
+                  text/csv: |-
+                    experiment_name,treatment_name
+                    'MAC Season 8: Border','MAC Season 6: Sorghum'
+                  
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1613500696'
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '409':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '500':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
+        '401':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
+        '410':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /sites_cultivars:
+    post:
+      summary: Upload sites_cultivars Metadata
+      operationId: Meta.insert_sitesCultivars
+      tags:
+        - sites_cultivars
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+              example:
+                CSV:
+                  summary: A CSV file for sites_cultivars metadata Upload.Below is the schema of csv file with example row.
+                  text/csv: |-
+                    cultivar_name,specie_id,sitename
+                    'Orita','2588','MAC Field Scanner Season 8 Range 1 Column 1 W'
+                  
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1613500696'
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '409':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '500':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
+        '401':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
+        '410':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /citations_sites:
+    post:
+      summary: Upload citations_sites Metadata
+      operationId: Meta.insert_citationsSites
+      tags:
+        - citations_sites
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+              example:
+                CSV:
+                  summary: A CSV file for citations_sites metadata Upload.Below is the schema of csv file with example row.
+                  text/csv: |-
+                    author,year,title,sitename
+                    'LeBauer',2010,'Expert Prior','MAC Field Scanner Season 4 Range 51 Column 7 E'
+
+                  
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1613500696'
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '409':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '500':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                 
+        '401':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+               ERROR - User does not have permission to perform this action
+               ERROR - Invalid query parameter
+               ERROR - Required parameter is missing
+
+        '410':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
