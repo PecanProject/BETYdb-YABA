@@ -8,14 +8,7 @@ BASE_URL = 'http://0.0.0.0:5001/'
 
 
 class BasicTests(unittest.TestCase):
-
-    def test_index_point(self):
-        response = requests.get(BASE_URL)
-        self.assertEqual(response.status_code, 200)
-        # print(response.content)
-        self.assertEqual('"Welcome to YABA API Index Route"', response.text)
-        self.assertTrue(response.ok)
-
+    
     def test_insert_experiments(self):
         csv_filename = 'experiments.csv'
         csv_path = 'input_files/experiments.csv'
