@@ -3,22 +3,18 @@ This is the Meta module and supports all the REST actions for the yaba.yaml
 """
 # Importing modules
 import os
-import numpy as np
-import json
 import geopandas as gpd
 import traceback
 import logging
 import pandas as pd
 
-from flask import make_response,abort,Response,jsonify
+from flask import make_response,Response,jsonify
 from flask import json
 from db import *
 from werkzeug import secure_filename,FileStorage
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.exc import OperationalError
-from shapely import geos, wkb, wkt
 from shapely.geometry import Polygon
-from fiona.crs import from_epsg
 
 
 
@@ -42,8 +38,7 @@ def insert_experiments(username,fileName):
     """
     This function responds to a request for /yaba/v1/experiments with csv file.
     It first checks the file is appropriate one and then add new column user_id to dataframe.
-    Insertion is done to "experiments" table. 
-
+    Insertion is done to "experiments" table.
 
     :fileName:      CSV file with experiments meta data
     :return:        201 on success
@@ -158,12 +153,10 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
         if(all(x in accepted_columns for x in columns)):
             data['notes']=data_g['notes']
             #data['geometry']=data_g['geometry']
-            data['time_zone'].fillna("America/Phoenix", inplace = True)         
-            data['soilnotes'].fillna("some text", inplace = True)            
+            data['time_zone'].fillna("America/Phoenix", inplace = True)
+            data['soilnotes'].fillna("some text", inplace = True)      
             data['greenhouse'].fillna("f", inplace = True)            
-            
             data=data.fillna('')
-
             file_name='sites_n.csv'
 
             data.to_csv(file_name, encoding='utf-8', index=False)
@@ -328,7 +321,7 @@ def insert_citations(username,fileName):
                     401 Unauthorized | No user exists
                     410 Default error.See logs for more information
     """
-    try:    
+    try:
         user_id=fetch_id(username, table='users')
 
         if not user_id:
@@ -416,7 +409,7 @@ def insert_experimentSites(fileName):
     except Exception :
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 410 
+        return 410
 
 def insert_experimentTreatments(fileName):
     """
@@ -541,7 +534,7 @@ def insert_citationsSites(fileName):
 
         #Checking necessary columns are there.
         columns=data.columns.values.tolist()
-        accepted_columns=['author','year','title','sitename']    
+        accepted_columns=['author','year','title','sitename']
 
         if(all(x in accepted_columns for x in columns)):
             new_data = pd.DataFrame(columns=['citation_id','site_id'])
@@ -574,11 +567,3 @@ def insert_citationsSites(fileName):
         # Logs the error appropriately
         logging.error(traceback.format_exc())
         return 410
-    
-
-
-
-
-
-
-

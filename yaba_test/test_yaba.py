@@ -72,7 +72,6 @@ class BasicTests(unittest.TestCase):
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
         
-
     def test_insert_experimentSites(self):
         csv_filename = 'experiments_sites.csv'
         csv = 'input_files/'+csv_filename
