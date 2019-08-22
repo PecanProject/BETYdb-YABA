@@ -8,6 +8,9 @@ services:
 
 # install dependencies
 install: 
+  - pip install nose2
+  - pip install codecov
+  - pip install coverage-badge
   - pip install docker-compose
   - docker-compose up -d postgres
   - docker-compose run --rm bety initialize
@@ -16,13 +19,12 @@ install:
   - docker ps -a
 
 before_script:
-  - pip install nose2
-  - pip install codecov
-
+  - sleep 20
   
 # run scripts
 script:
-  - nose2 --verbose
+  - nose2 --with-coverage
+  - coverage-badge
 
 after_success:
-  - bash < (curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash)

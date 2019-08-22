@@ -3,13 +3,9 @@ Main module of the Server file
 """
 
 #Importing moudles
-from flask import Flask, g, render_template,request,redirect,Response
 import connexion
 import json
 from time import sleep
-#from gevent.pywsgi import WSGIServer
-
-
 
 # Create the application instance
 app = connexion.App(__name__, specification_dir="./")
@@ -25,7 +21,7 @@ app.add_api("yaba.yaml",validate_responses=False)
 def home():
     """
     This function just responds to the browser URL
-    localhost:5000/  
+    localhost:5000/
     (on docker:     localhost:5001/)
     :return:        the below json message
     """

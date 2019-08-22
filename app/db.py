@@ -1,11 +1,7 @@
-import psycopg2
 import csv
 import sys
-
 from sqlalchemy.sql import text
 from setup import setup_environment
-
-
 
 def insert_table(table,data):
 	#Make PostgreSQL Connection
@@ -90,4 +86,3 @@ def fetch_id(value,table):
 	connection.close()
 	for r in result_set:
 		return r
-	
