@@ -37,7 +37,17 @@ services:
       - 5001:5000
     depends_on:
       - postgres
-      
+
+  yaba_client:
+    build: ./client
+    networks:
+      - bety
+    volumes:
+      - ./client:/code
+    ports:
+      - 6001:6000
+    depends_on:
+      - yaba_api
 volumes:
   postgres:
 
