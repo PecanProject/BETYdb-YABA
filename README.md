@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/saurabh1969/BETYdb-YABA.svg?branch=client)](https://travis-ci.org/saurabh1969/BETYdb-YABA)
+[![Build Status](https://travis-ci.org/saurabh1969/BETYdb-YABA.svg?branch=api)](https://travis-ci.org/saurabh1969/BETYdb-YABA)
 
 
 # BETYdb-YABA
