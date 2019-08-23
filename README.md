@@ -1,5 +1,5 @@
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Build Status](https://travis-ci.org/saurabh1969/BETYdb-YABA.svg?branch=api)](https://travis-ci.org/saurabh1969/BETYdb-YABA)
-
 
 # BETYdb-YABA
 Yet Another BETYdb API (for metadata upload)
@@ -104,8 +104,6 @@ Citations_sites: (to citations_sites table)
 curl -F "fileName=@input_files/citations_sites.csv"   \
      http://localhost:5001/yaba/v1/citations_sites
 ```
-
-
 ## How to hit the Client Endpoints
 
 Following endpoints can be used to upload Metadata to respective tables in bety.
