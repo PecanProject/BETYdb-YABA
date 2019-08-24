@@ -1,11 +1,10 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Build Status](https://travis-ci.org/saurabh1969/BETYdb-YABA.svg?branch=api)](https://travis-ci.org/saurabh1969/BETYdb-YABA)
 
-
-
 # BETYdb-YABA
 Yet Another BETYdb API (for metadata upload)
 
+Gsoc Report : [Project Summary](https://gist.github.com/saurabh1969/3e464dd88d4ec845262287c785c04eeb)
 
 ## Setup BETYdb
 
@@ -36,9 +35,7 @@ docker-compose up -d yaba_api
 # Bring up full stack
 docker-compose up
 ```
-
-
-## How to hit the endpoints
+## How to hit the YABA API endpoints
 
 Following endpoints can be used to upload Metadata to respective tables in bety.
 
@@ -107,4 +104,75 @@ Citations_sites: (to citations_sites table)
 ```sh
 curl -F "fileName=@input_files/citations_sites.csv"   \
      http://localhost:5001/yaba/v1/citations_sites
+```
+
+## How to hit the Client Endpoints
+
+Following endpoints can be used to upload Metadata to respective tables in bety.
+
+Experiments: (to experiments table):
+
+```sh
+curl -F "fileName=@input_files/experiments.csv"   \
+     http://localhost:6001/experiments?username=guestuser
+```
+
+Sites: (to sites table)
+
+```sh
+curl -F "fileName=@input_files/sites.csv"   \
+     -F "shp_file=@input_files/S8_two_row_polys.shp"  \
+     -F "dbf_file=@input_files/S8_two_row_polys.dbf"  \
+     -F "prj_file=@input_files/S8_two_row_polys.prj"  \
+     -F "shx_file=@input_files/S8_two_row_polys.shx"  \
+     http://localhost:6001/sites
+```
+
+Treatments: (to treatments table)
+
+```sh
+curl -F "fileName=@input_files/treatments.csv"   \
+     http://localhost:6001/treatments?username=guestuser
+```
+
+Cultivars: (to cultivars table)
+
+```sh
+curl -F "fileName=@input_files/cultivars.csv"   \
+     http://localhost:6001/cultivars
+```
+
+
+Citations: (to citations table)
+
+```sh
+curl -F "fileName=@input_files/citations.csv"   \
+     http://localhost:6001/citations?username=guestuser
+```
+
+Experiments_sites: (to experiments_sites table)
+
+```sh
+curl -F "fileName=@input_files/experiments_sites.csv"   \
+     http://localhost:6001/experiments_sites
+```
+Experiments_treatments: (to experiments_treatments table)
+
+```sh
+curl -F "fileName=@input_files/experiments_treatments.csv"   \
+     http://localhost:6001/experiments_treatments
+```
+
+Sites_cultivars: (to sites_cultivars table)
+
+```sh
+curl -F "fileName=@input_files/sites_cultivars.csv"   \
+     http://localhost:6001/sites_cultivars
+```
+
+Citations_sites: (to citations_sites table)
+ 
+```sh
+curl -F "fileName=@input_files/citations_sites.csv"   \
+     http://localhost:6001/citations_sites
 ```
