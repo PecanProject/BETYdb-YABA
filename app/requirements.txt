@@ -5,7 +5,7 @@ gevent
 pandas
 connexion==2.2.0
 Flask==1.0
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 SQLAlchemy==1.1.11
 geopandas==0.5.0
 PyYAML==5.1.1
