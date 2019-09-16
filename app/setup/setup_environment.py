@@ -29,7 +29,7 @@ def get_connection_from_config(config_file_name='credentials.yaml'):
     """
 
     with open(config_file_name, 'r') as f:
-        creds = yaml.safe_load(f,Loader=yaml.FullLoader)
+        creds = yaml.safe_load(f)
 
     if not ('PGHOST' in creds.keys() and
             'PGUSER' in creds.keys() and
