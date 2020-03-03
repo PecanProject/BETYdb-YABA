@@ -59,11 +59,9 @@ def insert_experiments(username,fileName):
 
         #Checking necessary columns are there.
         columns=data.columns.values.tolist()
-        accepted_columns=['name','start_date','end_date','description','design']
-     
+        accepted_columns=['name','start_date','end_date','description']
         if(all(x in accepted_columns for x in columns)):
             data['user_id']=user_id
-            data['design'].fillna('some text', inplace=True)
             insert_table(table='experiments',data=data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Experiments',
