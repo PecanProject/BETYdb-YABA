@@ -63,7 +63,7 @@ def insert_experiments(username,fileName):
      
         if(all(x in accepted_columns for x in columns)):
             data['user_id']=user_id
-            data['design'].fillna('some text', inplace=True)
+            data['design'].fillna('some text', inplace=True, method=None, limit=None)
             insert_table(table='experiments',data=data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Experiments',
