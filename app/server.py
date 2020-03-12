@@ -4,7 +4,8 @@ Main module of the Server file
 
 #Importing moudles
 import connexion
-import json
+from flask import jsonify
+from flask import json
 from time import sleep
 
 # Create the application instance
@@ -25,7 +26,7 @@ def home():
     (on docker:     localhost:5001/)
     :return:        the below json message
     """
-    return Response(json.dumps("Welcome to YABA API Index Route"), mimetype='application/json')
+    return jsonify("Welcome to YABA API Index Route")
 
 
 if __name__ == "__main__":
