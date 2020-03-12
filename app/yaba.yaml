@@ -737,7 +737,82 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /cultivars_whitespace_test:
+    post:
+      summary: Upload cultivars_whitespace_test Metadata
+      operationId: Meta.insert_cultivars_whitespace_test
+      tags:
+        - cultivars_whitespace_test
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: base64
+              example:
+                CSV:
+                  summary: A CSV file for cultivars_whitespace_test metadata Upload.Below is the schema of csv file with example row.
+                  text/csv: |-
+                    name,ecotype,notes,species
+                    'DP_074','RIL','RIL','Sorghum bicolor'
+                  
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1280032116'
+      responses:
+        '201':
+          description: Successfully Inserted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Uploaded file does not meet the standards.Check the columns
+                ERROR - Uploaded file does not have appropriate columns
+                ERROR - File for wrong table is uploaded
+        '409':
+          description: IntegrityError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Constraint Error
+                
+        '500':
+          description: OperationalError
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - Database Connection Error.
+                ERROR - Incorrect credentials of Postgres Database.
+                ERROR - Postgres Database not available.
+                  
+        '401':
+          description: Forbidden-No access to user
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - User does not have permission to perform this action
+                ERROR - Invalid query parameter
+                ERROR - Required parameter is missing
 
+        '410':
+          description: Not Found
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
   schemas:
     Error:

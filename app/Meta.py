@@ -298,7 +298,66 @@ def insert_cultivars(fileName):
         # Logs the error appropriately
         logging.error(traceback.format_exc())
         return 410      
-   
+def insert_cultivars_whitespace_test(fileName):
+    """
+    This function responds to a request for /yaba/v1/cultivars_whitespace_test
+    with csv file
+
+
+    :fileName:      CSV file with cultivars_whitespace_test meta data
+    :return:        201 on success
+                    400 if file is unsuitable or does not contain appropriate columns
+                    409 Intregrity or Constraint error : 23503 foreign_key_violation | 23505 unique_violation
+                    500 Database Connection Error
+                    401 Unauthorized | No user exists
+                    410 Default error.See logs for more information
+    """
+    
+
+    try:
+        data = pd.read_csv(fileName,delimiter = ',')
+
+        specie_id=fetch_specie_id(data['species'][0])
+
+        #Checking necessary columns are there.
+        columns=data.columns.values.tolist()
+        accepted_columns=['name','species','ecotype','notes']
+     
+        if(all(x in accepted_columns for x in columns)):
+            new_data = pd.DataFrame(columns=['name', 'specie_id','name','ecotype','notes'])
+
+            new_data['name']=data['name']
+            new_data['specie_id']=specie_id
+            new_data['ecotype']='some text'
+            new_data['notes']='some text'
+
+            insert_table(table='cultivars_whitespace_test',data=new_data)
+
+            msg = {'Message' : 'Successfully inserted',
+                   'Table Affected' : 'cultivars_whitespace_tests',
+                   'Lines Inserted': data.shape[0]}
+            
+            return make_response(jsonify(msg), 201)
+
+        else:
+            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            return make_response(jsonify(msg), 400)
+    
+    except OperationalError:
+        # Logs the error appropriately
+        logging.error(traceback.format_exc())
+        msg = {'Message' : 'Database Conection Error'}
+        return make_response(jsonify(msg), 500)
+    except IntegrityError:
+        # Logs the error appropriately
+        logging.error(traceback.format_exc())
+        msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "unique_name_per_species"'}
+        return make_response(jsonify(msg), 409)
+    except Exception :
+        # Logs the error appropriately
+        logging.error(traceback.format_exc())
+        return 410
+ 
 def insert_citations(username,fileName):
     """
     This function responds to a request for  /yaba/v1/citations
