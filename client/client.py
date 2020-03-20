@@ -3,6 +3,8 @@
 #################
 
 import requests
+import csv
+import os
 from flask import Flask, g, render_template,request,redirect,Response,flash,jsonify, make_response
 from flask import request
 
@@ -77,6 +79,34 @@ def citations_sites():
     if request.method == 'POST':
         response=postRequest(request,'citations_sites')
         return Response(response.text,mimetype="application/json") 
+
+#adding experiments via GUI . For GET it simply renders the GUI 
+#from add_experiments.html and for POST, 
+# 1.it extracts data from the form,
+# 2.creates a temporary file and adds data in that file in csv format ,
+# 3.sends it to the client via API Call using post request and 
+# 4. deletes the file 
+# 5. and again renders the GUI if user needs to add more experiments
+@app.route('/add_experiment',method=['GET','POST'])
+def add_experiment():
+	if request.method=='GET':
+		return render_template('add_experiment.html')
+	if request.method=='POST':
+		exp_name=request.form["e_name"]
+		s_date=request.form["s_date"]
+		e_date=request.form["e_date"]
+		description=request.form["description"]
+		design=request.form["design"]
+		file=("experiments.csv", "w")
+		file.truncate(0)
+		writer = csv.writer(file)
+		writer.writerow([exp_name, s_date, e_date,description,design])
+		file.close()
+		requests.post('http://localhost:6001/experiments?username=guestuser', files={'fileName': ('experiments.csv', open('experiments.csv', 'rb'))})
+		os.remove("experiments.csv")
+		return render_template(add_experiment.html)
+
+
 
 @app.errorhandler(404)
 def page_not_found(e):
