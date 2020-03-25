@@ -1,6 +1,6 @@
-name,start_date,end_date,description
-MAC Season 8: Border ,2019-01-01,2019-03-31,
-MAC Season 8: Uniformity ,2019-01-01,2019-03-31,
-MAC Season 8: DP4 ,2019-01-01,2019-03-31,
-MAC Season 8: DP ,2019-01-01,2019-03-31,
-MAC Season 8: DP test,2019-01-01,2019-03-31,
+name,start_date,end_date,description,design
+MAC Season 8: Border ,2019-01-01,2019-03-31,wefu,
+MAC Season 8: Uniformity ,2019-01-01,2019-03-31,some text,
+MAC Season 8: DP4 ,2019-01-01,2019-03-31,wefgyu,
+MAC Season 8: DP ,2019-01-01,2019-03-31,some text,
+MAC Season 8: DP test,2019-01-01,2019-03-31,some text,
