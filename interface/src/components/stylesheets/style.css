@@ -1,0 +1,58 @@
+html{
+    font-size: 62.5%;
+}
+
+a{
+    color:inherit;
+    text-decoration: none;
+}
+
+input{
+  height: 3.5rem;
+  width: 50rem;
+  font-size: 1.8rem;
+  background: #fefefe;
+  color: #536569;
+  text-align: center;
+  border: 1px solid rgba(0,0,0,0.2);  
+  border-radius: 0.5rem;
+}
+
+button{
+  font-size: 1.8rem;
+  height: 4rem;
+  width:15rem;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  text-align: center;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: #49cad5;
+}
+
+input:hover{
+  border: 1px solid #49CAD2;
+  box-shadow: 0 0 3px #49CAD2;
+}
+
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
+.ripple:hover {
+  background: #49cad5 radial-gradient(circle, transparent 1%, #49cad5 1%) center/15000%;
+  box-shadow: 0 0 1rem #49CAD5;
+}
+
+.ripple:active {
+  background-color: #51d3db;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+@media screen and (max-width: 600px) {
+  input{
+    width: 30rem;
+    font-size: 1.5rem;
+  }
+}
