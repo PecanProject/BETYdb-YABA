@@ -1,0 +1,93 @@
+.home-content{
+    font-size: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 3rem 5rem 20.2rem 5rem;
+}
+
+.home-content .heading{
+    font-size: 4.2rem;
+    text-align: center;
+    align-self: center;
+    color: #005;
+    padding: 0.5rem;
+    transition: border 0.1s linear;
+    border: 3px solid #fff;
+    border-radius: 0.5rem;
+    width: 55rem;
+    cursor: pointer;
+}
+
+.home-content .heading:hover{
+    border-bottom:3px solid #49CAD2 ;
+}
+
+.home-content .description{
+    font-size: 2.4rem;
+    margin:1rem 0;
+}
+
+.home-content>div{
+    margin-bottom: 1rem;
+}
+
+.steps>div{
+    font-size: 3.2rem;
+    color: #005;
+    margin-bottom: 3rem;
+    padding: 0.5rem;
+    transition: border 0.1s linear;
+    border: 3px solid #fff;
+    border-radius: 0.5rem;
+    width: 8rem;
+    cursor: pointer;
+}
+
+.steps li{
+    margin: 1rem;
+}
+
+.steps>div:hover{
+    border-bottom:3px solid #49CAD2 ;
+}
+
+.home-content .field{
+    font-size: 2.2rem;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    margin: 2rem 0;
+    padding-top: 3rem;
+}
+
+.home-content .field>div{
+    margin: 0 1rem;
+}
+
+#start{
+    align-self: center;
+}
+
+@media screen and (max-width: 600px) {
+    .home-content .heading{
+        font-size: 2.5rem;
+        width: 31rem;
+    }
+    .steps>div{
+        font-size: 2.5rem;   
+    }
+    .home-content .description{
+        font-size: 2rem;
+    }
+    .home-content .field{
+        flex-direction: column;
+        margin: 1rem 0;
+    }   
+    .home-content>div{
+        margin: 0rem;
+    }
+    .home-content .field>div{
+        margin: 1rem 0rem;
+    }
+}

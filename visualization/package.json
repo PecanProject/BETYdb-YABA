@@ -1,0 +1,22 @@
+{
+  "name": "metadata_visualization",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "google-spreadsheets-key-parser": "^1.1.0",
+    "multer": "^1.4.2",
+    "papaparse": "^5.2.0",
+    "pg": "^8.2.1",
+    "pg-format": "^1.0.4",
+    "shpjs": "^3.5.0",
+    "squel": "^5.13.0"
+  }
+}

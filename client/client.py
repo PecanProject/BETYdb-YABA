@@ -8,6 +8,8 @@ from flask import request
 
 import json
 from time import sleep
+import sys
+from flask_cors import CORS, cross_origin
 
 # Create app
 app = Flask(__name__)
@@ -15,21 +17,26 @@ app.secret_key = 'my unobvious secret key'
 
 # The maximum allowed payload to 16 megabytes.
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['CORS_HEADERS'] = 'Content-Type'
+cors = CORS(app, resources={r'/*': {'origins': '*'}})
 
 
 ALLOWED_EXTENSIONS = set(['csv', 'xls','xlsx'])
 
 @app.route("/")
+@cross_origin()
 def index():    
     return render_template("index.html")
 
 @app.route('/experiments',methods = ['POST'])
+@cross_origin()
 def experiments():    
     if request.method == 'POST':
         response=postRequest(request,'experiments')
         return Response(response.text,mimetype="application/json")
 
 @app.route('/sites',methods = ['POST'])
+@cross_origin()
 def sites():    
     if request.method == 'POST':
         response=postRequest_with_shpFile(request,'sites')
@@ -37,48 +44,56 @@ def sites():
 
         
 @app.route('/treatments',methods = ['POST'])
+@cross_origin()
 def treatments():    
     if request.method == 'POST':
         response=postRequest(request,'treatments')
         return Response(response.text,mimetype="application/json")
 
 @app.route('/cultivars',methods = ['POST'])
+@cross_origin()
 def cultivars():    
     if request.method == 'POST':
         response=postRequest(request,'cultivars')
         return Response(response.text,mimetype="application/json") 
 
 @app.route('/citations',methods = ['POST'])
+@cross_origin()
 def citations():    
     if request.method == 'POST':
         response=postRequest(request,'citations')
         return Response(response.text,mimetype="application/json") 
 
 @app.route('/experiments_sites',methods = ['POST'])
+@cross_origin()
 def experiments_sites():    
     if request.method == 'POST':
         response=postRequest(request,'experiments_sites')
         return Response(response.text,mimetype="application/json") 
 
 @app.route('/experiments_treatments',methods = ['POST'])
+@cross_origin()
 def experiments_treatments():    
     if request.method == 'POST':
         response=postRequest(request,'experiments_treatments')
         return Response(response.text,mimetype="application/json") 
 
 @app.route('/sites_cultivars',methods = ['POST'])
+@cross_origin()
 def sites_cultivars():    
     if request.method == 'POST':
         response=postRequest(request,'sites_cultivars')
         return Response(response.text,mimetype="application/json") 
 
 @app.route('/citations_sites',methods = ['POST'])
+@cross_origin()
 def citations_sites():    
     if request.method == 'POST':
         response=postRequest(request,'citations_sites')
         return Response(response.text,mimetype="application/json") 
 
 @app.errorhandler(404)
+@cross_origin()
 def page_not_found(e):
     return render_template("404.html"), 404
 

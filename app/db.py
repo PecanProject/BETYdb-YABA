@@ -19,11 +19,10 @@ def insert_sites_table(table,data):
 		reader = csv.reader(f)
 		next(reader) # Skip the header row.
 		for row in reader:
-			#cur.execute("INSERT INTO sites (sitename,city,state,country,notes,greenhouse,geometry,time_zone,soil,soilnotes) VALUES (%s, %s, %s, %s,%s, %s, ST_Transform(ST_Geomfromtext(%s,32612),4326), %s,%s, %s)",row)
 			cur.execute("INSERT INTO sites (sitename,city,state,country,notes,greenhouse,geometry,time_zone,soil,soilnotes) VALUES (%s, %s, %s, %s,%s, %s, ST_MakeValid(ST_Geomfromtext(%s,4326)), %s,%s, %s)",row)
-			print(row)
-			
+			print(row)			
 		connection.commit()
+		connection.close()
      
 
 def fetch_specie_id(species):
@@ -36,7 +35,6 @@ def fetch_specie_id(species):
 	connection.close()
 	for r in result_set:
 		return r
-	
 
 
 def fetch_sites_id(sitename):
