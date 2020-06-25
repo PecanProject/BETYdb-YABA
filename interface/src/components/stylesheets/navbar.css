@@ -1,0 +1,78 @@
+nav{
+    display: flex;
+    width:100%;
+    font-size: 1.8rem;
+    justify-content: space-between;
+    background-color: rgba(44, 62, 80, 0.95);
+    color:#e8eef2;
+}
+
+nav span{
+    align-self: center !important;
+}
+
+
+.nav-img{
+    position: relative;
+    height: 42px;
+    width:42px;
+    margin-right: 1rem;
+    border-radius: 0.2rem;
+}
+
+nav .gh-img{
+    position: relative;
+    align-self: flex-end;
+    margin: 1rem 1.2rem 0.6rem 2rem ;
+}
+
+.brand{
+    display: flex;
+    justify-content: center;
+    justify-self: flex-start; 
+    margin: 1rem 1.8rem 0.6rem 1.8rem;
+}
+
+.link{
+    display: flex;
+    justify-content: space-between;
+    justify-self: flex-end;
+    margin: 1rem 1rem 0.6rem 1rem;
+}
+
+.link>div{
+    align-self: center;
+}
+
+.bars{
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+.link div:not(:last-child){
+    display: none;
+}
+
+.bars{
+    display: block ;
+    align-self: flex-start;
+    margin: 0 1rem;
+    cursor: pointer;
+}
+
+.link .responsive{
+    position: relative;
+    display: flex !important;
+    flex-direction: column;
+    text-align: center;
+}
+
+.link .responsive div{
+    display: block!important;
+    align-self: 'center';
+    z-index: 2;
+
+}
+
+}
+  
