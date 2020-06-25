@@ -59,11 +59,9 @@ def insert_experiments(username,fileName):
 
         #Checking necessary columns are there.
         columns=data.columns.values.tolist()
-        accepted_columns=['name','start_date','end_date','description','design']
-     
+        accepted_columns=['name','start_date','end_date','description']
         if(all(x in accepted_columns for x in columns)):
             data['user_id']=user_id
-            data['design'].fillna('some text', inplace=True)
             insert_table(table='experiments',data=data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Experiments',
@@ -132,18 +130,11 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
 
         #Reading the shapefile as DataFrame
         data_g1=gpd.read_file(shp_file_target)              
-        
-        #data['geometry'] = data.geometry.astype(str)
-        
-        """for i in range(data_g.shape[0]):
-            p=data_g.iat[i,10]
-            geos.lgeos.GEOSSetSRID(p._geom, 4326)
-            data.iat[i,6]=p.wkb_hex"""
 
         data_g  = data_g1.to_crs({'init': 'epsg:4326'})
 
-        flat_list = []
         for index, row in data_g.iterrows():
+            flat_list = []
             for pt in list(row['geometry'].exterior.coords):
                 pt=pt+(115,)
                 flat_list.append(pt)
@@ -151,8 +142,6 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
             data.loc[index, 'geometry'] = poly
         
         if(all(x in accepted_columns for x in columns)):
-            data['notes']=data_g['notes']
-            #data['geometry']=data_g['geometry']
             data['time_zone'].fillna("America/Phoenix", inplace = True)
             data['soilnotes'].fillna("some text", inplace = True)      
             data['greenhouse'].fillna("f", inplace = True)            
@@ -160,12 +149,13 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
             file_name='sites_n.csv'
 
             data.to_csv(file_name, encoding='utf-8', index=False)
-
+                        
             #Inserting in Bety
             insert_sites_table(table='sites',data=file_name)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Sites',
                    'Lines Inserted': data_g.shape[0]}
+            os.remove(file_name)
             
             return make_response(jsonify(msg), 201)
 
@@ -191,8 +181,7 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
         os.remove(shp_file_target)
         os.remove(dbf_file_target)
         os.remove(prj_file_target)
-        os.remove(shx_file_target)
-        os.remove(file_name)        
+        os.remove(shx_file_target)                
 
 def insert_treatments(username,fileName):
     """
@@ -225,7 +214,7 @@ def insert_treatments(username,fileName):
             insert_table(table='treatments',data=data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Treatments',
-                    'Lines Inserted': data.shape[0]}
+                   'Lines Inserted': data.shape[0]}
             
             return make_response(jsonify(msg), 201)
 

@@ -35,8 +35,8 @@ paths:
                 CSV:
                   summary: A CSV file for experiment metadata Upload.Below is the schema of csv file with example row.
                   text/csv: |-
-                    name,start_date,end_date,description,design
-                    'MAC Season 8: Border','2019-01-01','2019-03-31','ProMix BRK20 14-14-14 Osmocote pots; pre-filled by Hummert Sorghum seed Conviron Growth House'....,'Grain Sorghum also planted to fill out empty plots'
+                    name,start_date,end_date,description
+                    'MAC Season 8: Border','2019-01-01','2019-03-31','ProMix BRK20 14-14-14 Osmocote pots; pre-filled by Hummert Sorghum seed Conviron Growth House'
                   
                   externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1676963884'
               
