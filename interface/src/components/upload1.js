@@ -54,7 +54,7 @@ class Upload extends Component{
             return this.props.history.push("/upload2");
         }
         str.join(", ");
-        alert(`You have not uploaded  your ${str} files`);
+        alert(`You have not uploaded your ${str} files`);
     
     }
     
