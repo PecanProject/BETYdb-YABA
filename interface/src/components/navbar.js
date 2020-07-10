@@ -22,7 +22,7 @@ const navbar= ()=>{
         </div>
         <div className= "link" id="Link">
             <div>
-                <a href="http://pecanproject.org/" rel="noopener noreferrer" target="_blank"><img src="/pecan.jpeg" alt="pecan" className="nav-img"/></a>
+                <a href="http://pecanproject.org/" rel="noopener noreferrer" target="_blank"><img src="/pecan.jpeg" alt="PEcAn Project logo" className="nav-img"/></a>
             </div>
             <div>
                 <span><a href="http://pecanproject.org/" rel="noopener noreferrer" target="_blank">PEcAn Project</a></span>
