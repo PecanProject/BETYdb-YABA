@@ -29,8 +29,7 @@ const rejectStyle = {
   borderColor: '#ff1744'
 };
 
- const Dropzone =({ fileUpload, data })=> {
-   
+ const Dropzone =({ fileUpload, data })=> {   
   const onDrop=(acceptedFiles)=>{
     fileUpload(acceptedFiles[0],data);
 }
@@ -61,18 +60,18 @@ const rejectStyle = {
     isDragAccept
   ]);
 
-  const files = acceptedFiles.map(file => ( <li key={file.path}>{file.path} - {file.size} bytes </li> ));
+  const files = acceptedFiles.map(file => ( <span key="1">{file.path} - {Math.round((file.size/1024)*100)/100} KB </span> ));
 
   return (
     <div className="container">
       <div {...getRootProps({className: 'dropzone',style})}>
         <input {...getInputProps()} />
         <div className="browse">
-          <button className="ripple" onClick={open}>BROWSE</button>
+          <button className="primary ripple-primary" onClick={open}>BROWSE</button>
           <span>or drop files here</span>
         </div>
         <aside>
-          <ul>{files}</ul>
+          {files}
       </aside>
       </div>
     </div>

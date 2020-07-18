@@ -7,7 +7,10 @@ import Homepage from './components/homepage';
 import Upload1 from './components/upload1';
 import Upload2 from './components/upload2';
 import Validation from './components/validation';
-import Try from './components/try';
+import ShapeView from './components/shape-visual'
+import Visual from './components/data-visual';
+import Successpage from './components/success';
+import Errorpage from './components/error'
 
 class App extends Component {
   constructor(){
@@ -25,7 +28,6 @@ class App extends Component {
     console.log(this.state)
   }
 
-
   render(){
     return (
       <BrowserRouter>
@@ -36,7 +38,10 @@ class App extends Component {
         <Route path="/upload1" component={()=> <Upload1 getFiles={this.getFiles}/>} exact/>
         <Route path="/upload2" component={()=> <Upload2 getFiles={this.getFiles}/>} exact/>
         <Route path="/validate" component={()=> <Validation fileList={this.state}/>} exact/>
-        <Route path="/try" component={()=> <Try />} exact/>
+        <Route path="/map" component={()=> <ShapeView fileList={this.state}/>} exact/>
+        <Route path="/visual" component={()=> <Visual fileList={this.state}/>} exact/>
+        <Route path="/success" component={Successpage} exact/>
+        <Route path="/error" component={Errorpage} exact/>
         </Switch>
         <Footer />
       </div>

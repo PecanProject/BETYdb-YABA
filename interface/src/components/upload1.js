@@ -63,7 +63,7 @@ class Upload extends Component{
             <div className="upload-content">
                 <div className="upload" id="upload-shapefile">
                     <div className="heading" >
-                        <span>Upload your shapefile</span>
+                        <span>Upload your shapefile as zip</span>
                     </div>
                     <DragAndDrop fileUpload={this.fileUpload} data="shapefile"/>
                 </div>    
@@ -113,7 +113,7 @@ class Upload extends Component{
                 </div>
 
                 <div className="next">
-                            <button className="ripple" onClick={this.sendFile}>NEXT</button>
+                            <button className="primary ripple-primary" onClick={this.sendFile}>NEXT</button>
                 </div>
             </div>
         )

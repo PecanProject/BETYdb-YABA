@@ -136,14 +136,15 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
         for index, row in data_g.iterrows():
             flat_list = []
             for pt in list(row['geometry'].exterior.coords):
-                pt=pt+(115,)
+                if len(pt) < 3:
+                    pt=pt+(115,)
                 flat_list.append(pt)
             poly = Polygon(flat_list)
             data.loc[index, 'geometry'] = poly
         
         if(all(x in accepted_columns for x in columns)):
             data['time_zone'].fillna("America/Phoenix", inplace = True)
-            data['soilnotes'].fillna("some text", inplace = True)      
+            data['soilnotes'].fillna("", inplace = True)      
             data['greenhouse'].fillna("f", inplace = True)            
             data=data.fillna('')
             file_name='sites_n.csv'
@@ -182,6 +183,7 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
         os.remove(dbf_file_target)
         os.remove(prj_file_target)
         os.remove(shx_file_target)                
+        os.remove(file_name)        
 
 def insert_treatments(username,fileName):
     """
@@ -533,12 +535,14 @@ def insert_citationsSites(fileName):
             insert_table(table='citations_sites',data=new_data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Citations_sites',
+                   'col' : columns,
                    'Lines Inserted': data.shape[0]}
             
             return make_response(jsonify(msg), 201)
 
         else:
             msg = {'Message' : 'File not acceptable and Check the format of file or columns',
+                   'col' : columns,
                    'Table':'citations_sites'}
             return make_response(jsonify(msg), 400)
     

@@ -1,0 +1,26 @@
+.success-content{
+    margin: auto; 
+    position: relative;
+    min-height: 60vh;  
+}
+.success-box{
+    display: flex;
+    width: 60rem;
+    margin: 15rem auto;
+    font-size: 2.2rem;
+    font-weight: lighter;
+    border: 1.5px solid #49CAD2;
+    background: #fbfbfb;
+    border-radius: 1rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+  
+.success-box>div{
+    margin: 2rem auto 1rem auto;
+}
+
+span>p{
+    line-height: 2rem;
+}
