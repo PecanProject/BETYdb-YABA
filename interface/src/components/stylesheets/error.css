@@ -1,0 +1,33 @@
+.content{
+    margin: auto; 
+    position: relative;
+    min-height: 60vh;  
+}
+
+.error-box{
+    display: flex;
+    width: 60rem;
+    margin: 15rem auto 3rem auto;
+    font-size: 2.2rem;
+    font-weight: lighter;
+    border: 1.5px solid #EB5757;
+    background: #fbfbfb;
+    border-radius: 1rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+  
+.error-box>div{
+    margin: 2rem auto 1rem auto;
+}
+
+span>p{
+    line-height: 2rem;
+}
+
+.button{
+    display: flex;
+    justify-content: center;
+    
+}

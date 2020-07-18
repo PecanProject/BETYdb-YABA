@@ -1,0 +1,35 @@
+.shape-view{
+    display: flex;
+    flex-direction: column;
+}
+
+.shape-view>div{
+    margin: 2rem;
+}
+
+.heading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5rem auto;
+    font-weight: lighter;
+    font-size: 2.8rem;
+}
+
+.choice{
+    display: flex;
+    flex-direction: column;
+    margin: 3rem auto;
+    justify-content: center;
+    align-items: center;
+    font-weight: lighter;
+    font-size: 2.5rem;
+}
+
+.options{
+    display: flex;
+}
+
+.options>button{
+    margin: 3rem 8rem;
+}

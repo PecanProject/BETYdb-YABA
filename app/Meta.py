@@ -533,12 +533,14 @@ def insert_citationsSites(fileName):
             insert_table(table='citations_sites',data=new_data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Citations_sites',
+                   'col' : columns,
                    'Lines Inserted': data.shape[0]}
             
             return make_response(jsonify(msg), 201)
 
         else:
             msg = {'Message' : 'File not acceptable and Check the format of file or columns',
+                   'col' : columns,
                    'Table':'citations_sites'}
             return make_response(jsonify(msg), 400)
     

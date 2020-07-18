@@ -113,7 +113,7 @@ class Upload extends Component{
                 </div>
 
                 <div className="next">
-                            <button className="ripple" onClick={this.sendFile}>NEXT</button>
+                            <button className="primary ripple-primary" onClick={this.sendFile}>NEXT</button>
                 </div>
             </div>
         )

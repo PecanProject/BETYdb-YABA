@@ -12,4 +12,4 @@ const shapeParser=async(file)=>{
     }
 }
 
-module.exports={ shapeParser }
+export default shapeParser;
