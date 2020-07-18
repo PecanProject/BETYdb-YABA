@@ -27,7 +27,14 @@ button{
   color: #ffffff;
   text-align: center;
   border: 1px solid rgba(0,0,0,0.1);
+}
+
+.primary{
   background: #49cad5;
+}
+
+.danger{
+  background: #ed2121;
 }
 
 input:hover{
@@ -35,17 +42,32 @@ input:hover{
   box-shadow: 0 0 3px #49CAD2;
 }
 
-.ripple {
+.ripple-primary {
   background-position: center;
   transition: background 0.8s;
 }
-.ripple:hover {
+.ripple-primary:hover {
   background: #49cad5 radial-gradient(circle, transparent 1%, #49cad5 1%) center/15000%;
   box-shadow: 0 0 1rem #49CAD5;
 }
 
-.ripple:active {
+.ripple-primary:active {
   background-color: #51d3db;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+.ripple-danger {
+  background-position: center;
+  transition: background 0.8s;
+}
+.ripple-danger:hover {
+  background: #e04a4a radial-gradient(circle, transparent 1%, #e04a4a 1%) center/15000%;
+  box-shadow: 0 0 1rem #e04a4a;
+}
+
+.ripple-danger:active {
+  background-color: #ed5858;
   background-size: 100%;
   transition: background 0s;
 }

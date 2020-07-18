@@ -1,22 +1,24 @@
 const parser = require('google-spreadsheets-key-parser');
-const Papa=require('papaparse')
 
-let arrayWithData=[];
-async function parseToCsv(googleSheetLink){
-    return await new Promise((resolve,reject)=>{
-        const Tabletop= require('tabletop')
-        let sheetID = parser(googleSheetLink)["key"];
-         Tabletop.init({
-            key: sheetID,
-            callback:(data) => { resolve(showInfo(data)) },
-            simpleSheet: true
-        })    
-    })
+async function sheetToCsv(googleSheetLink){
+    try{
+        return await new Promise((resolve,reject)=>{
+            const Tabletop= require('tabletop')
+            let sheetID = parser(googleSheetLink)["key"];
+            Tabletop.init({
+                key: sheetID,
+                callback:(data) => { resolve(showInfo(data)) },
+                simpleSheet: true
+            })    
+        })
+    }
+    catch(e){
+        throw Error(e)
+    }
 }
 
 function showInfo (data) {
-    arrayWithData.push(...data);
-    return (Papa.parse(arrayWithData)).slice(1);
+    return data;
   }
 
-module.exports = { parseToCsv };
+module.exports = { sheetToCsv };
