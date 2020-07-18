@@ -25,7 +25,7 @@ class homepage extends Component{
                     <div><input type="text" placeholder="asdf-my-secret-key-asodihf"/></div>
                 </div>
                 <div id="start">
-                    <Link to="/upload1"><button className="ripple">START</button></Link>
+                    <Link to="/upload1"><button className="primary ripple-primary">START</button></Link>
                 </div>
             </div>
         )

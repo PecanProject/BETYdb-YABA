@@ -1,0 +1,50 @@
+.visualize{
+    display: flex;
+    flex-direction: column;
+}
+
+.heading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 3rem auto;
+    font-weight: lighter;
+    font-size: 2.8rem;
+}
+
+.grid-container{
+    display: flex;
+    justify-content: space-around;
+}
+
+.grid{
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+}
+
+.grid>div{
+    margin: 1rem;
+}
+
+.title{
+    font-size: 2rem;
+}
+
+.choice{
+    display: flex;
+    flex-direction: column;
+    margin: 3rem auto;
+    justify-content: center;
+    align-items: center;
+    font-weight: lighter;
+    font-size: 2.5rem;
+}
+
+.options{
+    display: flex;
+}
+
+.options>button{
+    margin: 3rem 8rem;
+}

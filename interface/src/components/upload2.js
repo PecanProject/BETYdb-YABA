@@ -20,6 +20,10 @@ class Upload extends Component{
         this.urlUpload=this.urlUpload.bind(this);
     }
 
+    componentDidMount(){
+        window.scrollTo(0, 0);
+    }
+
     fileUpload(file , data){
         this.setState({ [data]: file });
    }
@@ -50,10 +54,10 @@ class Upload extends Component{
        }
        if(str.length===0){
            this.props.getFiles(this.state)
-           return this.props.history.push("/validate");
+           return this.props.history.push("/visual");
        }
        str.join(", ");
-       alert(`You have not uploaded  your ${str} files`);
+       alert(`You have not uploaded your ${str} files`);
    
    }
    
@@ -116,7 +120,7 @@ class Upload extends Component{
                 </div>
 
                 <div className="next">
-                    <button className="ripple" onClick={this.sendFile}>CONTINUE</button>
+                    <button className="primary ripple-primary" onClick={this.sendFile}>CONTINUE</button>
                 </div>
             </div>
         )
