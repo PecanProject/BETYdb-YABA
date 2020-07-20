@@ -185,6 +185,7 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
         os.remove(shx_file_target)                
         os.remove(file_name)        
 
+
 def insert_treatments(username,fileName):
     """
     This function responds to a request for  /yaba/v1/treatments
