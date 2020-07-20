@@ -47,14 +47,12 @@ def treatments():
         return Response(response.text,mimetype="application/json")
 
 @app.route('/cultivars',methods = ['POST'])
-
 def cultivars():    
     if request.method == 'POST':
         response=postRequest(request,'cultivars')
         return Response(response.text,mimetype="application/json") 
 
 @app.route('/citations',methods = ['POST'])
-
 def citations():    
     if request.method == 'POST':
         response=postRequest(request,'citations')

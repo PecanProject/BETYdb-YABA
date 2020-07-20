@@ -60,7 +60,7 @@ const rejectStyle = {
     isDragAccept
   ]);
 
-  const files = acceptedFiles.map(file => ( <span key="1">{file.path} - {Math.round(file.size/1024)} KB </span> ));
+  const files = acceptedFiles.map(file => ( <span key="1">{file.path} - {Math.round((file.size/1024)*100)/100} KB </span> ));
 
   return (
     <div className="container">

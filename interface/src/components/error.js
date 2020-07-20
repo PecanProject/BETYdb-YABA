@@ -13,6 +13,11 @@ class Errorpage extends Component{
     }
 
     render(){
+        let message="";
+        console.log(this.props.location.state.message)
+        if(this.props.location.state.message !== undefined){
+            message= <ul>{this.props.location.state.message.map((msg, i)=><li key={i}>{msg}</li>)}</ul>;
+        };
         return(   
             <div className="content">
                 <div className="error-box">
@@ -21,8 +26,9 @@ class Errorpage extends Component{
                     </div>
                     <div>
                         <span id="message">
-                            <center><span>An error occurred while uploading</span>
-                            <p>{this.props.message}</p></center>
+                            <center><span>We have encountered some error:</span>
+                            {message}
+                            </center>
                         </span>
                     </div>
                 </div>

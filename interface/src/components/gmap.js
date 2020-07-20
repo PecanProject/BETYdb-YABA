@@ -14,6 +14,7 @@ class GMap extends Component{
     }
     
     async componentDidMount(){
+        try{
         const geoJSON= await getGeoJSON(this.props.file);
         const bboxArray = bbox(geoJSON);
         const corner1 = [bboxArray[1], bboxArray[0]];
@@ -23,6 +24,10 @@ class GMap extends Component{
             geoJSON,
             bounds
         })
+        }
+        catch(err){
+            console.log(err);
+        }
     }
 
     render(){
