@@ -183,6 +183,7 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
         os.remove(dbf_file_target)
         os.remove(prj_file_target)
         os.remove(shx_file_target)                
+        os.remove(file_name)        
 
 def insert_treatments(username,fileName):
     """
