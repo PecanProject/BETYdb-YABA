@@ -107,4 +107,4 @@ venv.bak/
 node_modules/
 
 # test snapshots
-_snapshots_
+_snapshots_/

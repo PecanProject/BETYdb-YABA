@@ -22,13 +22,13 @@ const navbar= ()=>{
         </div>
         <div className= "link" id="Link">
             <div>
-                <a href="http://pecanproject.org/" rel="noopener noreferrer" target="_blank"><img src="/pecan.jpeg" alt="PEcAn Project logo" className="nav-img"/></a>
+                <a data-testid="Pecan-img" href="http://pecanproject.org/" rel="noopener noreferrer" target="_blank"><img src="/pecan.jpeg" alt="PEcAn Project logo" className="nav-img"/></a>
             </div>
             <div>
-                <span><a href="http://pecanproject.org/" rel="noopener noreferrer" target="_blank">PEcAn Project</a></span>
+                <span><a data-testid="Pecan-site" href="http://pecanproject.org/" rel="noopener noreferrer" target="_blank">PEcAn Project</a></span>
             </div>
             <div>
-                <a href="http://github.com/PecanProject/BETYdb-YABA/" rel="noopener noreferrer" target="_blank"><img src="/gh.svg" alt="Github" className="gh-img"/></a>
+                <a data-testid="BETYdb-github" href="http://github.com/PecanProject/BETYdb-YABA/" rel="noopener noreferrer" target="_blank"><img src="/gh.svg" alt="Github" className="gh-img"/></a>
             </div>
             <div className="bars" onClick={Responsive}>
                 <i className="fa fa-bars"></i>
