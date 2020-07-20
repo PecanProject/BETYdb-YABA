@@ -1,7 +1,7 @@
 .content{
     margin: auto; 
     position: relative;
-    min-height: 60vh;  
+    min-height: 60vh;
 }
 
 .error-box{
@@ -26,8 +26,12 @@ span>p{
     line-height: 2rem;
 }
 
+li{
+    margin: 10px 0;
+  }
+
 .button{
     display: flex;
     justify-content: center;
-    
+    margin: 0 auto 12rem auto;
 }
