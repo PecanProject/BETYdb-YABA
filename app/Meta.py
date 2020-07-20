@@ -136,7 +136,8 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
         for index, row in data_g.iterrows():
             flat_list = []
             for pt in list(row['geometry'].exterior.coords):
-                pt=pt+(115,)
+                if len(pt) < 3:
+                    pt=pt+(115,)
                 flat_list.append(pt)
             poly = Polygon(flat_list)
             data.loc[index, 'geometry'] = poly
