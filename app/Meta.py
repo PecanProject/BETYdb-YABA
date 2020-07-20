@@ -144,7 +144,7 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
         
         if(all(x in accepted_columns for x in columns)):
             data['time_zone'].fillna("America/Phoenix", inplace = True)
-            data['soilnotes'].fillna("some text", inplace = True)      
+            data['soilnotes'].fillna("", inplace = True)      
             data['greenhouse'].fillna("f", inplace = True)            
             data=data.fillna('')
             file_name='sites_n.csv'
