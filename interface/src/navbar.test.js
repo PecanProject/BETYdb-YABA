@@ -1,6 +1,6 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import Navbar from './components/navbar';
+import React from 'react'
+import { shallow } from 'enzyme'
+import Navbar from './components/navbar'
 
 describe('Test Navbar Component', () => {
   it('should render correctly', () => {

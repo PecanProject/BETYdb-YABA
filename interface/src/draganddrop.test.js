@@ -1,5 +1,5 @@
-import React from "react";
-import { shallow } from 'enzyme';
+import React from "react"
+import { shallow } from 'enzyme'
 import DragandDrop from "./components/draganddrop"
 import Dropzone from 'react-dropzone'
 import { fireEvent, render } from '@testing-library/react'
