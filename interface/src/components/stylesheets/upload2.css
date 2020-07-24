@@ -1,0 +1,73 @@
+.upload-content{
+    font-size: 2.4rem;
+    color: #212529;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 5rem 6rem 5rem;
+
+}
+.upload{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.upload>div{
+    margin: 2rem auto;
+}
+
+.upload .heading{
+    font-size: 2.8rem;
+    font-weight: lighter;
+}
+
+.upload-input{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: lighter;
+}
+
+.upload-input>span{
+    color: #555;
+    margin-top: 1rem;
+    margin-bottom: -2rem;
+}
+
+.dropzone{
+    width: 60rem;
+    height: 12rem;
+    font-size: 1.5rem;
+    color: #555;
+}
+
+.browse{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+    margin:1.5rem 0 2rem 0;
+}
+
+.browse>span{
+    font-size: 1.5rem;
+}
+
+.next{
+    margin-top: 1rem;
+}
+
+
+@media screen and (max-width:600px){
+    .upload .heading{
+        font-size: 2.4rem;
+    }
+    .drag-drop{
+        height: 20rem;
+        width: 30rem;
+    }
+}
