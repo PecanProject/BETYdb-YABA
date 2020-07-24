@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Dropzone component should render correctly with no props 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="dropzone"
+    onBlur={null}
+    onClick={[Function]}
+    onDragEnter={[Function]}
+    onDragLeave={[Function]}
+    onDragOver={[Function]}
+    onDrop={[Function]}
+    onFocus={null}
+    onKeyDown={null}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#fafafa",
+        "borderColor": "#969899",
+        "borderRadius": 5,
+        "borderStyle": "dashed",
+        "borderWidth": 2,
+        "color": "#555",
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "column",
+        "outline": "none",
+        "padding": "20px",
+        "transition": "border .24s ease-in-out",
+      }
+    }
+  >
+    <input
+      accept=""
+      autoComplete="off"
+      multiple={true}
+      onChange={[Function]}
+      onClick={[Function]}
+      style={
+        Object {
+          "display": "none",
+        }
+      }
+      tabIndex={-1}
+      type="file"
+    />
+    <div
+      className="browse"
+    >
+      <button
+        className="primary ripple-primary"
+        onClick={[Function]}
+      >
+        BROWSE
+      </button>
+      <span>
+        or drop files here
+      </span>
+    </div>
+    <aside />
+  </div>
+</div>
+`;
