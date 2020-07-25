@@ -31,8 +31,8 @@ class Grid extends Component{
                 if(!label.includes(data[i][type])){
                     label.push(data[i][type])
                 }
-            }
-            
+            }          
+
             color= getRandomColors(label.length)
             let plots = new Array();
             let xpos = 1; //starting xpos and ypos at 1 so the stroke will show when we make the grid below
