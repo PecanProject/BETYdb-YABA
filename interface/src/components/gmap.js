@@ -15,15 +15,15 @@ class GMap extends Component{
     
     async componentDidMount(){
         try{
-        const geoJSON= await getGeoJSON(this.props.file);
-        const bboxArray = bbox(geoJSON);
-        const corner1 = [bboxArray[1], bboxArray[0]];
-        const corner2 = [bboxArray[3], bboxArray[2]];
-        const bounds= [corner1, corner2];
-        this.setState({
-            geoJSON,
-            bounds
-        })
+            const geoJSON= await getGeoJSON(this.props.file);
+            const bboxArray = bbox(geoJSON);
+            const corner1 = [bboxArray[1], bboxArray[0]];
+            const corner2 = [bboxArray[3], bboxArray[2]];
+            const bounds= [corner1, corner2];
+            this.setState({
+                geoJSON,
+                bounds
+            })
         }
         catch(err){
             console.log(err);

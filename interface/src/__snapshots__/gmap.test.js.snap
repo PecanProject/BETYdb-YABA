@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test the GMap Component it should render correctly 1`] = `
+<Map
+  animate={true}
+  attributionControl={true}
+  bounds={
+    Array [
+      Array [
+        0,
+        100,
+      ],
+      Array [
+        1,
+        105,
+      ],
+    ]
+  }
+  center={
+    Array [
+      51.505,
+      -0.09,
+    ]
+  }
+  doubleClickZoom={true}
+  dragging={true}
+  easeLinearity={0.35}
+  scrollWheelZoom={true}
+  touchZoom={true}
+  zoomControl={true}
+>
+  <ForwardRef(Leaflet(TileLayer))
+    attribution="&copy <a href=\\"http://osm.org/copyright\\">OpenStreetMap</a> contributors"
+    url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
+  />
+  <ForwardRef(Leaflet(GeoJSON))
+    data={
+      Object {
+        "features": Array [
+          Object {
+            "geometry": Object {
+              "coordinates": Array [
+                102,
+                0.5,
+              ],
+              "type": "Point",
+            },
+            "properties": Object {
+              "prop0": "value0",
+            },
+            "type": "Feature",
+          },
+          Object {
+            "geometry": Object {
+              "coordinates": Array [
+                Array [
+                  102,
+                  0,
+                ],
+                Array [
+                  103,
+                  1,
+                ],
+                Array [
+                  104,
+                  0,
+                ],
+                Array [
+                  105,
+                  1,
+                ],
+              ],
+              "type": "LineString",
+            },
+            "properties": Object {
+              "prop0": "value0",
+              "prop1": 0,
+            },
+            "type": "Feature",
+          },
+          Object {
+            "geometry": Object {
+              "coordinates": Array [
+                Array [
+                  Array [
+                    100,
+                    0,
+                  ],
+                  Array [
+                    101,
+                    0,
+                  ],
+                  Array [
+                    101,
+                    1,
+                  ],
+                  Array [
+                    100,
+                    1,
+                  ],
+                  Array [
+                    100,
+                    0,
+                  ],
+                ],
+              ],
+              "type": "Polygon",
+            },
+            "properties": Object {
+              "prop0": "value0",
+              "prop1": Object {
+                "this": "that",
+              },
+            },
+            "type": "Feature",
+          },
+        ],
+        "type": "FeatureCollection",
+      }
+    }
+  />
+</Map>
+`;
