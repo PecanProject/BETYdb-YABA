@@ -18,7 +18,7 @@ app.secret_key = 'my unobvious secret key'
 
 # The maximum allowed payload to 16 megabytes.
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-cors = CORS(app, resources={r'/*': {'origins': '*'}})
+cors = CORS(app, resources={r'/*': {'origins': 'http://localhost:3001'}})
 logging.getLogger('flask_cors').level = logging.DEBUG
 
 ALLOWED_EXTENSIONS = set(['csv', 'xls','xlsx'])
