@@ -84,6 +84,7 @@ class Grid extends Component{
                 list
             })
 
+
             let grid = d3.select(`#grid${type}`)
             .append("svg")
             .attr("width",26 * mcol)
@@ -107,6 +108,7 @@ class Grid extends Component{
             .attr("data-legend",function(d) { return d.name})
             .append("title")
             .text(function(d,i){ return d.text})
+
 
             var SVG = d3.select(`#legend${type}`).append("svg")
             // Usually you have a color scale in your chart already
