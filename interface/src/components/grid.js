@@ -40,7 +40,7 @@ class Grid extends Component{
             let width = 25;
             let height = 25;
             let gcol='';
-            let x,y,idx,text,name='';
+            let x,y,idx,text,name;
             let list=[];
             // iterate for rows 
             for (let row = 0; row < mrow; row++) {
