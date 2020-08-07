@@ -185,7 +185,6 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
         os.remove(shx_file_target)                
         os.remove(file_name)        
 
-
 def insert_treatments(username,fileName):
     """
     This function responds to a request for  /yaba/v1/treatments
@@ -536,12 +535,14 @@ def insert_citationsSites(fileName):
             insert_table(table='citations_sites',data=new_data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Citations_sites',
+                   'col' : columns,
                    'Lines Inserted': data.shape[0]}
             
             return make_response(jsonify(msg), 201)
 
         else:
             msg = {'Message' : 'File not acceptable and Check the format of file or columns',
+                   'col' : columns,
                    'Table':'citations_sites'}
             return make_response(jsonify(msg), 400)
     

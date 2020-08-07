@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { withRouter } from 'react-router-dom'
 import * as d3 from 'd3';
 import getRandomColors from './getRandomColor'
 import { getVisualData } from './requests'
@@ -7,13 +6,21 @@ import { getVisualData } from './requests'
 class Grid extends Component{
     constructor(props){
         super(props);
+        this.state={
+            label:[],
+            list:[]
+        }
     }
     
     async componentDidMount(){
         try{
             let type=this.props.type;
             let username= this.props.username;
-            let data= await getVisualData(this.props.data, type, username);
+            let data;
+            if(this.props.input !== true)
+                data= await getVisualData(this.props.data, type, username);
+            else
+                data=this.props.data;
             let label=[],color=[];
             let mrow=0,mcol=0;
             for(let i=0; i < data.length; i++){
@@ -24,7 +31,8 @@ class Grid extends Component{
                 if(!label.includes(data[i][type])){
                     label.push(data[i][type])
                 }
-            }
+            }          
+
             color= getRandomColors(label.length)
             let plots = new Array();
             let xpos = 1; //starting xpos and ypos at 1 so the stroke will show when we make the grid below
@@ -32,21 +40,24 @@ class Grid extends Component{
             let width = 25;
             let height = 25;
             let gcol='';
-            let x,y,idx,name='';
+            let x,y,idx,text,name;
+            let list=[];
             // iterate for rows 
             for (let row = 0; row < mrow; row++) {
                 plots.push( new Array() );
-                
+                name= '';
                 // iterate for cells/columns inside rows
                 for (let column = 0; column < mcol; column++) {
-                    gcol="#fff"
-                    data.forEach((set)=>{
-                        name= set.experiments;
+                    gcol= "#fff";
+                    text= "Range "+ ((ypos-1)/25 + 1) +" Column " + ((xpos-1)/25 + 1);
+                    data.forEach((set)=>{                        
                         y= ((set.x -1) * 25 )+ 1;
                         x= ((set.y -1) * 25 )+ 1;
                         if( x==xpos && y==ypos ){
                             idx= label.indexOf(set[type])
                             gcol= color[idx];
+                            name= set.experiments;
+                            list.push([name, text])
                         }
                     })
                     
@@ -56,7 +67,8 @@ class Grid extends Component{
                         y: ypos,
                         width: width,
                         height: height,
-                        color: gcol
+                        color: gcol,
+                        text: text
                     })
                     // increment the x position. I.e. move it over by 50 (width letiable)
                     xpos += width;
@@ -67,6 +79,11 @@ class Grid extends Component{
                 ypos += height; 
             }
         
+            this.setState({
+                label,
+                list
+            })
+
             let grid = d3.select(`#grid${type}`)
             .append("svg")
             .attr("width",26 * mcol)
@@ -89,10 +106,7 @@ class Grid extends Component{
             .style("stroke", "#222")
             .attr("data-legend",function(d) { return d.name})
             .append("title")
-            .text(function(d,i){
-                let x= ((d.x-1)/25) + 1;
-                let y= ((d.y-1)/25) + 1;
-                return "Range "+ y +" Column " + x})
+            .text(function(d,i){ return d.text})
 
             var SVG = d3.select(`#legend${type}`).append("svg")
             // Usually you have a color scale in your chart already
@@ -107,7 +121,7 @@ class Grid extends Component{
             .enter()
             .append("rect")
                 .attr("x", 0)
-                .attr("y", function(d,i){ return i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
+                .attr("y", function(d,i){ return i*(size+5)}) // 0 is where the first dot appears. 5 is the distance between dots
                 .attr("width", size)
                 .attr("height", size)
                 .style("fill", function(d){ return legend(d)})
@@ -119,7 +133,7 @@ class Grid extends Component{
             .enter()
             .append("text")
                 .attr("x", size*1.2)
-                .attr("y", function(d,i){ return 3 + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
+                .attr("y", function(d,i){ return 3 + i*(size+5) + (size/2)}) // 13 is where the first dot appears. 5 is the distance between dots
                 .style("fill", function(d){ return legend(d)})
                 .text(function(d){ return d})
                 .attr("text-anchor", "left")
@@ -145,4 +159,4 @@ class Grid extends Component{
 
 }
 
-export default withRouter(Grid);
+export default Grid;

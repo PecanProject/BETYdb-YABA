@@ -105,6 +105,3 @@ venv.bak/
 
 # node modules
 node_modules/
-
-# test snapshots
-_snapshots_
