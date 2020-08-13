@@ -64,7 +64,7 @@ def insert_experiments(username,fileName):
             data['user_id']=user_id
             insert_table(table='experiments',data=data)
             msg = {'Message' : 'Successfully inserted',
-                   'Table Affected' : 'Experiments',
+                   'Table Affected' : 'Experiment',
                    'Lines Inserted': data.shape[0]}
             
             return make_response(jsonify(msg), 201)
