@@ -32,6 +32,10 @@ jobs:
               python -m pip install pytest
               python -m pip install pytest-cov
               if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+              
+      - name: Run app
+        run: |
+              python server.py
 
       - name: Test with pytest and generate coverage report
         run: |
@@ -62,6 +66,10 @@ jobs:
               python -m pip install pytest
               python -m pip install pytest-cov
               if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run app
+        run: |
+              python client.py
 
       - name: Test with pytest and generate coverage report
         run: |
