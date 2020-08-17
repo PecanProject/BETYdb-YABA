@@ -1,0 +1,103 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: YABA app tests
+
+on:
+  push:
+    branches: [ master, containerize ]
+  pull_request:
+    branches: [ master, containerize ]
+
+jobs:
+  app_test:
+
+    runs-on: ubuntu-latest
+    defaults:
+        run:
+          working-directory: app
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip -m install pytest
+          pip -m install pytest-cov
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Test with pytest and generate coverage report
+        run: |
+          pytest yaba_test/test_yaba.py --cov=./
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+
+  client_test:
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+          working-directory: client
+
+    steps:
+      - name: Checkout Code        
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+            python-version: 3.7
+
+      - name: Install dependencies
+        run: |
+              python -m pip install --upgrade pip
+              pip -m install pytest
+              pip -m install pytest-cov
+              if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Test with pytest and generate coverage report
+        run: |
+              pytest yaba_client_test/test_yaba_client.py --cov=./
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        
+  interface_test:
+
+    runs-on: ubuntu-latest
+    defaults:
+        run:
+          working-directory: interface
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run the tests and generate coverage report
+      run: npm test -- --coverage
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+
+    - name: Build
+      run: npm run build
