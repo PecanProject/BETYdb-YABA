@@ -4,7 +4,6 @@
 
 import requests
 from flask import Flask, render_template,request,redirect,Response,flash
-from flask import request
 
 import logging
 from time import sleep

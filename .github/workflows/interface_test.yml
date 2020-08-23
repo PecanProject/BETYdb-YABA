@@ -1,4 +1,4 @@
-name: YABA app tests
+name: YABA interface tests
 
 on:
   push:
