@@ -92,6 +92,8 @@ disable=print-statement,
         setslice-method,
         import-error,
         no-absolute-import,
+        wrong-import-order,
+        wildcard-import,
         no-name-in-module,
         old-division,
         dict-iter-method,
@@ -135,7 +137,20 @@ disable=print-statement,
         xreadlines-attribute,
         deprecated-sys-function,
         exception-escape,
-        comprehension-escape
+        comprehension-escape,
+        invalid-name,
+        broad-except,
+        superfluous-parens,
+        missing-module-docstring,
+        missing-class-docstring
+        missing-function-docstring,
+        inconsistent-return-statements,
+        redefined-outer-name,
+        line-too-long,
+        bad-continuation,
+        trailing-newlines,
+        trailing-whitespace,
+        bad-whitespace
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option

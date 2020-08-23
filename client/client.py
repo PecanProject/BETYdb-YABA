@@ -3,14 +3,13 @@
 #################
 
 import requests
-from flask import Flask, g, render_template,request,redirect,Response,flash,jsonify, make_response
+from flask import Flask, render_template,request,redirect,Response,flash
 from flask import request
 
 import logging
-import json
 from time import sleep
-import sys
-from flask_cors import CORS, cross_origin
+
+from flask_cors import CORS
 
 # Create app
 app = Flask(__name__)

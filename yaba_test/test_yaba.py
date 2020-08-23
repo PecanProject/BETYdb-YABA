@@ -11,7 +11,7 @@ class BasicTests(unittest.TestCase):
 
     def test_insert_experiments(self):
         csv_filename = 'experiments.csv'
-        csv_path = '../input_files/experiments.csv'
+        csv_path = '/input_files/experiments.csv'
         files = {'fileName': open(csv_path, 'rb')}
         response = requests.post(
             'http://0.0.0.0:5001/yaba/v1/experiments?username=guestuser', files=files)
@@ -20,12 +20,12 @@ class BasicTests(unittest.TestCase):
 
     def test_insert_sites(self):
         csv_filename = 'sites.csv'
-        csv_path = '../input_files/'+csv_filename
+        csv_path = 'input_files/'+csv_filename
 
-        shp_file = '../input_files/S8_two_row_polys.shp'
-        dbf_file = '../input_files/S8_two_row_polys.dbf'
-        prj_file = '../input_files/S8_two_row_polys.prj'
-        shx_file = '../input_files/S8_two_row_polys.shx'
+        shp_file = 'input_files/S8_two_row_polys.shp'
+        dbf_file = 'input_files/S8_two_row_polys.dbf'
+        prj_file = 'input_files/S8_two_row_polys.prj'
+        shx_file = 'input_files/S8_two_row_polys.shx'
 
         files= {'fileName': open(csv_path, 'rb'),
                 'shp_file': open(shp_file, 'rb'),
@@ -40,7 +40,7 @@ class BasicTests(unittest.TestCase):
 
     def test_insert_treatments(self):
         csv_filename = 'treatments.csv'
-        csv = '../input_files/'+csv_filename
+        csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
             'http://0.0.0.0:5001/yaba/v1/treatments?username=guestuser', files=files)
@@ -49,7 +49,7 @@ class BasicTests(unittest.TestCase):
 
     def test_insert_cultivars(self):
         csv_filename = 'cultivars.csv'
-        csv = '../input_files/'+csv_filename
+        csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
             'http://0.0.0.0:5001/yaba/v1/cultivars', files=files)
@@ -58,7 +58,7 @@ class BasicTests(unittest.TestCase):
 
     def test_insert_citations(self):
         csv_filename = 'citations.csv'
-        csv = '../input_files/'+csv_filename
+        csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
             'http://0.0.0.0:5001/yaba/v1/citations?username=guestuser', files=files)
@@ -67,7 +67,7 @@ class BasicTests(unittest.TestCase):
         
     def test_insert_experimentSites(self):
         csv_filename = 'experiments_sites.csv'
-        csv = '../input_files/'+csv_filename
+        csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
             'http://0.0.0.0:5001/yaba/v1/experiments_sites', files=files)
@@ -76,7 +76,7 @@ class BasicTests(unittest.TestCase):
 
     def test_insert_experimentTreatments(self):
         csv_filename = 'experiments_treatments.csv'
-        csv = '../input_files/'+csv_filename
+        csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
             'http://0.0.0.0:5001/yaba/v1/experiments_treatments', files=files)
@@ -85,7 +85,7 @@ class BasicTests(unittest.TestCase):
 
     def test_insert_sitesCultivars(self):
         csv_filename = 'sites_cultivars.csv'
-        csv = '../input_files/'+csv_filename
+        csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
             'http://0.0.0.0:5001/yaba/v1/sites_cultivars', files=files)
@@ -94,7 +94,7 @@ class BasicTests(unittest.TestCase):
 
     def test_insert_citationsSites(self):
         csv_filename = 'citations_sites.csv'
-        csv = '../input_files/'+csv_filename
+        csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
             'http://0.0.0.0:5001/yaba/v1/citations_sites', files=files)
