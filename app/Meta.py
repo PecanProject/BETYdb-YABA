@@ -7,8 +7,7 @@ import geopandas as gpd
 import traceback
 import logging
 import pandas as pd
-
-from flask import make_response,Response,jsonify
+from flask import make_response,jsonify
 from db import *
 from werkzeug import secure_filename,FileStorage
 from sqlalchemy.exc import IntegrityError
