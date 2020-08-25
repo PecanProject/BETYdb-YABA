@@ -2,17 +2,6 @@ import React from 'react'
 import './stylesheets/navbar.css'
 
 const navbar= ()=>{
-
-    const Responsive= ()=>{
-        var x = document.getElementById("Link");
-        if (x.className === "link") {
-        x.className += " responsive";
-        x.style.display="flex !important;";
-        } else {
-        x.className = "link";
-        }
-        console.log(x);
-    }
    
   return (
     <nav className="nav">
@@ -29,9 +18,6 @@ const navbar= ()=>{
             </div>
             <div>
                 <a data-testid="BETYdb-github" href="http://github.com/PecanProject/BETYdb-YABA/" rel="noopener noreferrer" target="_blank"><img src="/gh.svg" alt="Github" className="gh-img"/></a>
-            </div>
-            <div className="bars" onClick={Responsive}>
-                <i className="fa fa-bars"></i>
             </div>
         </div>
     </nav>

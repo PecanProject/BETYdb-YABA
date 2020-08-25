@@ -48,11 +48,38 @@ services:
       - 6001:6000
     depends_on:
       - yaba_api
+  
+  yaba_visualization:
+    build: ./visualization
+    networks:
+      - bety
+    volumes:
+      - './visualization:/code'
+      - '/code/node_modules'
+    ports:
+      - 80:8080
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    
+  yaba_interface:
+    build: ./interface
+    networks: 
+      - bety
+    volumes:
+      - './interface:/code'
+      - '/code/node_modules'
+    ports:
+      - 3001:3000
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - yaba_client
+      - yaba_visualization
+    stdin_open: true
+
 volumes:
   postgres:
 
 networks:
   bety:
-
-
-  
