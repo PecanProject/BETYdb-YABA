@@ -44,7 +44,7 @@ jobs:
               docker-compose run --rm bety initialize
               docker-compose up -d
               docker ps -a
-              docker logs betydb-yaba_yaba_api
+              docker logs betydb-yaba_yaba_api_1
 
       - name: Test with pytest and generate coverage report
         run: |
