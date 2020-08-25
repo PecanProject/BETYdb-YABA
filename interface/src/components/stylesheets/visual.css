@@ -12,23 +12,8 @@
     font-size: 2.8rem;
 }
 
-.grid-container{
-    display: flex;
-    justify-content: space-around;
-}
-
-.grid{
-    display: flex;
-    flex-direction: column;
-    font-size: 1.5rem;
-}
-
-.grid>div{
-    margin: 1rem;
-}
-
-.title{
-    font-size: 2rem;
+.legend{
+    margin:auto 50%;
 }
 
 .choice{

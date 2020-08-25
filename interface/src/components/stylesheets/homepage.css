@@ -17,6 +17,7 @@
     border-radius: 0.5rem;
     width: 55rem;
     cursor: pointer;
+    border-bottom:3px solid #49CAD2
 }
 
 .home-content .heading:hover{
@@ -42,6 +43,7 @@
     border-radius: 0.5rem;
     width: 8rem;
     cursor: pointer;
+    border-bottom:3px solid #49CAD2
 }
 
 .steps li{

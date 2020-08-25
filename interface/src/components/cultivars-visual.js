@@ -1,17 +1,21 @@
 import React,{Component} from 'react';
-import Grid from './grid';
+import GMap from './gmap';
 import { withRouter } from 'react-router-dom'
 import './stylesheets/visual.css'
 
-class Visual extends Component{
+class CultivarsView extends Component{
     constructor(props){
         super(props);
         this.onError=this.onError.bind(this);
         this.onNext=this.onNext.bind(this);
     }
 
+    componentDidMount(){
+        window.scrollTo(0, 0);
+    }
+
     onNext(e){
-        return this.props.history.push("/map");
+        return this.props.history.push("/emap");
     }
 
     onError(e){
@@ -21,11 +25,9 @@ class Visual extends Component{
     render(){
         return(
             <div id="visualize">
-                <div className="heading">Confirm the design of your experiments ?</div>
-                <div className="grid-container">
-                    <Grid data={this.props.fileList.fileList} type='cultivars' username=''/>
-                    <Grid data={this.props.fileList.fileList} type='experiments' username='guestuser'/>
-                    <Grid data={this.props.fileList.fileList} type='treatments' username='guestuser'/>
+                <div className="heading">Confirm the design of your cultivars ?</div>
+                <div className="map">
+                <GMap file={this.props.fileList.fileList.shapefile} sites={this.props.fileList.fileList} type="cultivars"/>
                 </div>
                 <div className="choice">
                     <div>Do you want to continue ?</div>
@@ -39,4 +41,4 @@ class Visual extends Component{
     }
 }
 
-export default withRouter(Visual);
+export default withRouter(CultivarsView);

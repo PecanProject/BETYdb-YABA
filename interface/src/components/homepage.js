@@ -16,8 +16,8 @@ class homepage extends Component{
                 <div className="steps">
                     <div><span>Steps</span></div>
                     <ol>
-                        <li>Fill out Metadata in this google spreadsheet template (How to do this).</li>
-                        <li>Prepare a shapefile or table with plot polygons (How to do this).</li>
+                        <li>Fill out Metadata in the google spreadsheet template (<a href="https://docs.google.com/spreadsheets/d/1c_5j7q3TO6gQ24KSopE-_LXA5HhfsUEqMupckGZAbo8/edit#gid=0" target="_blank" style= { { color: "blue"} }>How to do this</a>).</li>
+                        <li>Prepare a shapefile or table with plot polygons (<a  href="https://desktop.arcgis.com/en/arcmap/latest/manage-data/shapefiles/creating-a-new-shapefile.htm" target="_blank" style= { { color: "blue"} }>How to do this</a>).</li>
                     </ol>
                 </div>
                 <div className="field">

@@ -7,8 +7,9 @@ import Homepage from './components/homepage';
 import Upload1 from './components/upload1';
 import Upload2 from './components/upload2';
 import Validation from './components/validation';
-import ShapeView from './components/shape-visual'
-import Visual from './components/data-visual';
+import CultivarsView from './components/cultivars-visual'
+import ExperimentsView from './components/experiments-visual'
+import TreatmentsView from './components/treatments-visual'
 import Successpage from './components/success';
 import Errorpage from './components/error'
 
@@ -38,8 +39,9 @@ class App extends Component {
         <Route path="/upload1" component={()=> <Upload1 getFiles={this.getFiles}/>} exact/>
         <Route path="/upload2" component={()=> <Upload2 getFiles={this.getFiles}/>} exact/>
         <Route path="/validate" component={()=> <Validation fileList={this.state}/>} exact/>
-        <Route path="/map" component={()=> <ShapeView fileList={this.state}/>} exact/>
-        <Route path="/visual" component={()=> <Visual fileList={this.state}/>} exact/>
+        <Route path="/cmap" component={()=> <CultivarsView fileList={this.state}/>} exact/>
+        <Route path="/emap" component={()=> <ExperimentsView fileList={this.state}/>} exact/>        
+        <Route path="/tmap" component={()=> <TreatmentsView fileList={this.state}/>} exact/>
         <Route path="/success" component={Successpage} exact/>
         <Route path="/error" component={Errorpage} exact/>
         </Switch>

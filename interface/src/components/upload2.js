@@ -54,7 +54,7 @@ class Upload extends Component{
        }
        if(str.length===0){
            this.props.getFiles(this.state)
-           return this.props.history.push("/visual");
+           return this.props.history.push("/cmap");
        }
        str.join(", ");
        alert(`You have not uploaded your ${str} files`);
