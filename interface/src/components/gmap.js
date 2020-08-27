@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Map, Polygon, Popup, GeoJSON, TileLayer } from 'react-leaflet'
+import { Map, Popup, GeoJSON, TileLayer } from 'react-leaflet'
+import { withRouter, Redirect } from 'react-router-dom'
 import getRandomColors from './getRandomColor'
 import * as d3 from 'd3';
 import { getGeoJSON, getVisualData } from './requests'
@@ -73,7 +74,11 @@ class GMap extends Component{
                 .style("alignment-baseline", "middle")
         }
         catch(err){
-            console.log(err);
+            this.setState({
+                redirect: true,
+                path: "/error",
+                message: [err.message]
+            })
         }
     }
 
@@ -82,7 +87,7 @@ class GMap extends Component{
         if(geoJSON !== undefined && sites !== undefined){
             geoData= geoJSON.map((feature)=>{
             feature.properties.color="#FFFFFF";   
-            sites.map((site,i)=>{
+            sites.forEach((site,i)=>{
                    if(site.polygon.type === feature.geometry.type && JSON.stringify(site.polygon.coordinates) === JSON.stringify(feature.geometry.coordinates))
                             feature.properties.color= colors[i];
                })
@@ -104,6 +109,13 @@ class GMap extends Component{
     }
 
     render(){
+        if (this.state.redirect){
+            return <Redirect
+                    to= {{
+                        pathname: this.state.path,
+                        state: { message: this.state.message }
+                    }}/>;
+            }
         return (
             <div>
                 <div id={`legend${this.props.type}`} className="legend"></div>
@@ -127,12 +139,10 @@ class GMap extends Component{
 
                     {this.geoFeature(this.state.features, this.state.sites, this.state.colors)}
             );
-            })}
-
                 </Map>
             </div>
         )
     }
 }
 
-export default GMap;
+export default withRouter(GMap);

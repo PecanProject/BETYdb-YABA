@@ -14,7 +14,6 @@ class Errorpage extends Component{
 
     render(){
         let message="";
-        console.log(this.props.location.state.message)
         if(this.props.location.state.message !== undefined){
             message= <ul>{this.props.location.state.message.map((msg, i)=><li key={i}>{msg}</li>)}</ul>;
         };

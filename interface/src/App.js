@@ -38,10 +38,10 @@ class App extends Component {
         <Route path="/" component={Homepage} exact/>
         <Route path="/upload1" component={()=> <Upload1 getFiles={this.getFiles}/>} exact/>
         <Route path="/upload2" component={()=> <Upload2 getFiles={this.getFiles}/>} exact/>
-        <Route path="/validate" component={()=> <Validation fileList={this.state}/>} exact/>
-        <Route path="/cmap" component={()=> <CultivarsView fileList={this.state}/>} exact/>
-        <Route path="/emap" component={()=> <ExperimentsView fileList={this.state}/>} exact/>        
-        <Route path="/tmap" component={()=> <TreatmentsView fileList={this.state}/>} exact/>
+        <Route path="/validate" component={()=> <Validation fileList={this.state.fileList}/>} exact/>
+        <Route path="/cmap" component={()=> <CultivarsView fileList={this.state.fileList}/>} exact/>
+        <Route path="/emap" component={()=> <ExperimentsView fileList={this.state.fileList}/>} exact/>        
+        <Route path="/tmap" component={()=> <TreatmentsView fileList={this.state.fileList}/>} exact/>
         <Route path="/success" component={Successpage} exact/>
         <Route path="/error" component={Errorpage} exact/>
         </Switch>

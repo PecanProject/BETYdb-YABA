@@ -22,6 +22,11 @@ paths:
           schema:
             type: string
           description: Username uploading the csv
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -38,10 +43,10 @@ paths:
                     name,start_date,end_date,description
                     'MAC Season 8: Border','2019-01-01','2019-03-31','ProMix BRK20 14-14-14 Osmocote pots; pre-filled by Hummert Sorghum seed Conviron Growth House'
                   
-                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1676963884'
-              
-                  
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1676963884'                                
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -101,6 +106,12 @@ paths:
       operationId: Meta.insert_sites
       tags:
         - sites
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           application/octet-stream:
@@ -129,9 +140,10 @@ paths:
                     sitename,city,state,country,notes,greenhouse,geometry,time_zone,soil,soilnotes
                     'MAC Field Scanner Season 8 Range 1 Column 1 W','Maricopa','Arizona','USA','This site represents the the whole wo...',...,'America/Phoenix','soil','soilnotes,
                   
-                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=347205052'
-      
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=347205052'      
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -197,6 +209,11 @@ paths:
           schema:
             type: string
           description: Username uploading the csv
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -215,6 +232,8 @@ paths:
                   
                   externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=2041366690'
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -274,6 +293,12 @@ paths:
       operationId: Meta.insert_cultivars
       tags:
         - cultivars
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -292,6 +317,8 @@ paths:
                   
                   externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1280032116'
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -357,6 +384,11 @@ paths:
           schema:
             type: string
           description: Username uploading the csv
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -376,6 +408,8 @@ paths:
                   
                   externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1613500696'
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -435,6 +469,12 @@ paths:
       operationId: Meta.insert_experimentSites
       tags:
         - experiment_sites
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -453,6 +493,8 @@ paths:
                   
                   externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1613500696'
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -512,6 +554,12 @@ paths:
       operationId: Meta.insert_experimentTreatments
       tags:
         - experiment_treatments
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -530,6 +578,8 @@ paths:
                   
                   externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1613500696'
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -589,6 +639,12 @@ paths:
       operationId: Meta.insert_sitesCultivars
       tags:
         - sites_cultivars
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -607,6 +663,8 @@ paths:
                   
                   externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1613500696'
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -666,6 +724,12 @@ paths:
       operationId: Meta.insert_citationsSites
       tags:
         - citations_sites
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -685,6 +749,8 @@ paths:
                   
                   externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1613500696'
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':

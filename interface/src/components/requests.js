@@ -63,14 +63,12 @@ export function getGeoJSON(file){
     return Promise.resolve(res);
 }
 
-export function uploadFiles(file, type, username){
+export function uploadFiles(file, type, username, status=true){
     const formData = new FormData();
-    let params= '';
+    let params= `${type}?status=${status}`;
 
-    if(username!="")
-        params= `${type}?username=${username}`;
-    else
-        params= `${type}`;
+    if(username!=="")
+        params+= `&username=${username}`;
     
     type=`${type}.csv`;
     formData.append('fileName',file, type);

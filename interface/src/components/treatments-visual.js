@@ -20,7 +20,7 @@ class TreatmentsView extends Component{
 
     async onNext(e){
         try{
-            let files= this.props.fileList.fileList;
+            let files= this.props.fileList;
             let val= [];
             Promise.all([
                     uploadFiles(files.cultivars, "cultivars", ""),
@@ -92,7 +92,7 @@ class TreatmentsView extends Component{
             <div className="shape-view">
                 <div className="heading">Confirm the view of your treatments ?</div>
                 <div className="map">
-                <GMap file={this.props.fileList.fileList.shapefile} sites={this.props.fileList.fileList} type="treatments"/>
+                <GMap file={this.props.fileList.shapefile} sites={this.props.fileList} type="treatments"/>
                 </div>
                 <div className="choice">
                     <div>Do you want to continue ?</div>
