@@ -2,9 +2,11 @@
 [![Build Status](https://travis-ci.org/saurabh1969/BETYdb-YABA.svg?branch=api)](https://travis-ci.org/saurabh1969/BETYdb-YABA)
 
 # BETYdb-YABA
+
 Yet Another BETYdb API (for metadata upload)
 
-Gsoc Report : [Project Summary](https://gist.github.com/saurabh1969/3e464dd88d4ec845262287c785c04eeb)
+Developed as part of Google Summer of Code 2019 and 2020
+- [GSOC 2019 Report and Workplan](https://osf.io/v7f9t/wiki/GSOC%202019%20Workplan%20and%20Summary/)
 
 ## Setup BETYdb
 
