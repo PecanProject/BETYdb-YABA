@@ -39,6 +39,7 @@ class Upload extends Component{
 
    async sendFile(){
        let str=[];
+       let err_link=[];
        for(let key in this.state){
            if(!Object.keys(this.state[key]).length>0){
                str.push(key);
@@ -47,16 +48,21 @@ class Upload extends Component{
                console.log(key);
               await parseToCsv(this.state[key].url)
                .then((data)=>{
-                   this.setState({[key]:data})
+                    str.pop();
+                    this.setState({[key]:data})
                })
-               .catch(err=> console.log(err))
+               .catch(err=> err_link.push(key))
            }
        }
        if(str.length===0){
            this.props.getFiles(this.state)
            return this.props.history.push("/validate");
        }
-       str.join(", ");
+       if(err_link.length!==0){
+            err_link=err_link.join(", ")
+            alert(`Please check your google sheet link for ${err_link} files`);
+       }
+       str= str.join(", ");
        alert(`You have not uploaded your ${str} files`);
    
    }
