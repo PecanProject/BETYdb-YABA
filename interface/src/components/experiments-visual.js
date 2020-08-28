@@ -27,7 +27,7 @@ class ExperimentsView extends Component{
             <div id="visualize">
                 <div className="heading">Confirm the design of your experiments ?</div>
                 <div className="map">
-                    <GMap file={this.props.fileList.shapefile} sites={this.props.fileList} type="experiments"/>
+                    <GMap file={this.props.fileList.shapefile} sites={this.props.fileList} user={this.props.user} type="experiments"/>
                 </div>
                 <div className="choice">
                     <div>Do you want to continue ?</div>

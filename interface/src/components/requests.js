@@ -1,8 +1,7 @@
 import axios from 'axios'
 
-export function getVisualData(files, type){
+export function getVisualData(files, type, username){
     const formData = new FormData();
-    let username= "guestuser";
     let params= '';
     
     if(type === "cultivars"){
@@ -38,14 +37,29 @@ export function getVisualData(files, type){
         body: formData,
         redirect: 'follow'
       })
-        .then(response => response.json())
-        .then(result => result)
-        .catch(error => {
+    .then(response => response.json())
+    .then(result => result)
+    .catch(error => {
         throw Error(error)
         });
     return Promise.resolve(res);
 }
 
+export function getUserData(apikey){
+    const formData = new FormData();
+    formData.append("apikey", apikey);
+    let res= fetch(`http://localhost:80/getUser`,  {
+        method: 'POST',
+        body: formData,
+        redirect: 'follow'
+      })
+    .then(response => response.json())
+    .then(result => result.user)
+    .catch(error => {
+        throw Error(error)
+    });
+    return Promise.resolve(res);
+}
 
 export function getGeoJSON(file){
     const formData = new FormData();
@@ -56,10 +70,10 @@ export function getGeoJSON(file){
         body: formData,
         redirect: 'follow'
       })
-        .then(response => response.json())
-        .catch(error => {
+    .then(response => response.json())
+    .catch(error => {
             throw Error(error)
-        });
+    });
     return Promise.resolve(res);
 }
 

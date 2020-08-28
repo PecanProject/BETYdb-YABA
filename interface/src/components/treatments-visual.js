@@ -92,7 +92,7 @@ class TreatmentsView extends Component{
             <div className="shape-view">
                 <div className="heading">Confirm the view of your treatments ?</div>
                 <div className="map">
-                <GMap file={this.props.fileList.shapefile} sites={this.props.fileList} type="treatments"/>
+                <GMap file={this.props.fileList.shapefile} sites={this.props.fileList} user={this.props.user} type="treatments"/>
                 </div>
                 <div className="choice">
                     <div>Do you want to continue ?</div>

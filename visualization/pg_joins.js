@@ -300,6 +300,18 @@ const getTreatmentSites=async (username, treatments, experiments_treatments, sit
   }
 }
 
+const getUser= async (apikey)=>{
+  try{
+    const client = await pool.connect()
+    const query=format('SELECT name as user FROM users WHERE apikey = %L', apikey)
+    const res= (await client.query(query)).rows[0]["user"];
+    return res
+  }
+  catch(e){
+    return new Error(e.name + " " + e.message);
+  }
+}
+
 const getGeoData= async (geoJSON)=>{
   try{
       const client = await pool.connect()
@@ -317,5 +329,5 @@ const getGeoData= async (geoJSON)=>{
 }
 
 module.exports={
-  getCultivarSites, getExperimentSites, getTreatmentSites, getGeoData
+  getCultivarSites, getExperimentSites, getTreatmentSites, getGeoData, getUser
 }

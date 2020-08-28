@@ -20,7 +20,7 @@ class GMap extends Component{
     async componentDidMount(){
         try{
             const geoJSON= await getGeoJSON(this.props.file);
-            const sites= await getVisualData(this.props.sites, this.props.type);
+            const sites= await getVisualData(this.props.sites, this.props.type, this.props.user);
             const colors= getRandomColors(sites.length);
             const bboxArray = bbox(geoJSON);
             const type= this.props.type;

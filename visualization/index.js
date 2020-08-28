@@ -1,9 +1,8 @@
 const express = require('express')
 const app = express()
 const port = 8080
-const { getCultivarSites, getExperimentSites, getTreatmentSites, getGeoData } = require('./pg_joins')
+const { getCultivarSites, getExperimentSites, getTreatmentSites, getGeoData, getUser } = require('./pg_joins')
 const { shapeParser }= require('./shape-parser')
-const { sheetToCsv }= require('./sheet-parser')
 const multer=require('multer')
 const Papa=require('papaparse')
 const upload=multer()
@@ -44,6 +43,9 @@ let upload3 = upload.fields(
 
 let shp_upload= upload.fields(
   [{ name: 'shp_file', maxCount: 1 }]);
+
+let api_key= upload.fields(
+  [{ name: 'api_key', maxCount: 1 }]);
   
 let parseCsv= (file)=>{
   let buf= Buffer.from(file.buffer)
@@ -136,6 +138,19 @@ app.post('/getTreatmentSites', upload3, async(req, res) => {
     }
 })
 
+//sends the Username for the valid api key
+app.post('/getUser', api_key, async(req, res) => {
+  let apikey= req.body.apikey;
+  try{
+    let user= await getUser(apikey);
+    res.status(200).send({"user":user});
+  }
+  catch(err){
+    console.log(err)
+    res.status(400).send({"error": err.message});
+  }
+})
+
 //sends the GeoJSON data after parsing the shapefile 
 app.post('/getGeoJSON', shp_upload, async(req, res) => {
   let file= Buffer.from(req.files['shp_file'][0].buffer);
@@ -173,11 +188,6 @@ app.post('/getGeoFile', shp_upload, async(req, res) => {
     console.log(err)
     res.status(400).send("File not acceptable.Check its format");
   }
-})
-
-app.post('/sheetToCsv', async(req, res) => {
-  let sheet=req.body.sheet;
-  let csvFile= await sheetToCsv(sheet)
 })
 
 app.listen(port, () => {

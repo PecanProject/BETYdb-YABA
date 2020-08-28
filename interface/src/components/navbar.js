@@ -1,8 +1,16 @@
 import React from 'react'
 import './stylesheets/navbar.css'
 
-const navbar= ()=>{
-   
+const navbar= ({ user })=>{
+  const User=()=>{
+      if(user !== undefined){
+          return (
+            <div>
+                <img src="/user.svg" className="user-img" alt="User"/>
+            </div>
+          )
+      }
+  }
   return (
     <nav className="nav">
         <div className="brand">
@@ -15,6 +23,10 @@ const navbar= ()=>{
             </div>
             <div>
                 <span><a data-testid="Pecan-site" href="http://pecanproject.org/" rel="noopener noreferrer" target="_blank">PEcAn Project</a></span>
+            </div>
+            {User()}
+            <div>
+                <span>{user}</span>
             </div>
             <div>
                 <a data-testid="BETYdb-github" href="http://github.com/PecanProject/BETYdb-YABA/" rel="noopener noreferrer" target="_blank"><img src="/gh.svg" alt="Github" className="gh-img"/></a>

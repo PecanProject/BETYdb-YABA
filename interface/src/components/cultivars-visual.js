@@ -27,7 +27,7 @@ class CultivarsView extends Component{
             <div id="visualize">
                 <div className="heading">Confirm the design of your cultivars ?</div>
                 <div className="map">
-                <GMap file={this.props.fileList.shapefile} sites={this.props.fileList} type="cultivars"/>
+                <GMap file={this.props.fileList.shapefile} sites={this.props.fileList} user={this.props.user} type="cultivars"/>
                 </div>
                 <div className="choice">
                     <div>Do you want to continue ?</div>

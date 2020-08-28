@@ -9,6 +9,7 @@ nav{
 
 nav span{
     align-self: center !important;
+    cursor: pointer;
 }
 
 
@@ -18,6 +19,13 @@ nav span{
     width:42px;
     margin-right: 1rem;
     border-radius: 0.2rem;
+}
+
+nav .user-img{
+    position: relative;
+    align-self: flex-end;
+    cursor: pointer;
+    margin: 0.5rem 0.5rem 0.6rem 2rem ;
 }
 
 nav .gh-img{
@@ -43,36 +51,3 @@ nav .gh-img{
 .link>div{
     align-self: center;
 }
-
-.bars{
-    display: none;
-}
-
-@media screen and (max-width: 600px) {
-.link div:not(:last-child){
-    display: none;
-}
-
-.bars{
-    display: block ;
-    align-self: flex-start;
-    margin: 0 1rem;
-    cursor: pointer;
-}
-
-.link .responsive{
-    position: relative;
-    display: flex !important;
-    flex-direction: column;
-    text-align: center;
-}
-
-.link .responsive div{
-    display: block!important;
-    align-self: 'center';
-    z-index: 2;
-
-}
-
-}
-  

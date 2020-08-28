@@ -16,6 +16,7 @@ class Validation extends Component{
 
 async componentDidMount(){
   let files= this.props.fileList;
+  let user= this.props.user;
   Promise.all([
     uploadFiles(files.cultivars, "cultivars", "", false),
     uploadFiles(files.experiments, "experiments", "guestuser", false),

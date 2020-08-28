@@ -1,8 +1,32 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
+import { getUserData } from './requests'
 import './stylesheets/homepage.css'
 
-class homepage extends Component{
+class Homepage extends Component{
+    constructor(props){
+        super(props);
+        this.updateUser=this.updateUser.bind(this);
+    }
+
+    async updateUser(){
+        let apikey= document.getElementById("api-key").value;
+        if(apikey !== ""){
+            let user= await getUserData(apikey);
+            if(typeof(user) === Object && Object.keys.length === 0)
+                return alert('Please enter a valid API key');
+            let isValid = window.confirm(`Please confirm, are you ${user}?`);
+            if(isValid === true){
+                this.props.setUser(user);
+                return this.props.history.push("/upload1");
+            }
+            return;
+        }
+        if(this.props.user !== undefined)
+        return this.props.history.push("/upload1");
+        return alert('Please enter a valid API key');
+    }
+
     render(){
         return(
             <div className="home-content">
@@ -16,20 +40,20 @@ class homepage extends Component{
                 <div className="steps">
                     <div><span>Steps</span></div>
                     <ol>
-                        <li>Fill out Metadata in the google spreadsheet template (<a href="https://docs.google.com/spreadsheets/d/1c_5j7q3TO6gQ24KSopE-_LXA5HhfsUEqMupckGZAbo8/edit#gid=0" rel="noopener noreferrer" target="_blank" style= { { color: "blue"} }>How to do this</a>).</li>
+                        <li>Fill out Metadata in the google spreadsheet template (<a href="https://docs.google.com/spreadsheets/d/1Fr_8xYOucyCQ9WH5_1bfPTMpm3IhKX5oqW4UOMvPoSY/edit#gid=0" rel="noopener noreferrer" target="_blank" style= { { color: "blue"} }>How to do this</a>).</li>
                         <li>Prepare a shapefile or table with plot polygons (<a  href="https://desktop.arcgis.com/en/arcmap/latest/manage-data/shapefiles/creating-a-new-shapefile.htm" rel="noopener noreferrer" target="_blank" style= { { color: "blue"} }>How to do this</a>).</li>
                     </ol>
                 </div>
                 <div className="field">
                     <div><span>Provide your API Key</span></div>
-                    <div><input type="text" placeholder="asdf-my-secret-key-asodihf"/></div>
+                    <div><input id="api-key" type="text" placeholder="asdf-my-secret-key-asodihf"/></div>
                 </div>
                 <div id="start">
-                    <Link to="/upload1"><button className="primary ripple-primary">START</button></Link>
+                    <button className="primary ripple-primary" onClick={this.updateUser}>START</button>
                 </div>
             </div>
         )
     }
 }
 
-export default homepage
+export default withRouter(Homepage)
