@@ -2,7 +2,7 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Build Status](https://travis-ci.org/saurabh1969/BETYdb-YABA.svg?branch=api)](https://travis-ci.org/saurabh1969/BETYdb-YABA)
 
-# [![BETYdb Logo](./interface/public/bety.png)] BETYdb-YABA
+# [![BETYdb Logo](images/bety.png)] BETYdb-YABA
 
 Another BETYdb-YABA app for Metadata Upload for seasons using the GUI.
 Developed as part of Google Summer of Code 2019 and 2020.
