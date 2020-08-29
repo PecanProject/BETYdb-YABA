@@ -5,14 +5,15 @@ import getRandomColors from './getRandomColor'
 import * as d3 from 'd3';
 import { getGeoJSON, getVisualData } from './requests'
 import './stylesheets/map.css'
-import { bbox } from '@turf/turf'
+import { bbox, geojsonType } from '@turf/turf'
 
 
 class GMap extends Component{    
     constructor(props) {
         super(props);
         this.state={
-            position: [ 33.056702, -112.046656 ]
+            position: [ 33.056702, -112.046656 ],
+            redirect: false
       }   
         this.geoFeature= this.geoFeature.bind(this);
     }
@@ -85,6 +86,23 @@ class GMap extends Component{
     geoFeature(geoJSON, sites, colors){
         let geoData;
         if(geoJSON !== undefined && sites !== undefined){
+            console.log(typeof(sites), sites.error, sites['error'])
+            if(geoJSON.hasOwnProperty("error")){
+                return  this.props.history.push({
+                            pathname:"/error",
+                            state:{
+                                message: [`While displaying ${this.props.type} plots, ${geoJSON.error}`]
+                            }
+                        }); 
+            }
+            if(sites.hasOwnProperty("error")){
+                return  this.props.history.push({
+                            pathname:"/error",
+                            state:{
+                                message: [`While displaying ${this.props.type} plots, ${sites.error}`]
+                            }
+                        }); 
+            }
             geoData= geoJSON.map((feature)=>{
             feature.properties.color="#FFFFFF";   
             sites.forEach((site,i)=>{
