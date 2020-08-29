@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
-const port = 8080
+const port = 8075
+const host= '0.0.0.0'
 const { getCultivarSites, getExperimentSites, getTreatmentSites, getGeoData, getUser } = require('./pg_joins')
 const { shapeParser }= require('./shape-parser')
 const multer=require('multer')
@@ -190,6 +191,6 @@ app.post('/getGeoFile', shp_upload, async(req, res) => {
   }
 })
 
-app.listen(port, () => {
+app.listen(port, host, () => {
   console.log(`App running on port ${port}.`)
 })

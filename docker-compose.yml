@@ -57,7 +57,7 @@ services:
       - './visualization:/code'
       - '/code/node_modules'
     ports:
-      - 80:8080
+      - 8008:8075
     depends_on:
       - postgres
     restart: unless-stopped
