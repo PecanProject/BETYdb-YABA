@@ -29,7 +29,7 @@ export function getVisualData(files, type, username){
         params= 'getTreatmentSites'
     }
     
-    let res= fetch(`http://localhost:80/${params}`,  {
+    let res= fetch(`http://localhost:8008/${params}`,  {
         method: 'POST',
         body: formData,
         redirect: 'follow'
@@ -48,7 +48,7 @@ export function getGeoJSON(file){
 
     formData.append("shp_file", file);
 
-    let res= fetch("http://localhost:80/getGeoJSON", {
+    let res= fetch("http://localhost:8008/getGeoJSON", {
         method: 'POST',
         body: formData,
         redirect: 'follow'
@@ -98,7 +98,7 @@ function getGeoFile(zip_file, file_type){
     redirect: 'follow'
     };
     
-    const res = fetch("http://localhost:80/getGeoFile", requestOptions)
+    const res = fetch("http://localhost:8008/getGeoFile", requestOptions)
     .then(response => new File([response.blob()], `${file_type}_file.${file_type}`))
     .catch(error => {
         throw Error(error)

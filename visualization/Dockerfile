@@ -8,7 +8,7 @@ ENV PATH /code/node_modules/.bin:$PATH
 
 RUN npm install --silent
 
-EXPOSE 8080
+EXPOSE 8075
 
 # start app
 CMD ["npm", "start"]

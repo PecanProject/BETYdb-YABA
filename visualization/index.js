@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
-const port = 8080
+const port = 8075
+const host = '0.0.0.0'
 const { getCultivarSites, getExperimentSites, getTreatmentSites } = require('./pg_joins')
 const { shapeParser }= require('./shape-parser')
 const { sheetToCsv }= require('./sheet-parser')
@@ -169,6 +170,6 @@ app.post('/sheetToCsv', async(req, res) => {
   let csvFile= await sheetToCsv(sheet)
 })
 
-app.listen(port, () => {
+app.listen(port, host,() => {
   console.log(`App running on port ${port}.`)
 })
