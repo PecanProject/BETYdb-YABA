@@ -2,7 +2,7 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Build Status](https://travis-ci.org/saurabh1969/BETYdb-YABA.svg?branch=api)](https://travis-ci.org/saurabh1969/BETYdb-YABA)
 
-# [![BETYdb Logo](./interface/public/bety.png)] BETYdb-YABA
+# ![BETYdb Logo](./interface/public/bety.png=40x40) BETYdb-YABA
 
 Another BETYdb-YABA app for Metadata Upload for seasons using the GUI.
 Developed as part of Google Summer of Code 2019 and 2020.
@@ -188,14 +188,31 @@ Cultivar and species combination for each site must be present in the cultivars 
 
 ## Screenshots
 
+### Homepage
 ![homepage](images/homepage.png)
+
+### Upload 1
 ![upload1](images/upload1.png)
+
+### Upload 2
 ![upload2](images/upload2.png)
+
+### Validation page
 ![validation_page](images/validation_page.png)
+
+### Cultivar Design page
 ![cultivars_design](images/cultivars_design.png)
+
+### Experiments Design Page
 ![experiments_design](images/experiments_design.png)
+
+### Treatments Design Page
 ![treatments_design](images/treatments_design.png)
+
+### Error Page
 ![error_page](images/error_page.png)
+
+### Success Page
 ![success_page](images/success_page.png)
 
 ## Developer's Documentation
