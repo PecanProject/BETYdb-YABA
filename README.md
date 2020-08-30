@@ -2,7 +2,7 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Build Status](https://travis-ci.org/saurabh1969/BETYdb-YABA.svg?branch=api)](https://travis-ci.org/saurabh1969/BETYdb-YABA)
 
-# ![BETYdb Logo](./interface/public/bety.png=40x40) BETYdb-YABA
+# ![BETYdb Logo](images/bety.png) BETYdb-YABA
 
 Another BETYdb-YABA app for Metadata Upload for seasons using the GUI.
 Developed as part of Google Summer of Code 2019 and 2020.
@@ -377,6 +377,8 @@ curl -F "fileName=@input_files/citations_sites.csv"   \
 
 ## Previous Year GSoC Reports
 
+- [GSOC 2020 Report](https://osf.io/v7f9t/wiki/GSOC%202020%20Report/)
+- [GSOC 2020 Roadmap](https://osf.io/v7f9t/wiki/GSOC%202020%20Roadmap/)
 - [GSOC 2019 Report and Workplan](https://osf.io/v7f9t/wiki/GSOC%202019%20Workplan%20and%20Summary/)
 
 ## Contributing
