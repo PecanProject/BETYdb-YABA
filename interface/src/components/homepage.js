@@ -13,8 +13,11 @@ class Homepage extends Component{
         let apikey= document.getElementById("api-key").value;
         if(apikey !== ""){
             let user= await getUserData(apikey);
-            if(typeof(user) === Object && Object.keys.length === 0)
-                return alert('Please enter a valid API key');
+            if(user.hasOwnProperty("error")){
+                return alert('Encountered error: '+ user.error);
+            }
+            if(Object.keys(user).length === 0)
+                return alert('User not found. Please enter a valid API key');
             let isValid = window.confirm(`Please confirm, are you ${user}?`);
             if(isValid === true){
                 this.props.setUser(user);
