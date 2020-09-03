@@ -84,13 +84,13 @@ docker-compose up
 
 ## Steps to Upload Metadata
 
-**1.** Enter your API key
-**2.** Upload your shapefile and different tables
-**3.** Check whether your tables are valid or not
-**4.** Confirm the design of your cultivars
-**5.** Confirm the design of your experiments
-**6.** Confirm the design of your treatments
-**7.** You will be redirected to the success page if the upload is successful.
+1. Enter your API key
+2. Upload your shapefile and different tables
+3. Check whether your tables are valid or not
+4. Confirm the design of your cultivars
+5. Confirm the design of your experiments
+6. Confirm the design of your treatments
+7. You will be redirected to the success page if the upload is successful.
 
 ## Schema and Format of the Tables
 
