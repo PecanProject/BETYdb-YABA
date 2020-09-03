@@ -11,7 +11,7 @@ class BasicTests(unittest.TestCase):
 
     def test_insert_experiments(self):
         csv_filename = 'experiments.csv'
-        csv_path = '/input_files/experiments.csv'
+        csv_path = 'input_files/experiments.csv'
         files = {'fileName': open(csv_path, 'rb')}
         response = requests.post(
             'http://0.0.0.0:5001/yaba/v1/experiments?username=guestuser', files=files)
