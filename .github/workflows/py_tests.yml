@@ -5,9 +5,9 @@ name: YABA app and client tests
 
 on:
   push:
-    branches: [ master, containerize ]
+    branches: [ master ]
   pull_request:
-    branches: [ master, containerize ]
+    branches: [ master ]
 
 jobs:
   py_test:

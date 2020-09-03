@@ -3,7 +3,7 @@ name: YABA Code Linter
 on:
   push:
   pull_request:
-    branches: [ master, containerize ]
+    branches: [ master ]
 
 jobs:
   lint:

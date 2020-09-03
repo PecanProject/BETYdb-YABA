@@ -2,9 +2,9 @@ name: YABA interface tests
 
 on:
   push:
-    branches: [ master, containerize ]
+    branches: [ master ]
   pull_request:
-    branches: [ master, containerize ]
+    branches: [ master ]
 
 jobs:
   interface_test:
