@@ -81,7 +81,7 @@ render() {
   return (
     <div id="validation">
       <div className='table'>
-        <h1 id='title'>Check weather your files are ready or not?</h1>
+        <h1 id='title'>Check whether your files are ready or not?</h1>
         <table id='status'>
            <tbody>
            <tr>
