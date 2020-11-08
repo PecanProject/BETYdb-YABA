@@ -25,8 +25,9 @@ class Homepage extends Component{
             }
             return;
         }
-        if(this.props.user !== undefined)
-        return this.props.history.push("/upload1");
+        if(this.props.user !== undefined) {
+            return this.props.history.push("/upload1");
+        }
         return alert('Please enter a valid API key');
     }
 
