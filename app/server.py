@@ -6,6 +6,7 @@ Main module of the Server file
 import connexion
 import json
 from time import sleep
+from flask import Response
 
 # Create the application instance
 app = connexion.App(__name__, specification_dir="./")

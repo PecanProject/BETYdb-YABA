@@ -5,8 +5,8 @@ const pool = new Pool({
   user: 'bety',
   database: 'bety',
   password: '',
-  host: 'localhost',
-  port: 9000,
+  host: 'postgres',
+  port: 5432,
 });
 
 const fetch_Id= async (client, value,table)=>{

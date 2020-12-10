@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
-const port = 3001
+const port = 8075
+const host = '0.0.0.0'
 const { getCultivarSites, getExperimentSites, getTreatmentSites } = require('./pg_joins')
 const { shapeParser }= require('./shape-parser')
 const { sheetToCsv }= require('./sheet-parser')
@@ -13,7 +14,7 @@ const path= require('path')
 app.use(express.static('dist'))
 app.use(express.json())
 app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers');
   next();
@@ -169,6 +170,6 @@ app.post('/sheetToCsv', async(req, res) => {
   let csvFile= await sheetToCsv(sheet)
 })
 
-app.listen(port, () => {
+app.listen(port, host,() => {
   console.log(`App running on port ${port}.`)
 })

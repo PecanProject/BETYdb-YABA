@@ -7,9 +7,7 @@ import geopandas as gpd
 import traceback
 import logging
 import pandas as pd
-
-from flask import make_response,Response,jsonify
-from flask import json
+from flask import make_response,jsonify
 from db import *
 from werkzeug import secure_filename,FileStorage
 from sqlalchemy.exc import IntegrityError
@@ -329,7 +327,7 @@ def insert_citations(username,fileName):
             insert_table(table='citations',data=data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Citations',
-                    'Lines Inserted': data.shape[0]}
+                   'Lines Inserted': data.shape[0]}
             
             return make_response(jsonify(msg), 201)
 
@@ -379,7 +377,7 @@ def insert_experimentSites(fileName):
             insert_table(table='experiments_sites',data=new_data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Experiments_sites',
-                    'Lines Inserted': data.shape[0]}
+                   'Lines Inserted': data.shape[0]}
             
             return make_response(jsonify(msg), 201)
 
@@ -431,7 +429,7 @@ def insert_experimentTreatments(fileName):
             insert_table(table='experiments_treatments',data=new_data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Experiments_treatments',
-                    'Lines Inserted': data.shape[0]}
+                   'Lines Inserted': data.shape[0]}
             
             return make_response(jsonify(msg), 201)
 
@@ -535,14 +533,12 @@ def insert_citationsSites(fileName):
             insert_table(table='citations_sites',data=new_data)
             msg = {'Message' : 'Successfully inserted',
                    'Table Affected' : 'Citations_sites',
-                   'col' : columns,
                    'Lines Inserted': data.shape[0]}
             
             return make_response(jsonify(msg), 201)
 
         else:
             msg = {'Message' : 'File not acceptable and Check the format of file or columns',
-                   'col' : columns,
                    'Table':'citations_sites'}
             return make_response(jsonify(msg), 400)
     
