@@ -304,7 +304,7 @@ curl -F "fileName=@input_files/citations_sites.csv"   \
      http://localhost:5001/yaba/v1/citations_sites
 ```
 
-### Hit the Client Endpoints
+### Accessing the Client Endpoints
 
 Following endpoints can be used to upload Metadata to respective tables in bety.
 
