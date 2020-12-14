@@ -8,6 +8,7 @@ export function getVisualData(files, type, username){
         formData.append('cultivars',files.cultivars,"cultivars.csv");
         formData.append('sites_cultivars',files.sites_cultivars,"sites_cultivars.csv");
         formData.append('sites',files.sites,"sites.csv");
+        formData.append('shp_file',files.shapefile);
         params= 'getCultivarSites'
     }
 
@@ -15,6 +16,7 @@ export function getVisualData(files, type, username){
         formData.append('experiments',files.experiments,"experiments.csv");
         formData.append('experiments_sites',files.experiments_sites,"experiments_sites.csv");
         formData.append('sites',files.sites,"sites.csv");
+        formData.append('shp_file',files.shapefile);
         formData.append("username", username);
         params= 'getExperimentSites'
     }
@@ -25,6 +27,7 @@ export function getVisualData(files, type, username){
         formData.append('sites',files.sites,"sites.csv");
         formData.append('treatments',files.treatments,"treatments.csv");
         formData.append('experiments_treatments',files.experiments_treatments,"experiments_treatments.csv");
+        formData.append('shp_file',files.shapefile);
         formData.append("username", username);
         params= 'getTreatmentSites'
     }
@@ -34,40 +37,52 @@ export function getVisualData(files, type, username){
         body: formData,
         redirect: 'follow'
       })
-        .then(response => response.json())
-        .then(result => result)
-        .catch(error => {
+    .then(response => response.json())
+    .then(result => result)
+    .catch(error => {
         throw Error(error)
         });
     return Promise.resolve(res);
 }
 
+export function getUserData(apikey){
+    const formData = new FormData();
+    formData.append("apikey", apikey);
+    let res= fetch(`http://localhost:8008/getUser`,  {
+        method: 'POST',
+        body: formData,
+        redirect: 'follow'
+      })
+    .then(response => response.json())
+    .then(result => result.user)
+    .catch(error => {
+        throw Error(error)
+    });
+    return Promise.resolve(res);
+}
 
 export function getGeoJSON(file){
     const formData = new FormData();
-
-    formData.append("shp_file", file);
+    formData.append('shp_file', file, file.name);
 
     let res= fetch("http://localhost:8008/getGeoJSON", {
         method: 'POST',
         body: formData,
         redirect: 'follow'
       })
-        .then(response => response.json())
-        .catch(error => {
+    .then(response => response.json())
+    .catch(error => {
             throw Error(error)
-        });
+    });
     return Promise.resolve(res);
 }
 
-export function uploadFiles(file, type, username){
+export function uploadFiles(file, type, username, status=true){
     const formData = new FormData();
-    let params= '';
+    let params= `${type}?status=${status}`;
 
-    if(username!="")
-        params= `${type}?username=${username}`;
-    else
-        params= `${type}`;
+    if(username!=="")
+        params+= `&username=${username}`;
     
     type=`${type}.csv`;
     formData.append('fileName',file, type);

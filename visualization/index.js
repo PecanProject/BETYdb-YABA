@@ -1,10 +1,9 @@
 const express = require('express')
 const app = express()
 const port = 8075
-const host = '0.0.0.0'
-const { getCultivarSites, getExperimentSites, getTreatmentSites } = require('./pg_joins')
+const host= '0.0.0.0'
+const { getCultivarSites, getExperimentSites, getTreatmentSites, getGeoData, getUser } = require('./pg_joins')
 const { shapeParser }= require('./shape-parser')
-const { sheetToCsv }= require('./sheet-parser')
 const multer=require('multer')
 const Papa=require('papaparse')
 const upload=multer()
@@ -23,13 +22,15 @@ app.use(function (req, res, next) {
 let upload1 = upload.fields(
   [{ name: 'cultivars', maxCount: 1 },
    { name: 'sites_cultivars', maxCount: 1 },
-   { name: 'sites', maxCount: 1 }
+   { name: 'sites', maxCount: 1 },
+   { name: 'shp_file', maxCount: 1 }
   ]);
 
 let upload2 = upload.fields(
   [{ name: 'experiments', maxCount: 1 },
    { name: 'experiments_sites', maxCount: 1 },
-   { name: 'sites', maxCount: 1 }
+   { name: 'sites', maxCount: 1 },
+   { name: 'shp_file', maxCount: 1 }
   ]);
 
 let upload3 = upload.fields(
@@ -37,11 +38,15 @@ let upload3 = upload.fields(
    { name: 'treatments', maxCount: 1 },
    { name: 'experiments_treatments', maxCount: 1 },
    { name: 'experiments_sites', maxCount: 1 },
-   { name: 'sites', maxCount: 1 }
+   { name: 'sites', maxCount: 1 },
+   { name: 'shp_file', maxCount: 1 }
   ]);
 
 let shp_upload= upload.fields(
   [{ name: 'shp_file', maxCount: 1 }]);
+
+let api_key= upload.fields(
+  [{ name: 'api_key', maxCount: 1 }]);
   
 let parseCsv= (file)=>{
   let buf= Buffer.from(file.buffer)
@@ -56,55 +61,53 @@ let parseCsv= (file)=>{
   return res
 }
 
-let parseVisData= (data)=>{ 
-  let res=data.map((item)=>{
-    let arr= item.plot.split(/\s+/);
-    item.x= parseInt(arr.filter((value, i)=>{
-      return arr[i-1] === "Range"
-    })[0]);
-    item.y= parseInt(arr.filter((value, i)=>{
-      return arr[i-1] === "Column"
-    })[0]);
-    delete item.plot;
-    return item;   
-  })
-  return res;
-}
-
 //sends plots for cultivars
 app.post('/getCultivarSites',upload1 ,async (req, res) => {
   let cultivars= parseCsv(req.files['cultivars'][0])
   let sites_cultivars= parseCsv(req.files['sites_cultivars'][0])
   let sites= parseCsv(req.files['sites'][0])
   let val=[];
-  let getval=(value)=>{ val.push(value) }
+  let file= Buffer.from(req.files['shp_file'][0].buffer);
+  let geoJSON= await shapeParser(file);
+  let getval=(value)=>{ 
+    val.push(value.map((data)=>{
+      data.polygon= JSON.parse(data.polygon);
+      return data;
+    })) 
+  }
   try{
-  await getCultivarSites(cultivars, sites_cultivars, sites).then((value)=> getval(value))
+  await getCultivarSites(cultivars, sites_cultivars, sites, geoJSON.features).then((value)=> getval(value))
   console.log(val)
-  res.status(200).send(parseVisData(val[0]));
+  res.status(200).send(val[0]);
   }
   catch(err){
-    console.log(err)
-    res.status(400).send("File not acceptable.Check its format");
+    res.status(400).send({"error": err.message});
   }
 })
 
 //sends plots for experiments
-app.post('/getExperimentSites', upload2,async (req, res) => {
+app.post('/getExperimentSites', upload2, async (req, res) => {
   let experiments= parseCsv(req.files['experiments'][0])
   let experiments_sites= parseCsv(req.files['experiments_sites'][0])
   let sites= parseCsv(req.files['sites'][0])
+  let file= Buffer.from(req.files['shp_file'][0].buffer);
+  let geoJSON= await shapeParser(file);
   let username= req.body.username;
   let val=[]
-  let getval=(value)=>{ val.push(value) }
+  let getval=(value)=>{ 
+    val.push(value.map((data)=>{
+      data.polygon= JSON.parse(data.polygon);
+      return data;
+    }))
+  } 
   try{
-    await getExperimentSites(username, experiments, experiments_sites, sites).then(value=> getval(value))
+    await getExperimentSites(username, experiments, experiments_sites, sites, geoJSON.features).then(value=> getval(value))
     console.log(val)
-    res.status(200).send(parseVisData(val[0]));
+    res.status(200).send(val[0]);
     }
     catch(err){
       console.log(err)
-      res.status(400).send("File not acceptable.Check its format");
+      res.status(400).send({"error": err.message});
     }
 })
 
@@ -115,30 +118,53 @@ app.post('/getTreatmentSites', upload3, async(req, res) => {
   let experiments_treatments= parseCsv(req.files['experiments_treatments'][0])
   let experiments_sites= parseCsv(req.files['experiments_sites'][0])
   let sites= parseCsv(req.files['sites'][0])
+  let file= Buffer.from(req.files['shp_file'][0].buffer);
+  let geoJSON= await shapeParser(file);
   let username= req.body.username;
   let val=[]
-  let getval=(value)=>{ val.push(value) }
+  let getval=(value)=>{ 
+    val.push(value.map((data)=>{
+      data.polygon= JSON.parse(data.polygon);
+      return data;
+    })) 
+  }
   try{
-    await getTreatmentSites(username, treatments, experiments_treatments, sites, experiments, experiments_sites).then(value=> getval(value))
+    await getTreatmentSites(username, treatments, experiments_treatments, sites, experiments, experiments_sites, geoJSON.features).then(value=> getval(value))
     console.log(val)
-    res.status(200).send(parseVisData(val[0]));
+    res.status(200).send(val[0]);
     }
     catch(err){
       console.log(err)
-      res.status(400).send("File not acceptable.Check its format");
+      res.status(400).send({"error": err.message});
     }
+})
+
+//sends the Username for the valid api key
+app.post('/getUser', api_key, async(req, res) => {
+  let apikey= req.body.apikey;
+  try{
+    let user= await getUser(apikey);
+    res.status(200).send({"user":user});
+  }
+  catch(err){
+    console.log(err)
+    res.status(400).send({"error": err.message});
+  }
 })
 
 //sends the GeoJSON data after parsing the shapefile 
 app.post('/getGeoJSON', shp_upload, async(req, res) => {
+  let file= Buffer.from(req.files['shp_file'][0].buffer);
+  let geoJSON= await shapeParser(file)
+  let geoData={"type":"FeatureCollection"}
   try{
-    let file= Buffer.from(req.files['shp_file'][0].buffer);
-    let geoJSON= await shapeParser(file)
-    res.status(200).send(geoJSON);
+    geoData.features= await getGeoData(geoJSON);
+    console.log(geoData)
+    res.status(200).send(geoData);
   }
   catch(err){
     console.log(err)
-    res.status(400).send("File not acceptable.Check its format");
+    res.status(400).send({"error": err.message});
   }
 })
 
@@ -165,11 +191,15 @@ app.post('/getGeoFile', shp_upload, async(req, res) => {
   }
 })
 
+<<<<<<< HEAD
 app.post('/sheetToCsv', async(req, res) => {
   let sheet=req.body.sheet;
   let csvFile= await sheetToCsv(sheet)
 })
 
 app.listen(port, host,() => {
+=======
+app.listen(port, host, () => {
+>>>>>>> 14c2e3b366a78b45ae750087276ee6e22e35b6d8
   console.log(`App running on port ${port}.`)
 })

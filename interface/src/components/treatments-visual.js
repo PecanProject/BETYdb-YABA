@@ -4,7 +4,7 @@ import { uploadFiles, uploadSites} from './requests'
 import { withRouter, Redirect} from 'react-router-dom'
 import './stylesheets/visual.css'
 
-class ShapeView extends Component{
+class TreatmentsView extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -14,9 +14,13 @@ class ShapeView extends Component{
         this.onNext=this.onNext.bind(this);
     }
 
+    componentDidMount(){
+        window.scrollTo(0, 0);
+    }
+
     async onNext(e){
         try{
-            let files= this.props.fileList.fileList;
+            let files= this.props.fileList;
             let val= [];
             Promise.all([
                     uploadFiles(files.cultivars, "cultivars", ""),
@@ -86,9 +90,9 @@ class ShapeView extends Component{
             }
         return(
             <div className="shape-view">
-                <div className="heading">Confirm the view of your shapefile ?</div>
+                <div className="heading">Confirm the view of your treatments ?</div>
                 <div className="map">
-                    <GMap file={this.props.fileList.fileList.shapefile} />
+                <GMap file={this.props.fileList.shapefile} sites={this.props.fileList} user={this.props.user} type="treatments"/>
                 </div>
                 <div className="choice">
                     <div>Do you want to continue ?</div>
@@ -102,4 +106,4 @@ class ShapeView extends Component{
     }
 }
 
-export default withRouter(ShapeView);
+export default withRouter(TreatmentsView);
