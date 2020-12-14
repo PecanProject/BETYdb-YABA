@@ -22,6 +22,11 @@ paths:
           schema:
             type: string
           description: Username uploading the csv
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -38,10 +43,10 @@ paths:
                     name,start_date,end_date,description
                     'MAC Season 8: Border','2019-01-01','2019-03-31','ProMix BRK20 14-14-14 Osmocote pots; pre-filled by Hummert Sorghum seed Conviron Growth House'
                   
-                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1676963884'
-              
-                  
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/view#gid=1676963884'                                
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -101,6 +106,12 @@ paths:
       operationId: Meta.insert_sites
       tags:
         - sites
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           application/octet-stream:
@@ -129,9 +140,10 @@ paths:
                     sitename,city,state,country,notes,greenhouse,geometry,time_zone,soil,soilnotes
                     'MAC Field Scanner Season 8 Range 1 Column 1 W','Maricopa','Arizona','USA','This site represents the the whole wo...',...,'America/Phoenix','soil','soilnotes,
                   
-                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=347205052'
-      
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/view#gid=347205052'      
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -197,6 +209,11 @@ paths:
           schema:
             type: string
           description: Username uploading the csv
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -213,8 +230,10 @@ paths:
                     name,definition,control
                     ' MAC Sorghum Season ','Pre-plant Nitrogen fertilizer incorporated in the field',t
                   
-                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=2041366690'
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/view#gid=2041366690'
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -274,6 +293,12 @@ paths:
       operationId: Meta.insert_cultivars
       tags:
         - cultivars
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -290,8 +315,10 @@ paths:
                     name,ecotype,notes,species
                     'DP_074','RIL','RIL','Sorghum bicolor'
                   
-                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1280032116'
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/view#gid=1280032116'
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -357,6 +384,11 @@ paths:
           schema:
             type: string
           description: Username uploading the csv
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -374,8 +406,10 @@ paths:
                     "Newcomb, Maria",2019,'Maricopa Agricultural Center Field Measurements and Activities,Journal of Experimental Botany',44,907-920 ,'http://jxb.oxfordjournals.org/cgi/content/abstract/44/5/907?ijkey=c47a46efb0770b07ce74b3affc2bcf364cbba8b7&keytype2=tf_ipsecsha,http://jxb.oxfordjournhls.org/cgi/reprint/44/5/907.pdf,10.1038/nature02403'
 
                   
-                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1613500696'
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/view#gid=1613500696'
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -435,6 +469,12 @@ paths:
       operationId: Meta.insert_experimentSites
       tags:
         - experiment_sites
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -451,8 +491,10 @@ paths:
                     experiment_name,sitename
                     'MAC Season 8: Border' ,'MAC Field Scanner Season 5 Range 39 Column 1 E'
                   
-                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1613500696'
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/view#gid=1613500696'
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -512,6 +554,12 @@ paths:
       operationId: Meta.insert_experimentTreatments
       tags:
         - experiment_treatments
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -528,8 +576,10 @@ paths:
                     experiment_name,treatment_name
                     'MAC Season 8: Border','MAC Season 6: Sorghum'
                   
-                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1613500696'
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/view#gid=1613500696'
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -589,6 +639,12 @@ paths:
       operationId: Meta.insert_sitesCultivars
       tags:
         - sites_cultivars
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -605,8 +661,10 @@ paths:
                     cultivar_name,specie_id,sitename
                     'Orita','2588','MAC Field Scanner Season 8 Range 1 Column 1 W'
                   
-                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1613500696'
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/view#gid=1613500696'
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':
@@ -666,6 +724,12 @@ paths:
       operationId: Meta.insert_citationsSites
       tags:
         - citations_sites
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: boolean
+          description: Status for uploading.
       requestBody:
         content:
           multipart/form-data:
@@ -683,8 +747,10 @@ paths:
                     'LeBauer',2010,'Expert Prior','MAC Field Scanner Season 4 Range 51 Column 7 E'
 
                   
-                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/edit#gid=1613500696'
+                  externalValue: 'https://docs.google.com/spreadsheets/d/1BPkZPfynZI9DB9bRJfa335uC_uNjST5jHVf-XUgSVvM/view#gid=1613500696'
       responses:
+        '200':
+          description: Successfully Validated
         '201':
           description: Successfully Inserted
         '400':

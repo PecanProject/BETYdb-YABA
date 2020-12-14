@@ -60,6 +60,7 @@ services:
       - 8008:8075
     depends_on:
       - postgres
+    restart: unless-stopped
     
   yaba_interface:
     build: ./interface
@@ -82,6 +83,3 @@ volumes:
 
 networks:
   bety:
-
-
-  

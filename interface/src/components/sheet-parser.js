@@ -1,22 +1,21 @@
-const parser = require('google-spreadsheets-key-parser');
 const Papa=require('papaparse')
 
-let arrayWithData=[];
 async function parseToCsv(googleSheetLink){
     return await new Promise((resolve,reject)=>{
-        const Tabletop= require('tabletop')
-        let sheetID = parser(googleSheetLink)["key"];
-         Tabletop.init({
-            key: sheetID,
-            callback:(data) => { resolve(showInfo(data)) },
-            simpleSheet: true
-        })    
+        googleSheetLink= 'https://cors-anywhere.herokuapp.com/' + googleSheetLink;
+        Papa.parse(googleSheetLink, {
+          download: true,
+          header: true,
+          complete: function(results) {
+            let csvData= Papa.unparse(results.data)
+            let csvBlob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' })
+            resolve(csvBlob)
+          },
+          error: function(err){
+              reject(err)
+          }
+        })
     })
 }
-
-function showInfo (data) {
-    arrayWithData.push(...data);
-    return Papa.unparse(arrayWithData);
-  }
 
 export default parseToCsv;

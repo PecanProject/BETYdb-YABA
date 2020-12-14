@@ -1,0 +1,56 @@
+#validation{
+    display: flex;
+    flex-direction: column;
+    margin: 3rem auto 8rem;
+}
+
+#title {
+    text-align: center;
+    font-family: arial, sans-serif;
+    font-size: 3.2rem;
+    font-weight: lighter;
+  }
+  
+  #status {
+    font-size: 1.5rem;
+    text-align: center;
+    border-collapse: collapse;
+    border: 3px solid #ddd;
+    margin: 5rem auto;
+    width: 50%;
+  }
+  
+  #status td, #status th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #status tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #status tr:hover {background-color: #ddd;}
+  
+  #status th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #009ACD;
+    color: white;
+  }
+
+  .choice{
+    display: flex;
+    flex-direction: column;
+    margin: 3rem auto;
+    justify-content: center;
+    align-items: center;
+    font-weight: lighter;
+    font-size: 2.5rem;
+}
+
+.options{
+    display: flex;
+}
+
+.options>button{
+    margin: 3rem 8rem;
+}
