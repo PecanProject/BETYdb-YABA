@@ -1,19 +1,16 @@
 import React from 'react'
 import './stylesheets/navbar.css'
 
-const navbar= ()=>{
-
-    const Responsive= ()=>{
-        var x = document.getElementById("Link");
-        if (x.className === "link") {
-        x.className += " responsive";
-        x.style.display="flex !important;";
-        } else {
-        x.className = "link";
-        }
-        console.log(x);
-    }
-   
+const navbar= ({ user })=>{
+  const User=()=>{
+      if(user !== undefined){
+          return (
+            <div>
+                <img src="/user.svg" className="user-img" alt="User"/>
+            </div>
+          )
+      }
+  }
   return (
     <nav className="nav">
         <div className="brand">
@@ -27,15 +24,20 @@ const navbar= ()=>{
             <div>
                 <span><a data-testid="Pecan-site" href="http://pecanproject.org/" rel="noopener noreferrer" target="_blank">PEcAn Project</a></span>
             </div>
+            {User()}
+            <div>
+                <span>{user}</span>
+            </div>
             <div>
                 <a data-testid="BETYdb-github" href="http://github.com/PecanProject/BETYdb-YABA/" rel="noopener noreferrer" target="_blank"><img src="/gh.svg" alt="Github" className="gh-img"/></a>
-            </div>
-            <div className="bars" onClick={Responsive}>
-                <i className="fa fa-bars"></i>
             </div>
         </div>
     </nav>
     )
 }
 
+<<<<<<< HEAD
 export default navbar;
+=======
+export default navbar;
+>>>>>>> 14c2e3b366a78b45ae750087276ee6e22e35b6d8

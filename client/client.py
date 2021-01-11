@@ -19,6 +19,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 cors = CORS(app, resources={r'/*': {'origins': 'http://localhost:3001'}})
 
 logging.getLogger('flask_cors').level = logging.DEBUG
+logging.basicConfig(filename='client.log',format='%(asctime)s %(message)s',level=logging.INFO)
 
 ALLOWED_EXTENSIONS = set(['csv', 'xls','xlsx'])
 
@@ -108,15 +109,29 @@ def postRequest(request,endpoint):
         flash('File successfully uploaded')
 
         if 'username' not in request.args:
-            sleep(1)
-            response = requests.post(_url(endpoint),files=payload)
+            if 'status' not in request.args:
+                sleep(1)
+                response = requests.post(_url(endpoint),files=payload)
+            
+            else:
+                status=request.args['status']
+                params={'status':status}
+                sleep(1)
+                response = requests.post(_url(endpoint),files=payload,params=params)
             
         else:
             username=request.args['username']
-            params={'username':username}
-            sleep(1)
-            response = requests.post(_url(endpoint),files=payload,params=params)
-
+            if 'status' not in request.args:
+                params={'username':username}
+                sleep(1)
+                response = requests.post(_url(endpoint),files=payload,params=params)
+            
+            else:
+                status=request.args['status']
+                params={'username':username, 'status':status}
+                sleep(1)
+                response = requests.post(_url(endpoint),files=payload,params=params)
+                
         return response
             
     else:

@@ -14,7 +14,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.exc import OperationalError
 from shapely.geometry import Polygon
 
-
+logging.basicConfig(filename='app.log',format='%(asctime)s %(message)s',level=logging.INFO)
 
 UPLOAD_FOLDER = 'temp'
 
@@ -32,7 +32,7 @@ def save_tempFile(File):
     File.save(UPLOAD_PATH)
     return None
 
-def insert_experiments(username,fileName):
+def insert_experiments(username,fileName,status=True):
     """
     This function responds to a request for /yaba/v1/experiments with csv file.
     It first checks the file is appropriate one and then add new column user_id to dataframe.
@@ -59,6 +59,12 @@ def insert_experiments(username,fileName):
         columns=data.columns.values.tolist()
         accepted_columns=['name','start_date','end_date','description']
         if(all(x in accepted_columns for x in columns)):
+            if status == False:
+                msg = {'Message' : 'Successfully Validated',
+                       'Table' : 'Experiments'}
+                
+                return make_response(jsonify(msg), 200)
+                
             data['user_id']=user_id
             insert_table(table='experiments',data=data)
             msg = {'Message' : 'Successfully inserted',
@@ -68,7 +74,9 @@ def insert_experiments(username,fileName):
             return make_response(jsonify(msg), 201)
 
         else:
-            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            msg = {'Message' : 'File not acceptable. Check the format of file or columns', 
+                   'Table' : 'Experiments'}
+
             return make_response(jsonify(msg), 400)
     
     except OperationalError:
@@ -81,12 +89,13 @@ def insert_experiments(username,fileName):
         logging.error(traceback.format_exc())
         msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "unique_name_per_species"'}
         return make_response(jsonify(msg), 409)
-    except Exception :
+    except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 410     
+        msg = {'Message' : 'Error' + str(e)}
+        return make_response(jsonify(msg), 410)
      
-def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
+def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file,status=True):
     """
     This function responds to a request for  /yaba/v1/sites with csv and shape files.Checks
     file is appropriate one.Takes all the shape file.Extracts geometry from Geopandas dataframe
@@ -141,6 +150,12 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
             data.loc[index, 'geometry'] = poly
         
         if(all(x in accepted_columns for x in columns)):
+            if status == False:
+                msg = {'Message' : 'Successfully Validated',
+                       'Table' : 'Sites'}
+
+                return make_response(jsonify(msg), 200)
+
             data['time_zone'].fillna("America/Phoenix", inplace = True)
             data['soilnotes'].fillna("", inplace = True)      
             data['greenhouse'].fillna("f", inplace = True)            
@@ -159,7 +174,9 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
             return make_response(jsonify(msg), 201)
 
         else:
-            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            msg = {'Message' : 'File not acceptable. Check the format of file or columns',
+                   'Table' : 'Sites'}
+            
             return make_response(jsonify(msg), 400)
     
     except OperationalError:
@@ -172,18 +189,18 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file):
         logging.error(traceback.format_exc())
         msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "unique_name_per_species"'}
         return make_response(jsonify(msg), 409)
-    except Exception:
+    except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 410
+        msg = {'Message' : 'Error' + str(e)}
+        return make_response(jsonify(msg), 410)
     finally:
         os.remove(shp_file_target)
         os.remove(dbf_file_target)
         os.remove(prj_file_target)
         os.remove(shx_file_target)                
-        os.remove(file_name)        
 
-def insert_treatments(username,fileName):
+def insert_treatments(username,fileName,status=True):
     """
     This function responds to a request for  /yaba/v1/treatments
     with csv file.Insertion is done to "treatments" table.
@@ -210,6 +227,12 @@ def insert_treatments(username,fileName):
         accepted_columns=['name','definition','control']
      
         if(all(x in accepted_columns for x in columns)):
+            if status == False:
+                msg = {'Message' : 'Successfully Validated',
+                       'Table' : 'Treatments'}
+
+                return make_response(jsonify(msg), 200)
+
             data['user_id']=user_id
             insert_table(table='treatments',data=data)
             msg = {'Message' : 'Successfully inserted',
@@ -219,7 +242,9 @@ def insert_treatments(username,fileName):
             return make_response(jsonify(msg), 201)
 
         else:
-            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            msg = {'Message' : 'File not acceptable. Check the format of file or columns',
+                   'Table' : 'Treatments'}
+            
             return make_response(jsonify(msg), 400)
     
     except OperationalError:
@@ -232,12 +257,13 @@ def insert_treatments(username,fileName):
         logging.error(traceback.format_exc())
         msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "unique_name_per_species"'}
         return make_response(jsonify(msg), 409)
-    except Exception :
+    except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 410   
+        msg = {'Message' : 'Error' + str(e)}
+        return make_response(jsonify(msg), 410)
 
-def insert_cultivars(fileName):
+def insert_cultivars(fileName, status=True):
     """
     This function responds to a request for /yaba/v1/cultivars
     with csv file
@@ -263,6 +289,12 @@ def insert_cultivars(fileName):
         accepted_columns=['name','species','ecotype','notes']
      
         if(all(x in accepted_columns for x in columns)):
+            if status == False:
+                msg = {'Message' : 'Successfully Validated',
+                       'Table' : 'Cultivars'}
+                
+                return make_response(jsonify(msg), 200)
+
             new_data = pd.DataFrame(columns=['name', 'specie_id','name','ecotype','notes'])
 
             new_data['name']=data['name']
@@ -279,7 +311,9 @@ def insert_cultivars(fileName):
             return make_response(jsonify(msg), 201)
 
         else:
-            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            msg = {'Message' : 'File not acceptable. Check the format of file or columns',
+                   'Table' : 'Cultivars'}
+            
             return make_response(jsonify(msg), 400)
     
     except OperationalError:
@@ -292,12 +326,13 @@ def insert_cultivars(fileName):
         logging.error(traceback.format_exc())
         msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "unique_name_per_species"'}
         return make_response(jsonify(msg), 409)
-    except Exception :
+    except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 410      
+        msg = {'Message' : 'Error' + str(e)}
+        return make_response(jsonify(msg), 410)
    
-def insert_citations(username,fileName):
+def insert_citations(username,fileName, status=True):
     """
     This function responds to a request for  /yaba/v1/citations
     with csv file
@@ -322,6 +357,11 @@ def insert_citations(username,fileName):
         accepted_columns=['author','year','title','journal','vol','pg','url','pdf','doi']
      
         if(all(x in accepted_columns for x in columns)):
+            if status == False:
+                msg = {'Message' : 'Successfully Validated',
+                       'Table' : 'Citations'}
+        
+                return make_response(jsonify(msg), 200)
             #Reading the CSV file into DataFrame            
             data['user_id']=user_id
             insert_table(table='citations',data=data)
@@ -332,7 +372,9 @@ def insert_citations(username,fileName):
             return make_response(jsonify(msg), 201)
 
         else:
-            msg = {'Message' : 'File not acceptable and Check the format of file or columns'}
+            msg = {'Message' : 'File not acceptable. Check the format of file or columns',
+                   'Table' : 'Citations'}
+
             return make_response(jsonify(msg), 400)
     
     except OperationalError:
@@ -345,12 +387,13 @@ def insert_citations(username,fileName):
         logging.error(traceback.format_exc())
         msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violation.'}
         return make_response(jsonify(msg), 409)
-    except Exception :
+    except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 410                   
+        msg = {'Message' : 'Error' + str(e)}
+        return make_response(jsonify(msg), 410)
         
-def insert_experimentSites(fileName):
+def insert_experimentSites(fileName, status=True):
     """
     This function responds to a request for /yaba/v1/experiments_sites
     with csv file
@@ -371,6 +414,12 @@ def insert_experimentSites(fileName):
         accepted_columns=['experiment_name','sitename']
      
         if(all(x in accepted_columns for x in columns)):
+            if status == False:
+                msg = {'Message' : 'Successfully Validated',
+                       'Table' : 'Experiments_sites'}
+                    
+                return make_response(jsonify(msg), 200)
+            
             new_data = pd.DataFrame(columns=['experiment_id', 'site_id'])
             new_data['experiment_id'] = data.apply(lambda row: fetch_id(row['experiment_name'],table='experiments'), axis=1)
             new_data['site_id'] = data.apply(lambda row: fetch_sites_id(row['sitename']), axis=1)            
@@ -382,7 +431,9 @@ def insert_experimentSites(fileName):
             return make_response(jsonify(msg), 201)
 
         else:
-            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            msg = {'Message' : 'File not acceptable. Check the format of file or columns',
+                   'Table' : 'Experiments_sites'}
+
             return make_response(jsonify(msg), 400)
     
     except OperationalError:
@@ -395,12 +446,13 @@ def insert_experimentSites(fileName):
         logging.error(traceback.format_exc())
         msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violation.'}
         return make_response(jsonify(msg), 409)
-    except Exception :
+    except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 410
+        msg = {'Message' : 'Error' + str(e)}
+        return make_response(jsonify(msg), 410)
 
-def insert_experimentTreatments(fileName):
+def insert_experimentTreatments(fileName, status=True):
     """
     This function responds to a request for /yaba/v1/experiments_treatments
     with csv file
@@ -423,6 +475,12 @@ def insert_experimentTreatments(fileName):
         accepted_columns=['experiment_name','treatment_name']    
 
         if(all(x in accepted_columns for x in columns)):
+            if status == False:
+                msg = {'Message' : 'Successfully Validated',
+                       'Table' : 'Experiments_treatments'}
+                    
+                return make_response(jsonify(msg), 200)
+                        
             new_data = pd.DataFrame(columns=['experiment_id', 'treatment_id'])
             new_data['experiment_id'] = data.apply(lambda row: fetch_id(row['experiment_name'],table='experiments'), axis=1)
             new_data['treatment_id'] = data.apply(lambda row: fetch_id(row['treatment_name'],table='treatments'), axis=1)
@@ -434,7 +492,9 @@ def insert_experimentTreatments(fileName):
             return make_response(jsonify(msg), 201)
 
         else:
-            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            msg = {'Message' : 'File not acceptable. Check the format of file or columns',
+                   'Table' : 'Experiments_treatments'}
+
             return make_response(jsonify(msg), 400)
     
     except OperationalError:
@@ -447,12 +507,13 @@ def insert_experimentTreatments(fileName):
         logging.error(traceback.format_exc())
         msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violation.'}
         return make_response(jsonify(msg), 409)
-    except Exception :
+    except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 410
+        msg = {'Message' : 'Error' + str(e)}
+        return make_response(jsonify(msg), 410)
 
-def insert_sitesCultivars(fileName):
+def insert_sitesCultivars(fileName, status=True):
     """
     This function responds to a request for /yaba/v1/sites_cultivars
     with csv file
@@ -474,6 +535,12 @@ def insert_sitesCultivars(fileName):
         accepted_columns=['sitename','cultivar_name','specie_id']    
 
         if(all(x in accepted_columns for x in columns)):
+            if status == False:
+                msg = {'Message' : 'Successfully Validated',
+                       'Table' : 'Sites_cultivars'}
+                    
+                return make_response(jsonify(msg), 200)
+
             new_data = pd.DataFrame(columns=['site_id', 'cultivar_id'])
             new_data['site_id'] = data.apply(lambda row: fetch_sites_id(row['sitename']), axis=1)
             new_data['cultivar_id'] = data.apply(lambda row: fetch_cultivars_id(row['cultivar_name'],row['specie_id']), axis=1)
@@ -485,7 +552,9 @@ def insert_sitesCultivars(fileName):
             return make_response(jsonify(msg), 201)
 
         else:
-            msg = {'Message' : 'File not acceptable.Check the format of file or columns'}
+            msg = {'Message' : 'File not acceptable. Check the format of file or columns',
+                   'Table' : 'Sites_cultivars'}
+
             return make_response(jsonify(msg), 400)
     
     except OperationalError:
@@ -498,12 +567,13 @@ def insert_sitesCultivars(fileName):
         logging.error(traceback.format_exc())
         msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violation.'}
         return make_response(jsonify(msg), 409)
-    except Exception :
+    except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 410
+        msg = {'Message' : 'Error' + str(e)}
+        return make_response(jsonify(msg), 410)
     
-def insert_citationsSites(fileName):
+def insert_citationsSites(fileName, status=True):
     """
     This function responds to a request for /yaba/v1/citations_sites
     with csv file
@@ -526,6 +596,12 @@ def insert_citationsSites(fileName):
         accepted_columns=['author','year','title','sitename']
 
         if(all(x in accepted_columns for x in columns)):
+            if status == False:
+                msg = {'Message' : 'Successfully Validated',
+                       'Table' : 'Citations_sites'}
+                    
+                return make_response(jsonify(msg), 200)
+                        
             new_data = pd.DataFrame(columns=['citation_id','site_id'])
             new_data['site_id'] = data.apply(lambda row: fetch_sites_id(row['sitename']), axis=1)
             new_data['citation_id'] = data.apply(lambda row: fetch_citations_id(row['author'],row['year'],row['title']), axis=1)
@@ -539,7 +615,7 @@ def insert_citationsSites(fileName):
 
         else:
             msg = {'Message' : 'File not acceptable and Check the format of file or columns',
-                   'Table':'citations_sites'}
+                   'Table':'Citations_sites'}
             return make_response(jsonify(msg), 400)
     
     except OperationalError:
@@ -552,7 +628,8 @@ def insert_citationsSites(fileName):
         logging.error(traceback.format_exc())
         msg = {'Message' : '(psycopg2.errors.UniqueViolation) duplicate key value violation.'}
         return make_response(jsonify(msg), 409)
-    except Exception :
+    except Exception as e:
         # Logs the error appropriately
         logging.error(traceback.format_exc())
-        return 410
+        msg = {'Message' : 'Error' + str(e)}
+        return make_response(jsonify(msg), 410)
