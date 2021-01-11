@@ -3,14 +3,12 @@
 #################
 
 import requests
-from flask import Flask, g, render_template,request,redirect,Response,flash,jsonify, make_response
-from flask import request
+from flask import Flask, render_template,request,redirect,Response,flash
 
 import logging
-import json
 from time import sleep
-import sys
-from flask_cors import CORS, cross_origin
+
+from flask_cors import CORS
 
 # Create app
 app = Flask(__name__)
@@ -18,7 +16,8 @@ app.secret_key = 'my unobvious secret key'
 
 # The maximum allowed payload to 16 megabytes.
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-cors = CORS(app, resources={r'/*': {'origins': '*'}})
+cors = CORS(app, resources={r'/*': {'origins': 'http://localhost:3001'}})
+
 logging.getLogger('flask_cors').level = logging.DEBUG
 logging.basicConfig(filename='client.log',format='%(asctime)s %(message)s',level=logging.INFO)
 

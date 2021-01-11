@@ -36,4 +36,8 @@ const navbar= ({ user })=>{
     )
 }
 
+<<<<<<< HEAD
 export default navbar;
+=======
+export default navbar;
+>>>>>>> 14c2e3b366a78b45ae750087276ee6e22e35b6d8

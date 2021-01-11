@@ -7,9 +7,7 @@ import geopandas as gpd
 import traceback
 import logging
 import pandas as pd
-
-from flask import make_response,Response,jsonify
-from flask import json
+from flask import make_response,jsonify
 from db import *
 from werkzeug import secure_filename,FileStorage
 from sqlalchemy.exc import IntegrityError
@@ -618,7 +616,6 @@ def insert_citationsSites(fileName, status=True):
         else:
             msg = {'Message' : 'File not acceptable and Check the format of file or columns',
                    'Table':'Citations_sites'}
-
             return make_response(jsonify(msg), 400)
     
     except OperationalError:
