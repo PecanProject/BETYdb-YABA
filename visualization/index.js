@@ -191,15 +191,11 @@ app.post('/getGeoFile', shp_upload, async(req, res) => {
   }
 })
 
-<<<<<<< HEAD
 app.post('/sheetToCsv', async(req, res) => {
   let sheet=req.body.sheet;
   let csvFile= await sheetToCsv(sheet)
 })
 
 app.listen(port, host,() => {
-=======
-app.listen(port, host, () => {
->>>>>>> 14c2e3b366a78b45ae750087276ee6e22e35b6d8
   console.log(`App running on port ${port}.`)
 })
