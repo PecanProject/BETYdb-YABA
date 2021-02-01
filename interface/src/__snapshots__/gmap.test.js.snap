@@ -320,8 +320,7 @@ exports[`Test the GMap Component it should render correctly 1`] = `
         </p>
       </ForwardRef(Leaflet(Popup))>
     </ForwardRef(Leaflet(GeoJSON))>
-    ); })}
+    );
   </Map>
-  /
 </div>
 `;
