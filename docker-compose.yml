@@ -78,7 +78,7 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
       - REACT_APP_HOST=0.0.0.0
-      - REACT_APP_PORT=3001
+      - REACT_APP_PORT=3000
     depends_on:
       - yaba_client
       - yaba_visualization
