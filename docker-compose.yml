@@ -23,6 +23,7 @@ services:
       - REMOTE_SERVERS=6
       - UNICORN_WORKER_PROCESSES=1
       - SECRET_KEY_BASE=thisissomereallllllylongsecretkeyandshouldbelongerthanthis
+      - DUMPURL=https://terraref.ncsa.illinois.edu/bety/dump/bety6/bety.tar.gz
     depends_on:
       - postgres
     restart: unless-stopped
