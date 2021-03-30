@@ -7,7 +7,7 @@ import geopandas as gpd
 import traceback
 import logging
 import pandas as pd
-from flask import make_response, jsonify
+from flask import make_response,jsonify
 from db import *
 from werkzeug import secure_filename,FileStorage
 from sqlalchemy.exc import IntegrityError
@@ -27,12 +27,12 @@ def save_tempFile(File):
     # Sanitise the filename
     a_file_name = secure_filename(File.filename)
 
-    UPLOAD_PATH = os.path.join(os.getcwd(), UPLOAD_FOLDER,a_file_name)
+    UPLOAD_PATH=os.path.join(os.getcwd(),UPLOAD_FOLDER,a_file_name)
     # Save file 
     File.save(UPLOAD_PATH)
     return None
 
-def insert_experiments(username, fileName, status=True):
+def insert_experiments(username,fileName,status=True):
     """
     This function responds to a request for /yaba/v1/experiments with csv file.
     It first checks the file is appropriate one and then add new column user_id to dataframe.
