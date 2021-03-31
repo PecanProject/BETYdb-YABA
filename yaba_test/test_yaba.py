@@ -52,7 +52,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://0.0.0.0:5001/yaba/v1/cultivars', files=files)
+            'http://0.0.0.0:5001/yaba/v1/cultivars?username=guestuser', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -70,7 +70,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://0.0.0.0:5001/yaba/v1/experiments_sites', files=files)
+            'http://0.0.0.0:5001/yaba/v1/experiments_sites?username=guestuser', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -79,7 +79,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://0.0.0.0:5001/yaba/v1/experiments_treatments', files=files)
+            'http://0.0.0.0:5001/yaba/v1/experiments_treatments?username=guestuser', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -88,7 +88,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://0.0.0.0:5001/yaba/v1/sites_cultivars', files=files)
+            'http://0.0.0.0:5001/yaba/v1/sites_cultivars?username=guestuser', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
@@ -97,7 +97,7 @@ class BasicTests(unittest.TestCase):
         csv = 'input_files/'+csv_filename
         files = {'fileName': open(csv, 'rb')}
         response = requests.post(
-            'http://0.0.0.0:5001/yaba/v1/citations_sites', files=files)
+            'http://0.0.0.0:5001/yaba/v1/citations_sites?username=guestuser', files=files)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.ok)
 
