@@ -37,4 +37,3 @@ const navbar= ({ user })=>{
 }
 
 export default navbar;
-
