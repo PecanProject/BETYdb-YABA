@@ -14,12 +14,12 @@ def get_database():
         log.info("Successfully Connected to BETY Database!")
     except IOError:
         log.exception("Failed to get database connection!")
-        return None, 'fail'
+        return None, "fail"
 
     return engine
 
 
-def get_connection_from_config(config_file_name='credentials.yaml'):
+def get_connection_from_config(config_file_name="credentials.yaml"):
     """
     Sets up database connection from config file.
     Input:
@@ -28,19 +28,25 @@ def get_connection_from_config(config_file_name='credentials.yaml'):
                       credentials for the PostgreSQL database
     """
 
-    with open(config_file_name, 'r') as f:
+    with open(config_file_name, "r") as f:
         creds = yaml.safe_load(f)
 
-    if not ('PGHOST' in creds.keys() and
-            'PGUSER' in creds.keys() and
-            'PGPASSWORD' in creds.keys() and
-            'PGDATABASE' in creds.keys() and
-            'PGPORT' in creds.keys()):
-        raise Exception('Bad config file: ' + config_file_name)
+    if not (
+        "PGHOST" in creds.keys()
+        and "PGUSER" in creds.keys()
+        and "PGPASSWORD" in creds.keys()
+        and "PGDATABASE" in creds.keys()
+        and "PGPORT" in creds.keys()
+    ):
+        raise Exception("Bad config file: " + config_file_name)
 
-    return get_engine(creds['PGDATABASE'], creds['PGUSER'],
-                      creds['PGHOST'], creds['PGPORT'],
-                      creds['PGPASSWORD'])
+    return get_engine(
+        creds["PGDATABASE"],
+        creds["PGUSER"],
+        creds["PGHOST"],
+        creds["PGPORT"],
+        creds["PGPASSWORD"],
+    )
 
 
 def get_engine(db, user, host, port, passwd):
@@ -54,7 +60,8 @@ def get_engine(db, user, host, port, passwd):
     passwd: Password for the database
     """
 
-    url = 'postgresql+psycopg2://{user}:{passwd}@{host}:{port}/{db}'.format(
-        user=user, passwd=passwd, host=host, port=port, db=db)
-    engine = create_engine(url,poolclass=QueuePool)
+    url = "postgresql+psycopg2://{user}:{passwd}@{host}:{port}/{db}".format(
+        user=user, passwd=passwd, host=host, port=port, db=db
+    )
+    engine = create_engine(url, poolclass=QueuePool)
     return engine
