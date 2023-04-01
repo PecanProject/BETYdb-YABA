@@ -1,5 +1,5 @@
 """
-This is the Meta module and supports all the REST actions for the yaba.yaml
+This is the Meta module and supports all the REST actions for the yaba.yaml 
 """
 # Importing modules
 import os
