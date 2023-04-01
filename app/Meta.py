@@ -1,5 +1,5 @@
 """
-This is the Meta module and supports all the REST actions for the yaba.yaml
+This is the Meta module and supports all the REST actions for the yaba.yaml 
 """
 # Importing modules
 import os
@@ -58,7 +58,7 @@ def insert_experiments(username,fileName,status=True):
         #Checking necessary columns are there.
         columns=data.columns.values.tolist()
         accepted_columns=['name','start_date','end_date','description']
-        if(all(x in columns for x in accepted_columns)):
+        if(all(x in accepted_columns for x in columns)):
             if status == False:
                 msg = {'Message' : 'Successfully Validated',
                        'Table' : 'Experiments'}
@@ -149,7 +149,7 @@ def insert_sites(fileName,shp_file,dbf_file,prj_file,shx_file,status=True):
             poly = Polygon(flat_list)
             data.loc[index, 'geometry'] = poly
         
-        if(all(x in columns for x in accepted_columns)):
+        if(all(x in accepted_columns for x in columns)):
             if status == False:
                 msg = {'Message' : 'Successfully Validated',
                        'Table' : 'Sites'}
@@ -226,7 +226,7 @@ def insert_treatments(username,fileName,status=True):
         columns=data.columns.values.tolist()
         accepted_columns=['name','definition','control']
      
-        if(all(x in columns for x in accepted_columns)):
+        if(all(x in accepted_columns for x in columns)):
             if status == False:
                 msg = {'Message' : 'Successfully Validated',
                        'Table' : 'Treatments'}
@@ -288,7 +288,7 @@ def insert_cultivars(fileName, status=True):
         columns=data.columns.values.tolist()
         accepted_columns=['name','species','ecotype','notes']
      
-        if(all(x in columns for x in accepted_columns)):
+        if(all(x in accepted_columns for x in columns)):
             if status == False:
                 msg = {'Message' : 'Successfully Validated',
                        'Table' : 'Cultivars'}
@@ -356,7 +356,7 @@ def insert_citations(username,fileName, status=True):
         columns=data.columns.values.tolist()
         accepted_columns=['author','year','title','journal','vol','pg','url','pdf','doi']
      
-        if(all(x in columns for x in accepted_columns)):
+        if(all(x in accepted_columns for x in columns)):
             if status == False:
                 msg = {'Message' : 'Successfully Validated',
                        'Table' : 'Citations'}
@@ -413,7 +413,7 @@ def insert_experimentSites(fileName, status=True):
         columns=data.columns.values.tolist()
         accepted_columns=['experiment_name','sitename']
      
-        if(all(x in columns for x in accepted_columns)):
+        if(all(x in accepted_columns for x in columns)):
             if status == False:
                 msg = {'Message' : 'Successfully Validated',
                        'Table' : 'Experiments_sites'}
@@ -474,7 +474,7 @@ def insert_experimentTreatments(fileName, status=True):
         columns=data.columns.values.tolist()
         accepted_columns=['experiment_name','treatment_name']    
 
-        if(all(x in columns for x in accepted_columns)):
+        if(all(x in accepted_columns for x in columns)):
             if status == False:
                 msg = {'Message' : 'Successfully Validated',
                        'Table' : 'Experiments_treatments'}
@@ -534,7 +534,7 @@ def insert_sitesCultivars(fileName, status=True):
         columns=data.columns.values.tolist()
         accepted_columns=['sitename','cultivar_name','specie_id']    
 
-        if(all(x in columns for x in accepted_columns)):
+        if(all(x in accepted_columns for x in columns)):
             if status == False:
                 msg = {'Message' : 'Successfully Validated',
                        'Table' : 'Sites_cultivars'}
@@ -595,7 +595,7 @@ def insert_citationsSites(fileName, status=True):
         columns=data.columns.values.tolist()
         accepted_columns=['author','year','title','sitename']
 
-        if(all(x in columns for x in accepted_columns)):
+        if(all(x in accepted_columns for x in columns)):
             if status == False:
                 msg = {'Message' : 'Successfully Validated',
                        'Table' : 'Citations_sites'}
