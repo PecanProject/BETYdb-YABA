@@ -1,13 +1,11 @@
 name: YABA interface tests
 
 on:
-  push:
   pull_request:
     branches: [ master ]
 
 jobs:
   interface_test:
-
     runs-on: ubuntu-latest
     defaults:
         run:
@@ -15,14 +13,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [16.x, 17.x]
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v2.7.0
 
     - name: Set up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2.5.2
       with:
         node-version: ${{ matrix.node-version }}
 
@@ -33,4 +31,4 @@ jobs:
       run: npm test -- --coverage
 
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3.1.1
