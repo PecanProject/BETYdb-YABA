@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        ports: ["9000:5432", "8000:8000", "5001:5000", "6001:6000", "8008:8075", "3001:3000"]
         code: [ app, client]
         include:
           - code: app
@@ -28,6 +29,7 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: '3.10'
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
@@ -42,8 +44,7 @@ jobs:
 
       - name: Test with pytest and generate coverage report
         run: |
-              sleep 20
-              pytest --cov= ${{ matrix.path }} --cov-report=xml
+              bash ./wait-for-server.sh ${{ matrix.ports }} pytest --cov= ${{ matrix.path }} --cov-report=xml
       
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
