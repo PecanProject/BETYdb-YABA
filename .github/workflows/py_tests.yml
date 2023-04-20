@@ -44,6 +44,7 @@ jobs:
 
       - name: Test with pytest and generate coverage report
         run: |
+              chmod +x wait-for-server.sh
               bash ./wait-for-server.sh ${{ matrix.ports }} pytest --cov= ${{ matrix.path }} --cov-report=xml
       
       - name: Upload coverage to Codecov
