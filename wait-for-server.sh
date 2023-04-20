@@ -4,7 +4,7 @@ set -e
 
 host="$1"
 shift
-cmd="$@"
+cmd="$*"
 
 until curl --silent --output /dev/null --fail "http://$host"; do
   echo "Waiting for server..."
