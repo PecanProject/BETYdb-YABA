@@ -49,7 +49,7 @@ services:
       - 6001:6000
     depends_on:
       - yaba_api
-  
+
   yaba_visualization:
     build: ./visualization
     networks:
@@ -60,16 +60,16 @@ services:
     environment:
       - HOST=0.0.0.0
       - PORT=8075
-         
+
     ports:
       - 8008:8075
     depends_on:
       - postgres
     restart: unless-stopped
-    
+
   yaba_interface:
     build: ./interface
-    networks: 
+    networks:
       - bety
     volumes:
       - './interface:/code'
@@ -87,6 +87,7 @@ services:
 
 volumes:
   postgres:
+
 
 networks:
   bety:
