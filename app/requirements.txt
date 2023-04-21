@@ -1,5 +1,5 @@
 requests==2.20.0
-psycopg2-binary
+psycopg2
 WSGIserver
 gevent
 pandas==0.24.2
