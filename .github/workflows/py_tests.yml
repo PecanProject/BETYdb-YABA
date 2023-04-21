@@ -40,7 +40,7 @@ jobs:
       - name: Set-up the project
         run: |
               docker-compose up -d postgres
-              docker-compose run --rm bety initialize
+              docker-compose run --rm pecan/db initialize
               docker-compose up -d
               docker ps -a
               docker logs betydb-yaba_yaba_api_1
