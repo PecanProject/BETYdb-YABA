@@ -1,5 +1,5 @@
 requests==2.20.0
-libpq-dev
+libpq-dev==9.4.3
 psycopg2-binary
 WSGIserver
 gevent
