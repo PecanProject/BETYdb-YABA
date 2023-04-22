@@ -16,6 +16,7 @@ WORKDIR /code
 
 RUN pip install git+https://github.com/aleju/imgaug --no-deps &&\
     pip install GDAL\
+    export PATH=/usr/bin/gdal-config:$PATH\
     pip install Fiona\
     pip install -r requirements.txt    
 
