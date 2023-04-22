@@ -15,6 +15,8 @@ COPY . /code
 WORKDIR /code
 
 RUN pip install git+https://github.com/aleju/imgaug --no-deps &&\
+    pip install GDAL\
+    pip install Fiona\
     pip install -r requirements.txt    
 
 USER myuser
