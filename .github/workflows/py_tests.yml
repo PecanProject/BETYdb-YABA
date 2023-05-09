@@ -23,10 +23,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python 3.7
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: 3.7
 
@@ -40,8 +40,8 @@ jobs:
       - name: Set-up the project
         run: |
               docker-compose up -d postgres
-              docker-compose run --rm bety initialize
-              docker-compose up -d
+              docker-compose up -d bety
+              docker-compose up -d 
               docker ps -a
               docker logs betydb-yaba_yaba_api_1
 
@@ -51,4 +51,4 @@ jobs:
               pytest --cov= ${{ matrix.path }} --cov-report=xml
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
