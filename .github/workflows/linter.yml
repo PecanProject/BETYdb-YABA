@@ -20,6 +20,8 @@ jobs:
         uses: github/super-linter@v4
         env:
           VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: "master"
+          VALIDATE_PYTHON_PYLINT: true
+          VALIDATE_JAVASCRIPT_ES: true
+          DEFAULT_BRANCH: master
           PYTHON_PYLINT_CONFIG_FILE: .pylintrc
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
