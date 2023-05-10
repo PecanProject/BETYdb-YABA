@@ -10,45 +10,42 @@ on:
 
 jobs:
   py_test:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        ports: ["9000:5432", "8000:8000", "5001:5000", "6001:6000", "8008:8075", "3001:3000"]
         code: [ app, client]
         include:
-         - code: app
-           path: ./yaba_test/test_yaba.py
-         - code: client
-           path: ./yaba_client_test/test_yaba_client.py
+          - code: app
+            path: ./yaba_test/test_yaba.py
+          - code: client
+            path: ./yaba_client_test/test_yaba_client.py
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v2
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
         with:
-          python-version: 3.7
+          python-version: '3.10'
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
               pip install --upgrade pip
-              pip install pytest
-              pip install pytest-cov
+              pip install pytest pytest-cov
               pip install docker-compose
-              
+
       - name: Set-up the project
         run: |
-              docker-compose up -d postgres
-              docker-compose run --rm bety initialize
-              docker-compose up -d
-              docker ps -a
-              docker logs betydb-yaba_yaba_api_1
+              docker-compose -p bety up -d postgres
+              docker run --rm --network bety_bety pecan/db
 
       - name: Test with pytest and generate coverage report
         run: |
-              sleep 20
-              pytest --cov= ${{ matrix.path }} --cov-report=xml
-
+              chmod +x wait-for-server.sh
+              bash ./wait-for-server.sh ${{ matrix.ports }} pytest --cov= ${{ matrix.path }} --cov-report=xml
+      
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3

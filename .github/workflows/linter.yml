@@ -7,19 +7,19 @@ on:
 
 jobs:
   lint:
-    
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
-        
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
       - name: Lint Code Base
-        uses: docker://github/super-linter:v3
+        uses: github/super-linter@v4
         env:
-          PYTHON_PYLINT_CONFIG_FILE: .pylintrc
           VALIDATE_ALL_CODEBASE: false
-          VALIDATE_PYTHON_PYLINT: true
-          VALIDATE_JAVASCRIPT_ES: true
-          DEFAULT_BRANCH: master
+          DEFAULT_BRANCH: "master"
+          PYTHON_PYLINT_CONFIG_FILE: .pylintrc
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
