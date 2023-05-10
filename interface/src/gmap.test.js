@@ -303,7 +303,7 @@ describe('Test the GMap Component',()=>{
       ];
         const bounds=[ [33.0745319570799, -111.975055142448], [33.0764637066593, -111.974793202983]];
         const colors= ["red", "blue", "green", "yellow"]
-        const gmap = shallow(<GMap type="experiments"/>, {
+        const gmap = shallow(<GMap.WrappedComponent type="experiments"/>, {
           disableLifecycleMethods: true
         });
         gmap.setState({
