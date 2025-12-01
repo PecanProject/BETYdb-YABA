@@ -17,3 +17,4 @@ If you have a specific solution or implementation in mind, please provide detail
 
 - Operating System: [e.g., Windows, macOS, Linux]
 - Browser (if applicable): [e.g., Chrome, Firefox, Safari]
+- Version: [e.g., 1.2.3]
