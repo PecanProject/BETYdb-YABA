@@ -15,7 +15,7 @@
     "google-spreadsheets-key-parser": "^1.1.0",
     "multer": "^1.4.2",
     "papaparse": "^5.2.0",
-    "pg": "^8.2.1",
+    "pg": "^8.11.0",
     "pg-format": "^1.0.4",
     "shpjs": "^3.5.0",
     "squel": "^5.13.0"
