@@ -43,6 +43,8 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
+app/coverage-api.xml
+client/coverage-client.xml
 *.cover
 .hypothesis/
 .pytest_cache/
