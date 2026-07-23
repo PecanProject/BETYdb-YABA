@@ -1,0 +1,16 @@
+services:
+  yaba_api:
+    build:
+      args:
+        REQUIREMENTS_FILE: requirements-ci.txt
+    volumes:
+      - ./.coveragerc:/coverage/.coveragerc:ro
+    command: ["coverage", "run", "--rcfile=/coverage/.coveragerc", "server.py"]
+
+  yaba_client:
+    build:
+      args:
+        REQUIREMENTS_FILE: requirements-ci.txt
+    volumes:
+      - ./.coveragerc:/coverage/.coveragerc:ro
+    command: ["coverage", "run", "--rcfile=/coverage/.coveragerc", "client.py"]

@@ -1,0 +1,4 @@
+[run]
+source = /code
+sigterm = true
+relative_files = true

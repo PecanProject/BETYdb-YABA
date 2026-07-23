@@ -1,6 +1,3 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
 name: YABA app and client tests
 
 on:
@@ -12,14 +9,23 @@ jobs:
   py_test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        ports: ["9000:5432", "8000:8000", "5001:5000", "6001:6000", "8008:8075", "3001:3000"]
-        code: [ app, client]
         include:
-          - code: app
-            path: ./yaba_test/test_yaba.py
-          - code: client
-            path: ./yaba_client_test/test_yaba_client.py
+          - component: api
+            service: yaba_api
+            test_path: ./yaba_test/test_yaba.py
+            port: 5001
+            coverage_file: app/.coverage
+            report: app/coverage-api.xml
+            expected_file: server.py
+          - component: client
+            service: yaba_client
+            test_path: ./yaba_client_test/test_yaba_client.py
+            port: 6001
+            coverage_file: client/.coverage
+            report: client/coverage-client.xml
+            expected_file: client.py
 
     steps:
       - name: Checkout Code
@@ -31,21 +37,73 @@ jobs:
           python-version: '3.10'
           cache: 'pip'
 
-      - name: Install dependencies
+      - name: Install test runner dependencies
         run: |
-              pip install --upgrade pip
-              pip install pytest pytest-cov
-              pip install docker-compose
+          python -m pip install --upgrade pip
+          python -m pip install pytest requests
 
-      - name: Set-up the project
+      - name: Start dependencies and initialize the database
         run: |
-              docker-compose -p bety up -d postgres
-              docker run --rm --network bety_bety pecan/db
+          if [ "${{ matrix.component }}" = "client" ]; then
+            docker compose -p bety -f docker-compose.yml -f .github/compose.coverage.yml up -d postgres yaba_api
+          else
+            docker compose -p bety -f docker-compose.yml -f .github/compose.coverage.yml up -d postgres
+          fi
+          docker run --rm --network bety_bety pecan/db
 
-      - name: Test with pytest and generate coverage report
+      - name: Start measured service and wait for readiness
         run: |
-              chmod +x wait-for-server.sh
-              bash ./wait-for-server.sh ${{ matrix.ports }} pytest --cov= ${{ matrix.path }} --cov-report=xml
-      
+          docker compose -p bety -f docker-compose.yml -f .github/compose.coverage.yml up -d ${{ matrix.service }}
+          chmod +x wait-for-server.sh
+          if [ "${{ matrix.component }}" = "client" ]; then
+            bash ./wait-for-server.sh localhost:5001 true
+          fi
+          bash ./wait-for-server.sh localhost:${{ matrix.port }} true
+
+      - name: Run HTTP tests
+        run: pytest ${{ matrix.test_path }}
+
+      - name: Stop measured service and collect coverage
+        run: |
+          docker compose -p bety -f docker-compose.yml -f .github/compose.coverage.yml stop -t 15 ${{ matrix.service }}
+          test -s ${{ matrix.coverage_file }}
+          docker compose -p bety -f docker-compose.yml -f .github/compose.coverage.yml run --rm --no-deps ${{ matrix.service }} coverage xml --rcfile=/coverage/.coveragerc -o /code/$(basename ${{ matrix.report }})
+          test -s ${{ matrix.report }}
+
+      - name: Validate coverage report
+        env:
+          REPORT: ${{ matrix.report }}
+          EXPECTED_FILE: ${{ matrix.expected_file }}
+        run: |
+          python - <<'PY'
+          import os
+          import xml.etree.ElementTree as ET
+
+          root = ET.parse(os.environ["REPORT"]).getroot()
+          lines_valid = int(root.attrib["lines-valid"])
+          files = [node.attrib["filename"] for node in root.findall(".//class")]
+          assert lines_valid > 0, "coverage report contains no measured lines"
+          assert files, "coverage report contains no measured files"
+          assert any(filename.endswith(os.environ["EXPECTED_FILE"]) for filename in files), (
+              "coverage report does not include " + os.environ["EXPECTED_FILE"]
+          )
+          PY
+
+      - name: Upload coverage report artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-${{ matrix.component }}
+          path: ${{ matrix.report }}
+          if-no-files-found: error
+
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v3.1.2
+        with:
+          files: ${{ matrix.report }}
+          flags: yaba_${{ matrix.component }}
+          disable_search: true
+          fail_ci_if_error: false
+
+      - name: Stop project services
+        if: always()
+        run: docker compose -p bety -f docker-compose.yml -f .github/compose.coverage.yml down -v
